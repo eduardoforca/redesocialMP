@@ -208,3 +208,12 @@ Pessoa PessoaByID(Rede rede, int id){
 	return (Pessoa)retorna_valor_vertice(rede->pessoas, id);
 
 }
+
+Rede RedeFile(char* nome_arquivo){
+	FILE* fp = fopen(nome_arquivo,"rb");
+	if (fp!=NULL){
+	    Rede rede = (Rede)malloc(sizeof(rede));
+	    fclose (fp);
+  	}
+  	return NULL;
+}

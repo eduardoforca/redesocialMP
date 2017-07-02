@@ -8,6 +8,35 @@ enum Types{
 	PRODUTOS, TRANSACAO, PESSOA
 };
 int userMainWindow(Pessoa p){
+/*
+amizades, transações*/
+
+	if (p == NULL)
+		return 1;
+
+	WINDOW *win;
+	win = newwin(3, 10, 0, 15);
+	erase();
+	printw("--------HOME----------\n");
+/*	struct pessoa{
+	int id;
+	char nome[50];
+	List amigos;
+	List conhecidos;//Ja fez transacao
+	List transacoes;//Transacoes concluidas
+	List notificacoes;//Transacoes que pode prover
+	float rating_provedor;
+	float rating_cliente;
+	List comentarios;	
+};*/
+
+	printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+	printw("Amizades:\t%s\n", p->amigos);
+
+
+/*wrefresh(win)*/
+	getch();
+	endwin();
 	return 0;
 }
 int listWindow(int type, List lista){
@@ -43,7 +72,7 @@ int listWindow(int type, List lista){
 
 	getch();
 	endwin();
-	return 1;
+	return 0;
 }
 int signupWindow(){
 	return 0;

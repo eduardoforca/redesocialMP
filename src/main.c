@@ -7,6 +7,8 @@ Rede rede;
 enum Types{
 	PRODUTOS, TRANSACAO, PESSOA
 };
+int amizadeWindow(Pessoa p);
+int listWindow(int type, List lista);
 int userMainWindow(Pessoa p){
 /*
 amizades, transações*/
@@ -15,29 +17,81 @@ amizades, transações*/
 		return 1;
 
 	WINDOW *win;
-	win = newwin(3, 10, 0, 15);
-	erase();
-	printw("--------HOME----------\n");
-/*	struct pessoa{
-	int id;
-	char nome[50];
-	List amigos;
-	List conhecidos;//Ja fez transacao
-	List transacoes;//Transacoes concluidas
-	List notificacoes;//Transacoes que pode prover
-	float rating_provedor;
-	float rating_cliente;
-	List comentarios;	
-};*/
-
-	printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
-	printw("Amizades:\t%s\n", p->amigos);
-
-
-/*wrefresh(win)*/
-	getch();
+	int opcao, back =0;
+	win = newwin(3, 10, 0, 0);
+	do{
+		erase();
+		printw("--------HOME----------\n");
+		printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+		if (p->amigos != NULL){
+			printw("Amizades:\n");
+			listWindow(PESSOA, p->amigos);
+		}	
+		win = newwin(3, 10, 10, 10);
+		if (p->transacoes != NULL){
+			printw("Transacoes:\t%s\n", p->transacoes);
+		}
+		printw("1 - Adicionar Amizade\n");
+		printw("2 - Voltar\n");
+		scanw("%d", &opcao);	
+		switch(opcao){
+			case 1:
+				amizadeWindow(p);
+				break;
+			case 2:
+				back = 1;
+			default:break;
+		}
+	}while(!back);
 	endwin();
 	return 0;
+}
+int amizadeWindow(Pessoa p){
+	WINDOW *win;
+	win = newwin(3, 10, 0, 0);
+	int opcao, back = 0;
+	int id;
+	erase();
+	do{
+		erase();
+		printw("----- ADICIONAR AMIZADE -----\nDigite o ID do usuario que deseja adicionar:\n");
+		scanw("%d", &id);
+		Pessoa n = PessoaByID(rede, id);
+		if(n==p){
+			erase();
+			printw("----- ADICIONAR AMIZADE -----\nVocê não pode adicionar a si mesmo\n");
+			printw("1 - Tentar Novamente\n");
+			printw("2 - Cancelar\n");
+			scanw("%d", &opcao);	
+			switch(opcao){
+				case 2:
+					back = 1;
+					break;
+				default:break;
+			}
+		}else{
+			if(n!= NULL){
+				AdicionarAmizade(rede, p, n);
+				back = 1;
+			}
+			else{
+				erase();
+				printw("----- ADICIONAR AMIZADE -----\nUsuario nao existe:\n");
+				printw("1 - Tentar Novamente\n");
+				printw("2 - Cancelar\n");
+				scanw("%d", &opcao);	
+				switch(opcao){
+					case 2:
+						back = 1;
+						break;
+					default:break;
+				}
+			}
+		}
+	}while(!back);
+	endwin();
+	return 0;
+
 }
 int listWindow(int type, List lista){
 

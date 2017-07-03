@@ -14,8 +14,8 @@ struct pessoa{
 	char nome[50];
 	List amigos;
 	List conhecidos;//Ja fez transacao
-	List transacoes;
-	List notificacoes;
+	List transacoes;//Transacoes concluidas
+	List notificacoes;//Transacoes que pode prover
 	float rating_provedor;
 	float rating_cliente;
 	List comentarios;	
@@ -30,6 +30,7 @@ struct transacao{
 	int status;
 	char comentario_cliente[1000];
 	char comentario_provedor[1000];
+	List ofertas;
 };
 
 struct produto{
@@ -56,10 +57,19 @@ enum tipo_produto
 
 enum status_transacao
 {
-	PEDIDA, INICIADA, CONCLUIDA
+	PEDIDA, INICIADA, PENDENTE, CONCLUIDA
 	
 };
-
+enum conexao
+{
+	AMIZADE, NEGOCIOS 
+};
+enum filtros_transacao{
+	CATEGORIA, GACLIENTE
+}
+enum filtros_pessoas{
+	GA, PRESTASERVICO, RATING
+}
 Pessoa CriarPessoa(char* nome, int id);
 Produto CriarProduto(char* nome, char* descricao, int tipo, int id);
 Transacao CriarTransacao(Pessoa cliente, Produto produto, int id);
@@ -71,5 +81,13 @@ int ExcluirPessoa(Rede rede, Pessoa pessoa);
 int ExcluirProduto(Rede rede, Produto produto);
 int ExcluirTransacao(Rede rede, Transacao transacao);
 int DeletaRede(Rede rede);
+void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
+void RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
+void NotificarTransacao(Rede rede, Transacao transacao, int* filtros);
+void AceitarTransacao(Rede rede, Transacao transacao);
+void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa);
+void IniciarTransacao(Rede rede, Transacao oferta);
+void AvaliarTransacao(Rede rede, Transacao oferta, Pessoa avaliador, char* comentario, int rating);
+Transacao* FiltrarTransacao(Rede rede, int* filtros);
 
 #endif

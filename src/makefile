@@ -9,7 +9,7 @@ LDIR =../lib
 SLIBS = $(patsubst %,$(LDIR)/%,$(_SLIBS))
 LIBS = -lncurses
 LIBSMAIN = 
-LIBSTEST = -lgtest -pthreads
+LIBSTEST = -pthread -lgtest
 
 _DEPS = redeSocial.h grafo.h lista.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

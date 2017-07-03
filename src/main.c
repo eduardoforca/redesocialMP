@@ -2,13 +2,64 @@
 #include <stdlib.h>
 #include "redeSocial.h"
 #include <ncurses.h>
+#include "main.h"
 
 Rede rede;
-enum Types{
-	PRODUTOS, TRANSACAO, PESSOA
-};
-int amizadeWindow(Pessoa p);
-int listWindow(int type, List lista);
+int main(){
+	int opcao;
+
+	rede = RedeFile("socialnetwork.bin");
+	if(rede == NULL){
+		rede = CriarRede();
+	}
+
+	initscr();
+
+	WINDOW *main_win;
+
+	main_win = newwin(3, 10, 0, 0);
+	int error = 0;
+
+	do{
+		error = 0;
+		printw("Escolha uma opcao:\n");
+		printw("1 - Login\n");
+		printw("2 - Cadastro\n");
+		printw("3 - Painel de Admin\n");
+		printw("4 - Sair\n");		
+		scanw("%d", &opcao);
+		wrefresh(main_win);
+		erase();
+		switch(opcao){
+			case 1:
+				error = loginWindow();
+				break;
+			case 2:
+				error = signupWindow();
+				break;
+			case 3:
+				error = adminWindow();
+				break;
+			case 4:
+				error = 0;
+				break;
+			default: 
+				printw("Entrada invalida\n");
+				error = 1;
+				break;
+		}
+	}while(error);
+
+	SalvaRede(rede, "socialnetwork.bin");
+	DeletaRede(rede);
+	endwin();
+	return 0;	
+}
+
+int editPessoa(Pessoa p){
+
+}
+
 int userMainWindow(Pessoa p){
 /*
 amizades, transações*/
@@ -32,13 +83,20 @@ amizades, transações*/
 			printw("Transacoes:\t%s\n", p->transacoes);
 		}
 		printw("1 - Adicionar Amizade\n");
-		printw("2 - Voltar\n");
+		printw("2 - Editar Dados\n");
+		printw("3 - Nova Transacao\n");
+		printw("4 - Aceitar Transacao\n");
+		printw("5 - Avaliar Transacoes Pendentes\n");
+		printw("6 - Voltar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
 				amizadeWindow(p);
 				break;
 			case 2:
+				editPessoa(p);
+				break;
+			case 6:
 				back = 1;
 			default:break;
 		}
@@ -288,54 +346,4 @@ int adminWindow(){
 	}while(!back);
 	endwin();
 	return back;
-}
-int main(){
-	int opcao;
-
-	rede = RedeFile("socialnetwork.bin");
-	if(rede == NULL){
-		rede = CriarRede();
-	}
-
-	initscr();
-
-	WINDOW *main_win;
-
-	main_win = newwin(3, 10, 0, 0);
-	int error = 0;
-
-	do{
-		error = 0;
-		printw("Escolha uma opcao:\n");
-		printw("1 - Login\n");
-		printw("2 - Cadastro\n");
-		printw("3 - Painel de Admin\n");
-		printw("4 - Sair\n");		
-		scanw("%d", &opcao);
-		wrefresh(main_win);
-		erase();
-		switch(opcao){
-			case 1:
-				error = loginWindow();
-				break;
-			case 2:
-				error = signupWindow();
-				break;
-			case 3:
-				error = adminWindow();
-				break;
-			case 4:
-				error = 0;
-				break;
-			default: 
-				printw("Entrada invalida\n");
-				error = 1;
-				break;
-		}
-	}while(error);
-
-	SalvaRede(rede, "socialnetwork.bin");
-	DeletaRede(rede);
-	endwin();
-	return 0;	
 }

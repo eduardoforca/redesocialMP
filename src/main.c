@@ -211,7 +211,7 @@ int main(){
 	}while(error);
 
 	//SALVA Rede
-	deletaRede(rede);
+	DeletaRede(rede);
 	endwin();
 	return 0;	
 }

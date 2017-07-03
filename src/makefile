@@ -8,6 +8,8 @@ LDIR =../lib
 
 SLIBS = $(patsubst %,$(LDIR)/%,$(_SLIBS))
 LIBS = -pthread -lgtest -lncurses
+LIBSMAIN = 
+LIBSTEST = -lgtest
 
 _DEPS = redeSocial.h grafo.h lista.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -31,10 +33,10 @@ $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) -Wno-write-strings 
 
 test: $(OBJC) $(OBJTEST)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LIBSTEST)
 
 main: $(OBJC) $(OBJMAIN)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) $(LIBSMAIN)
 
 .PHONY: clean
 

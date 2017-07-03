@@ -46,7 +46,48 @@ int listWindow(int type, List lista){
 	return 1;
 }
 int signupWindow(){
-	return 0;
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	erase();
+	wrefresh(win);
+	do{
+		erase();
+		printw("----- CADASTRO -----\n");
+		char nome[50];
+		int id;
+		printw("Nome do Usuario:");
+		scanw("%s", &nome);
+		printw("ID do Usuario:");
+		scanw("%d", &id);
+		Pessoa p = PessoaByID(rede, id);
+		if(p== NULL){
+			if(AdicionarPessoa(rede, CriarPessoa(nome, id))){
+				userMainWindow(PessoaByID(rede, id));
+			}
+			else{
+				printw("----- CADASTRO -----\nErro Desconhecido\n");
+				getch();
+			}
+			back = 1;
+		}
+		else{
+			erase();
+			printw("----- CADASTRO -----\nUsuario ja existe:\n");
+			printw("1 - Tentar Novamente\n");
+			printw("2 - Cancelar\n");
+			scanw("%d", &opcao);	
+			switch(opcao){
+				case 2:
+					back = 1;
+					break;
+				default:break;
+			}
+		}
+
+	}while(!back);
+	erase();
+	endwin();
+	return back;
 }
 int loginWindow(){
 	WINDOW *win = newwin(3, 10, 0, 0);

@@ -10,8 +10,7 @@ struct pessoa{
 	Transacao* transacoes;
 	Transacao* notificacoes;
 	float rating_provedor;
-	float rating_cliente;
-	char* comentarios[1000];	
+	float rating_cliente;	
 };
 
 struct transacao{
@@ -20,6 +19,8 @@ struct transacao{
 	Pessoa cliente;
 	Produto produto;
 	int status;
+	char comentario_cliente[1000];
+	char comentario_provedor[1000];
 };
 
 struct produto{
@@ -30,4 +31,18 @@ struct produto{
 	
 };
 
+enum tipo_produto
+{
+	PRODUTO, SERVICO   
+};
+
+enum status_transacao
+{
+	PEDIDA, INICIADA, CONCLUIDA
+	
+};
+
+Pessoa CriarPessoa(char* nome);
+Produto CriarProduto(char* nome, char* descricao, int tipo);
+Transacao CriarTransacao(Pessoa provedor, Produto produto);
 #endif

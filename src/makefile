@@ -1,7 +1,7 @@
 IDIR =../include
 CC=g++
 
-CFLAGS=-I$(IDIR) -g
+CFLAGS=-I$(IDIR) -g -ftest-coverage -fprofile-arcs
 
 ODIR=obj
 LDIR =../lib
@@ -14,8 +14,15 @@ LIBS = -pthread -lgtest
 _DEPS = pessoa.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJC = main.o
+_OBJC = pessoa.o
 OBJC = $(patsubst %,$(ODIR)/%,$(_OBJC))
+
+_OBJTEST = test_redesocial.o
+OBJTEST = $(patsubst %,$(ODIR)/%,$(_OBJTEST))
+
+_OBJMAIN = main.o
+OBJMAIN = $(patsubst %,$(ODIR)/%,$(_OBJMAIN))
+
 
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -25,7 +32,10 @@ $(ODIR)/%.o: %.c $(DEPS)
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) -Wno-write-strings 
 
-main: $(OBJC)
+test: $(OBJC) $(OBJTEST)
+	$(CC) -o $@ $^ $(CFLAGS) $(SLIBS) $(LIBS)
+
+main: $(OBJC) $(OBJMAIN)
 	$(CC) -o $@ $^ $(CFLAGS) $(SLIBS) $(LIBS)
 
 .PHONY: clean

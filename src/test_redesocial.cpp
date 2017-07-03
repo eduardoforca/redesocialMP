@@ -9,7 +9,8 @@
  */
 
 #include <gtest/gtest.h>
-#include "pessoa.h"
+#include "redeSocial.h"
+#include "grafo.h"
 
 TEST(PessoaTest, NovaPessoaTest){
 	Pessoa p = CriarPessoa("Pessoa Teste");
@@ -36,6 +37,14 @@ TEST(TransacaoTest, NovaTransacaoTest){
 	ASSERT_EQ(t->produto, prod);
 	ASSERT_EQ(t->status, PEDIDA);
 	ASSERT_EQ(t->cliente, (Pessoa)NULL);
+}
+
+TEST(RedeSocialTest, NovaRedeTest){
+
+	Rede r = CriarRede();
+
+	ASSERT_NE((Graph) NULL, r->pessoas);
+	ASSERT_EQ((List) NULL, r->transacoes);
 }
 
 int main(int argc, char **argv) {

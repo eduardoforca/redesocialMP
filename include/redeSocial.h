@@ -1,16 +1,22 @@
-#ifndef _PESSOA_H_
-#define _PESSOA_H_
+#ifndef _REDESOCIAL_H_
+#define _REDESOCIAL_H_
+
+#include "grafo.h"
+#include "lista.h"
+
 typedef struct pessoa* Pessoa;
 typedef struct transacao* Transacao;
 typedef struct produto* Produto;
+typedef struct rede* Rede;
 
 struct pessoa{
 	char nome[50];
-	Pessoa* amigos;
-	Transacao* transacoes;
-	Transacao* notificacoes;
+	List amigos;
+	List transacoes;
+	List notificacoes;
 	float rating_provedor;
-	float rating_cliente;	
+	float rating_cliente;
+	List comentarios;	
 };
 
 struct transacao{
@@ -31,6 +37,13 @@ struct produto{
 	
 };
 
+struct rede{
+
+	Graph pessoas;
+	List transacoes;
+	
+};
+
 enum tipo_produto
 {
 	PRODUTO, SERVICO   
@@ -45,4 +58,6 @@ enum status_transacao
 Pessoa CriarPessoa(char* nome);
 Produto CriarProduto(char* nome, char* descricao, int tipo);
 Transacao CriarTransacao(Pessoa provedor, Produto produto);
+Rede CriarRede();
+
 #endif

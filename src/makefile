@@ -6,15 +6,13 @@ CFLAGS=-I$(IDIR) -g -ftest-coverage -fprofile-arcs
 ODIR=obj
 LDIR =../lib
 
-# #SLIBS indica bibliotecas estaticas na pasta lib, enquanto LIBS sao bibliotecas instaladas no sistema
-# _SLIBS= liblista.a
 SLIBS = $(patsubst %,$(LDIR)/%,$(_SLIBS))
 LIBS = -pthread -lgtest
 
-_DEPS = pessoa.h
+_DEPS = redeSocial.h grafo.h lista.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJC = pessoa.o
+_OBJC = redeSocial.o grafo.o lista.o
 OBJC = $(patsubst %,$(ODIR)/%,$(_OBJC))
 
 _OBJTEST = test_redesocial.o
@@ -33,10 +31,10 @@ $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS) -Wno-write-strings 
 
 test: $(OBJC) $(OBJTEST)
-	$(CC) -o $@ $^ $(CFLAGS) $(SLIBS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 main: $(OBJC) $(OBJMAIN)
-	$(CC) -o $@ $^ $(CFLAGS) $(SLIBS) $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 

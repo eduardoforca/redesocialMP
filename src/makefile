@@ -7,9 +7,9 @@ ODIR=obj
 LDIR =../lib
 
 SLIBS = $(patsubst %,$(LDIR)/%,$(_SLIBS))
-LIBS = -pthread -lgtest -lncurses
+LIBS = -lncurses
 LIBSMAIN = 
-LIBSTEST = -lgtest
+LIBSTEST = -lgtest -pthreads
 
 _DEPS = redeSocial.h grafo.h lista.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

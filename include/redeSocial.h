@@ -1,8 +1,12 @@
 #ifndef _REDESOCIAL_H_
 #define _REDESOCIAL_H_
 
+#include "redeSocial.h"
 #include "grafo.h"
 #include "lista.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct pessoa* Pessoa;
 typedef struct transacao* Transacao;
@@ -93,4 +97,8 @@ Rede RedeFile(char* nomeArquivo);
 Produto ProdutoByID(Rede rede, int id);
 Transacao TransacaoByID(Rede rede, int id);
 Pessoa PessoaByID(Rede rede, int id);
+void SalvaRede(Rede rede, char* nomeArquivo);
+void writeTransacao(Transacao t, FILE* fp);
+void writePessoa(Pessoa p, FILE* fp);
+void writeGrafo(Graph g, FILE*fp);
 #endif

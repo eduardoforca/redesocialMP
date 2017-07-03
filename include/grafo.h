@@ -10,6 +10,36 @@
 /*	Graph is defined as a pointer to a struct graph*/
 typedef struct graph *Graph;
 
+/*	Definition: Directed graph structure
+	Members:	char* name - user assigned name to the graph, can't be NULL
+				List adjList - headers list containing all the vertices on the graph, uses the List structure defined by list.h*/
+struct graph {
+	List verticesList;
+	char name[100];
+};
+
+/*	Edge is defined as a pointer to an edge
+	Definition: Edge of a graph, connects two vertices
+	Members:	void* value - generic value to be stored on the edge
+				int start, end - identifiers of the vertices on the start and end of the edge(for a directed graph)*/
+typedef struct edge {
+	void* value;
+	int start, end;
+} *Edge;
+
+/*	Vertex is defined as a pointer to a vertex
+	Definition: Vertex of a graph, or a node
+	Members:	void* value - generic value to be stored on the vertex
+				int id - identifier of the vertex(defined by user, must be unique)
+				List adjList - adjacency list containing all the edges connected to this vertex, uses the List structure defined by list.h*/
+typedef struct vertex {
+	List adjList;
+	void* value;
+	int id;
+
+} *Vertex;
+
+
 /*	Definition: Creates an empty graph called nome
 	Parameters: char* nome - string containing the name of the graph
 	Return: a pointer to the empty graph created by the function */

@@ -7,7 +7,12 @@
 
 #define TRUE 1
 #define FALSE 0
-
+/*
+*Função para criar uma instância de Pessoa
+*A Função recebe nome e a id
+*inicializa variáveis da estrutura Pessoa
+*Retorna ponteiro Pessoa p
+*/
 Pessoa CriarPessoa(char* nome, int id){
 	Pessoa p = (Pessoa) malloc(sizeof(pessoa));
 	strcpy(p->nome, nome);
@@ -20,6 +25,12 @@ Pessoa CriarPessoa(char* nome, int id){
 	p->id = id;
 	return p;
 }
+/*
+*Função para criar uma instância de Produto
+*A Função recebe nome, descrição, tipo(servico ou produto) e id
+*inicializa variáveis da estrutura Produto
+*Retorna ponteiro Produto p
+*/
 Produto CriarProduto(char* nome, char* descricao, int tipo, int id){
 	Produto p = (Produto) malloc(sizeof(produto));
 	strcpy(p->nome, nome);
@@ -29,6 +40,13 @@ Produto CriarProduto(char* nome, char* descricao, int tipo, int id){
 
 	return p;
 }
+
+/*
+*Função para criar uma instância de Transacao
+*A Função recebe a Pessoa cliente que está requisitando um serviço ou produto, o Produto, e a id da transação
+*inicializa variáveis da estrutura Transação
+*Retorna ponteiro Transação t
+*/
 Transacao CriarTransacao(Pessoa cliente, Produto produto, int id){
 	Transacao t = (Transacao) malloc(sizeof(transacao));
 	t->cliente = cliente;
@@ -40,6 +58,12 @@ Transacao CriarTransacao(Pessoa cliente, Produto produto, int id){
 
 	return t;
 }
+/*
+*Função para criar a rede social
+*Não recebe parâmetros
+*Inicializa as variaveis da estrutura rede
+*Retorna a rede r vazia
+*/
 Rede CriarRede(){
 	Rede r = (Rede) malloc (sizeof(rede));
 	r->pessoas = cria_grafo("Pessoas");
@@ -48,6 +72,12 @@ Rede CriarRede(){
 
 	return r;
 }
+/*
+*Função para adicionar uma pessoa a Rede
+*recebe rede e pessoa
+*insere a pessoa no grafo
+*retorna validação da inserção
+*/
 int AdicionarPessoa(Rede rede, Pessoa pessoa){
 
 	if(adiciona_vertice(rede->pessoas, pessoa->id)){
@@ -57,14 +87,29 @@ int AdicionarPessoa(Rede rede, Pessoa pessoa){
 	return FALSE;
 
 }
+/*
+*Função para adicionar produto na rede
+*recebe rede e produto
+*sem retorno
+*/
 void AdicionarProduto(Rede rede, Produto produto){
 	rede->produtos = adiciona_no(&(rede->produtos), produto); 
 
 }
+/*
+*Função para adicionar transacao na rede
+*recebe rede e transacao
+*sem retorno
+*/
 void AdicionarTransacao(Rede rede, Transacao transacao){
 	rede->transacoes = adiciona_no(&(rede->transacoes), transacao); 
 
 }
+/*
+*Função para excluir pessoa da rede
+*recebe rede e pessoa
+*retorna a validação da exclusão
+*/
 int ExcluirPessoa(Rede rede, Pessoa pessoa){
 
 	if (remove_vertice(rede->pessoas, pessoa->id)){
@@ -77,6 +122,11 @@ int ExcluirPessoa(Rede rede, Pessoa pessoa){
 	return FALSE;
 
 }
+/*
+*Função para excluir produto da rede
+*recebe rede e produto
+*retorna a validação da exclusão
+*/
 int ExcluirProduto(Rede rede, Produto produto){
 	if(remove_no_byvalue(&(rede->produtos), produto)){
 		free(produto);
@@ -84,6 +134,11 @@ int ExcluirProduto(Rede rede, Produto produto){
 	}
 	return FALSE;
 }
+/*
+*Função para excluir transacao da rede
+*recebe rede e transacao
+*retorna a validação da exclusão
+*/
 int ExcluirTransacao(Rede rede,Transacao transacao){
 	if(remove_no_byvalue(&(rede->transacoes), transacao)){
 		destroi_lista(transacao->ofertas);
@@ -92,6 +147,12 @@ int ExcluirTransacao(Rede rede,Transacao transacao){
 	}
 	return FALSE;
 }
+/*
+*Função para deletar a rede
+*recebe rede
+*remove a rede da memoria
+*retorna a validação da exclusão
+*/
 int DeletaRede(Rede rede){
 	int flag;
 	destroi_lista(rede->produtos);
@@ -103,6 +164,12 @@ int DeletaRede(Rede rede){
 
 	return flag;
 }
+/*
+*Função para adicionar amizades
+*recebe rede e as duas pessoas que serão amigas
+*adiciona uma aresta entre as duas pessoas 
+*sem retorno
+*/
 void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	int grau = AMIZADE;
 	adiciona_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
@@ -113,6 +180,12 @@ void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	adiciona_no(&(pessoa1->amigos), pessoa2);
 	adiciona_no(&(pessoa2->amigos), pessoa1);
 }
+/*
+*Função para remover amizades
+*recebe rede e as duas pessoas que serão amigas
+*remove a aresta entre as duas pessoas 
+*retorna validação da remoção
+*/
 int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	remove_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
 	remove_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
@@ -122,6 +195,12 @@ int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	flag&=remove_no_byvalue(&(pessoa2->amigos), pessoa1);
 	return(flag);
 }
+/*
+*Função para notificar transações
+*recebe rede, transacao e filtro
+*notifica todos usuários que passarem no filtro da transação
+*sem retorno
+*/
 void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 	// List pessoas = cria_lista();
 	// for(int* i = filtros; i!=NULL && *i!= 0; i++){
@@ -135,17 +214,36 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 	// adiciona_no(&(p->notificacoes), transacao);
 
 }
+/*
+*Função para aceitar transações
+*recebe rede, transacao e pessoa
+*a pessoa aceita a transacao envia uma oferta para o cliente
+*sem retorno
+*/
 void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){//ENVIA OFERTA
 
 	adiciona_no(&(transacao->ofertas), pessoa);
 	remove_no_byvalue(&(pessoa->notificacoes), transacao);
 
 }
+/*
+*Função para aceitar oferta
+*recebe rede, oferta e pessoa
+*o cliente aceita a oferta
+*inicializa a transação
+*sem retorno
+*/
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
 	destroi_lista(oferta->ofertas);
 	oferta->provedor = pessoa;
 	oferta->status = INICIADA;
 }
+/*
+*Função para concluir transacao
+*recebe rede e transacao
+*adiciona uma aresta entre as pessoas envolvidas na transacao
+*sem retorno
+*/
 void ConcluirTransacao(Rede rede, Transacao transacao){
 	int grau = NEGOCIOS;
 	transacao->status = PENDENTE;
@@ -160,6 +258,12 @@ void ConcluirTransacao(Rede rede, Transacao transacao){
 	}
 	
 }
+/*
+*Função para avaliar transacao
+*recebe rede, transacao, avaliador, comentario e rating (avaliacao em pontos)
+*grava comentário e calcula o rating
+*sem retorno
+*/
 void AvaliarTransacao(Rede rede, Transacao transacao, Pessoa avaliador, char* comentario, int rating){
 	transacao->status = CONCLUIDA;
 	if(avaliador == transacao->cliente){
@@ -171,6 +275,12 @@ void AvaliarTransacao(Rede rede, Transacao transacao, Pessoa avaliador, char* co
 		transacao->provedor->rating_cliente += rating;
 	}
 }
+/*
+*Função para filtrar transacoes
+*recebe rede e filtros
+*filtra as transacoes da rede
+*lista transacoes filtradas
+*/
 Transacao* FiltrarTransacao(Rede rede, int* filtros){
 	for(int* i = filtros; *i!= 0; i++){
 		int filtro = *i;
@@ -180,6 +290,12 @@ Transacao* FiltrarTransacao(Rede rede, int* filtros){
 		}
 	}
 }
+/*
+*Função para retornar produto por ID
+*recebe rede e id de produto
+*percorre lista de produtos
+*retorna um produto
+*/
 Produto ProdutoByID(Rede rede, int id){
 	if (rede->produtos == NULL)
 		return NULL;
@@ -192,6 +308,12 @@ Produto ProdutoByID(Rede rede, int id){
 	}
 	return NULL;
 }
+/*
+*Função para retornar transacao por ID
+*recebe rede e id de transacao
+*percorre lista de transacoes
+*retorna uma transacao
+*/
 Transacao TransacaoByID(Rede rede, int id){
 	if (rede->transacoes == NULL)
 		return NULL;
@@ -224,7 +346,7 @@ void SalvaRede(Rede rede, char* nomeArquivo){
 	FILE* fp = fopen(nomeArquivo,"w+b");
 	if (fp!=NULL){
 	   	
-	   	//Write GRAFO
+	   	writeGrafo(rede->pessoas, fp);
 
 	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
 			Transacao t = (Transacao)n->value;
@@ -283,7 +405,13 @@ void writeGrafo(Graph g, FILE*fp){
 	fwrite(g->name, sizeof(char), 100, fp);
 	for (List n = g->verticesList; n != NULL; n = n->next) { 
 		Vertex v = ((Vertex)n->value);
-		//WriteADJLIST
+		for(List m = v->adjList; m != NULL; m = m->next){
+			Edge e = ((Edge)m->value);
+			fwrite((int*)e->value, sizeof(int), 1, fp);
+			fwrite(&e->start, sizeof(int), 1, fp);
+			fwrite(&e->start, sizeof(int), 1, fp);			
+			
+		}
 		Pessoa p = (Pessoa)v->value;
 		writePessoa(p, fp);
 		fwrite(&v->id, sizeof(int), 1, fp);		

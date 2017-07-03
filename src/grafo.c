@@ -14,35 +14,6 @@
 
 /*ESCOPO PRIVADO DA BIBLIOTECA*/
 
-/*	Definition: Directed graph structure
-	Members:	char* name - user assigned name to the graph, can't be NULL
-				List adjList - headers list containing all the vertices on the graph, uses the List structure defined by list.h*/
-struct graph {
-	List verticesList;
-	char* name;
-};
-
-/*	Edge is defined as a pointer to an edge
-	Definition: Edge of a graph, connects two vertices
-	Members:	void* value - generic value to be stored on the edge
-				int start, end - identifiers of the vertices on the start and end of the edge(for a directed graph)*/
-typedef struct edge {
-	void* value;
-	int start, end;
-} *Edge;
-
-/*	Vertex is defined as a pointer to a vertex
-	Definition: Vertex of a graph, or a node
-	Members:	void* value - generic value to be stored on the vertex
-				int id - identifier of the vertex(defined by user, must be unique)
-				List adjList - adjacency list containing all the edges connected to this vertex, uses the List structure defined by list.h*/
-typedef struct vertex {
-	List adjList;
-	void* value;
-	int id;
-
-} *Vertex;
-
 /*	Definition: Finds a vertex by the identifier
 	Parameters: Graph a_graph - the graph to be searched
 				int x - identifier of the vertex
@@ -89,7 +60,6 @@ Graph cria_grafo(char* name) {
 		return NULL;
 
 	Graph a_graph = (Graph)malloc(sizeof(struct graph));
-	a_graph->name = (char*)malloc(sizeof(char) * (strlen(name) + 1));
 	strcpy(a_graph->name, name);
 	a_graph->verticesList = cria_lista();
 
@@ -114,7 +84,6 @@ int destroi_grafo(Graph a_graph) {
 		destroi_lista(adj); //frees adjList
 		free((n->value));
 	}
-	free(a_graph->name);
 	destroi_lista(a_graph->verticesList);
 	free(a_graph);
 

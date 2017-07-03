@@ -209,10 +209,10 @@ int adminWindow(){
 int main(){
 	int opcao;
 
-	// Rede rede = RedeFile("socialnetwork.bin");
-	// if(rede == NULL){
+	rede = RedeFile("socialnetwork.bin");
+	if(rede == NULL){
 		rede = CriarRede();
-	// }
+	}
 
 	initscr();
 
@@ -251,7 +251,7 @@ int main(){
 		}
 	}while(error);
 
-	//SALVA Rede
+	SalvaRede(rede, "socialnetwork.bin");
 	DeletaRede(rede);
 	endwin();
 	return 0;	

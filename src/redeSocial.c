@@ -213,7 +213,80 @@ Rede RedeFile(char* nome_arquivo){
 	FILE* fp = fopen(nome_arquivo,"rb");
 	if (fp!=NULL){
 	    Rede rede = (Rede)malloc(sizeof(rede));
+	    fread(rede, sizeof(rede), 1, fp);
 	    fclose (fp);
+	    return rede;
   	}
   	return NULL;
+}
+void SalvaRede(Rede rede, char* nomeArquivo){
+
+	FILE* fp = fopen(nomeArquivo,"w+b");
+	if (fp!=NULL){
+	   	
+	   	//Write GRAFO
+
+	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+			Transacao t = (Transacao)n->value;
+			writeTransacao(t, fp);
+		}
+	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+			Produto p = (Produto)n->value;
+			fwrite(p, sizeof(Produto), 1, fp);
+		}
+	    fclose (fp);
+  	}
+
+}
+void writeTransacao(Transacao t, FILE* fp){
+	fwrite(&t->id, sizeof(int), 1, fp);
+	fwrite(&t->cliente->id, sizeof(int), 1, fp);
+	fwrite(&t->provedor->id, sizeof(int), 1, fp);
+	fwrite(&t->status, sizeof(int), 1, fp);
+	fwrite(&t->produto->id, sizeof(int), 1, fp);
+	fwrite(t->comentario_cliente, sizeof(char), 1000, fp);
+	fwrite(t->comentario_provedor, sizeof(char), 1000, fp);
+	for (List n = t->ofertas; n != NULL; n = n->next) { 
+		Pessoa p = (Pessoa)n->value;
+		fwrite(&p->id, sizeof(int), 1, fp);
+	}	
+}
+
+void writePessoa(Pessoa p, FILE* fp){
+	fwrite(&p->id, sizeof(int), 1, fp);
+	fwrite(p->nome, sizeof(char), 50, fp);
+	for (List n = p->amigos; n != NULL; n = n->next) { 
+		Pessoa p = (Pessoa)n->value;
+		fwrite(&p->id, sizeof(int), 1, fp);
+	}
+	for (List n = p->conhecidos; n != NULL; n = n->next) { 
+		Pessoa p = (Pessoa)n->value;
+		fwrite(&p->id, sizeof(int), 1, fp);
+	}
+	for (List n = p->transacoes; n != NULL; n = n->next) { 
+		Transacao t = (Transacao)n->value;
+		fwrite(&t->id, sizeof(int), 1, fp);	
+	}
+	for (List n = p->notificacoes; n != NULL; n = n->next) { 
+		Transacao t = (Transacao)n->value;
+		fwrite(&t->id, sizeof(int), 1, fp);
+	}
+	fwrite(&p->rating_provedor, sizeof(float), 1, fp);
+	fwrite(&p->rating_cliente, sizeof(float), 1, fp);
+	for (List n = p->comentarios; n != NULL; n = n->next) { 
+		char* comentario = (char*)n->value;
+		fwrite(comentario, sizeof(char), 1000, fp);
+	}	
+}
+
+void writeGrafo(Graph g, FILE*fp){
+	fwrite(g->name, sizeof(char), 100, fp);
+	for (List n = g->verticesList; n != NULL; n = n->next) { 
+		Vertex v = ((Vertex)n->value);
+		//WriteADJLIST
+		Pessoa p = (Pessoa)v->value;
+		writePessoa(p, fp);
+		fwrite(&v->id, sizeof(int), 1, fp);		
+	}
+
 }

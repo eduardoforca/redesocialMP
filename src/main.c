@@ -8,10 +8,10 @@ Rede rede;
 int main(){
 	int opcao;
 
-	rede = RedeFile("socialnetwork.bin");
-	if(rede == NULL){
+	// rede = RedeFile("socialnetwork.bin");
+	// if(rede == NULL){
 		rede = CriarRede();
-	}
+	// }
 
 	initscr();
 
@@ -57,6 +57,17 @@ int main(){
 }
 
 int editPessoa(Pessoa p){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	erase();
+	wrefresh(win);
+	printw("----- EDITAR CADASTRO -----\n");
+	char nome[50];
+	printw("Novo nome de Usuario:");
+	scanw("%s", &nome);
+	strcpy(p->nome, nome);
+	erase();
+	endwin();
+	return 1;
 
 }
 
@@ -87,7 +98,7 @@ amizades, transações*/
 		printw("3 - Nova Transacao\n");
 		printw("4 - Aceitar Transacao\n");
 		printw("5 - Avaliar Transacoes Pendentes\n");
-		printw("6 - Voltar\n");
+		printw("6 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:

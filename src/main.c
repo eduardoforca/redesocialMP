@@ -292,11 +292,11 @@ int adminWindow(){
 int main(){
 	int opcao;
 
-	rede = RedeFile("socialnetwork.bin");
+/*	rede = RedeFile("socialnetwork.bin");
 	if(rede == NULL){
-		rede = CriarRede();
+	*/	rede = CriarRede();/*
 	}
-
+*/
 	initscr();
 
 	WINDOW *main_win;

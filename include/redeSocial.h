@@ -10,8 +10,10 @@ typedef struct produto* Produto;
 typedef struct rede* Rede;
 
 struct pessoa{
+	int id;
 	char nome[50];
 	List amigos;
+	List conhecidos;//Ja fez transacao
 	List transacoes;
 	List notificacoes;
 	float rating_provedor;
@@ -21,6 +23,7 @@ struct pessoa{
 
 struct transacao{
 
+	int id;
 	Pessoa provedor;
 	Pessoa cliente;
 	Produto produto;
@@ -31,6 +34,7 @@ struct transacao{
 
 struct produto{
 
+	int id;
 	int tipo;
 	char descricao[500];
 	char nome[50];
@@ -41,6 +45,7 @@ struct rede{
 
 	Graph pessoas;
 	List transacoes;
+	List produtos;
 	
 };
 
@@ -55,9 +60,16 @@ enum status_transacao
 	
 };
 
-Pessoa CriarPessoa(char* nome);
-Produto CriarProduto(char* nome, char* descricao, int tipo);
-Transacao CriarTransacao(Pessoa provedor, Produto produto);
+Pessoa CriarPessoa(char* nome, int id);
+Produto CriarProduto(char* nome, char* descricao, int tipo, int id);
+Transacao CriarTransacao(Pessoa cliente, Produto produto, int id);
 Rede CriarRede();
+int AdicionarPessoa(Rede rede, Pessoa pessoa);
+void AdicionarProduto(Rede rede, Produto produto);
+void AdicionarTransacao(Rede rede, Transacao transacao);
+int ExcluirPessoa(Rede rede, Pessoa pessoa);
+int ExcluirProduto(Rede rede, Produto produto);
+int ExcluirTransacao(Rede rede, Transacao transacao);
+int DeletaRede(Rede rede);
 
 #endif

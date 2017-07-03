@@ -66,10 +66,10 @@ enum conexao
 };
 enum filtros_transacao{
 	CATEGORIA, GACLIENTE
-}
+};
 enum filtros_pessoas{
 	GA, PRESTASERVICO, RATING
-}
+};
 Pessoa CriarPessoa(char* nome, int id);
 Produto CriarProduto(char* nome, char* descricao, int tipo, int id);
 Transacao CriarTransacao(Pessoa cliente, Produto produto, int id);
@@ -82,12 +82,15 @@ int ExcluirProduto(Rede rede, Produto produto);
 int ExcluirTransacao(Rede rede, Transacao transacao);
 int DeletaRede(Rede rede);
 void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
-void RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
+int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 void NotificarTransacao(Rede rede, Transacao transacao, int* filtros);
 void AceitarTransacao(Rede rede, Transacao transacao);
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa);
 void IniciarTransacao(Rede rede, Transacao oferta);
 void AvaliarTransacao(Rede rede, Transacao oferta, Pessoa avaliador, char* comentario, int rating);
 Transacao* FiltrarTransacao(Rede rede, int* filtros);
-
+Rede RedeFile(char* nomeArquivo);
+Produto ProdutoByID(Rede rede, int id);
+Transacao TransacaoByID(Rede rede, int id);
+Pessoa PessoaByID(Rede rede, int id);
 #endif

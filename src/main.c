@@ -1,26 +1,217 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "redeSocial.h"
-int main(){
-	int opcao;
-	printf("USUARIO ----- Escolha uma opcao:\n");
-	printf("1 - Criar Pessoa\n");
-	printf("2 - Editar Pessoa\n");
-	printf("3 - Buscar Transacao\n");
-	printf("4 - Fazer uma Transacao\n");
-	scanf("%d", &opcao);
-	switch(opcao){
-		default: break;
-	}
-	printf("ADMIN ----- Escolha uma opcao:\n");
-	printf("1 - Visualizar Grafo\n");
-	printf("2 - Cadastrar/Excluir Transacao\n");
-	printf("3 - Lista de Transacoes\n");
-	printf("4 - Salvar Rede Social em Arquivo\n");
-	scanf("%d", &opcao);
-	switch(opcao){
-		default: break;
+#include <ncurses.h>
+
+Rede rede;
+enum Types{
+	PRODUTOS, TRANSACAO, PESSOA
+};
+int userMainWindow(Pessoa p){
+	return 0;
+}
+int listWindow(int type, List lista){
+
+	if (lista == NULL)
+		return 1;
+
+	WINDOW *win;
+	win = newwin(3, 10, 0, 0);
+	erase();
+	printw("---------LISTA----------\n");
+	for (List n = lista; n != NULL; n = n->next) { //iterates over all vertices
+		switch(type){
+			case PESSOA:{
+				Pessoa p = (Pessoa)n->value;
+				printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+				break;
+			}
+			case PRODUTOS:{
+				Produto p = (Produto)n->value;
+				printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+				break;
+			}
+			case TRANSACAO:{
+				Transacao p = (Transacao)n->value;
+				printw("ID:%d\tProduto:\t%s\n", p->id, p->produto->nome);
+				break;
+			}
+			default:break;
+		}
+		wrefresh(win);
 	}
 
+	getch();
+	endwin();
+	return 1;
+}
+int signupWindow(){
+	return 0;
+}
+int loginWindow(){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0, id;
+	erase();
+	wrefresh(win);
+	do{
+		erase();
+		printw("----- LOGIN -----\nDigite o ID do usuario:\n");
+		scanw("%d", &id);
+		Pessoa p = PessoaByID(rede, id);
+		if(p!= NULL){
+			userMainWindow(p);
+			back = 1;
+		}
+		else{
+			erase();
+			printw("----- LOGIN -----\nUsuario nao existe:\n");
+			printw("1 - Tentar Novamente\n");
+			printw("2 - Cadastrar Novo Usuario\n");
+			scanw("%d", &opcao);	
+			switch(opcao){
+				case 2:
+					back = 1;
+					signupWindow();
+					break;
+				default:break;
+			}
+		}
+
+	}while(!back);
+	erase();
+	endwin();
+	return back;
+}
+int addRemoveWindow(){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- PAINEL DE ADMIN -----\n----- Adicionar/Remover Produto -----\nEscolha uma opcao:\n");
+		printw("1 - Adicionar Produto\n");
+		printw("2 - Remover Produto\n");
+		printw("3 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				char nome[50], descricao[500];
+				int id, tipo;
+				printw("Nome do Produto:");
+				scanw("%s", &nome);
+				printw("Descricao do Produto:");
+				scanw("%s", &descricao);
+				printw("ID do Produto:");
+				scanw("%d", &id);
+				printw("Tipo do Produto(1 - SERVICO, 2 - PRODUTO):");
+				scanw("%d", &tipo);
+				AdicionarProduto(rede, CriarProduto(nome, descricao, tipo, id));
+			break;
+			}
+			case 2:{
+				int id;
+				printw("ID do Produto:");
+				scanw("%d", &id);
+				Produto p = ProdutoByID(rede, id);
+				if(p!=NULL){
+					ExcluirProduto(rede, p);
+					printw("%s excluido!", p->nome);
+				}else{
+					printw("ID invalido");
+				}
+				getch();
+			break;
+			}
+			case 3:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+}
+int adminWindow(){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back = 0;
+	do{
+		erase();
+		printw("----- PAINEL DE ADMIN -----\nEscolha uma opcao:\n");
+		printw("1 - Visualizar Grafo\n");
+		printw("2 - Lista de Produtos\n");
+		printw("3 - Cadastrar/Excluir Produto\n");
+		printw("4 - Lista de Transacoes\n");
+		printw("5 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 2:
+				listWindow(PRODUTOS, rede->produtos);
+			break;
+			case 3:
+				addRemoveWindow();
+			break;
+			case 4:
+				listWindow(TRANSACAO, rede->transacoes);
+			break;
+			case 5:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+}
+int main(){
+	int opcao;
+
+	// Rede rede = RedeFile("socialnetwork.bin");
+	// if(rede == NULL){
+		rede = CriarRede();
+	// }
+
+	initscr();
+
+	WINDOW *main_win;
+
+	main_win = newwin(3, 10, 0, 0);
+	int error = 0;
+
+	do{
+		error = 0;
+		printw("Escolha uma opcao:\n");
+		printw("1 - Login\n");
+		printw("2 - Cadastro\n");
+		printw("3 - Painel de Admin\n");
+		printw("4 - Sair\n");		
+		scanw("%d", &opcao);
+		wrefresh(main_win);
+		erase();
+		switch(opcao){
+			case 1:
+				error = loginWindow();
+				break;
+			case 2:
+				error = signupWindow();
+				break;
+			case 3:
+				error = adminWindow();
+				break;
+			case 4:
+				error = 0;
+				break;
+			default: 
+				printw("Entrada invalida\n");
+				error = 1;
+				break;
+		}
+	}while(error);
+
+	//SALVA Rede
+	deletaRede(rede);
+	endwin();
 	return 0;	
 }

@@ -122,6 +122,94 @@ TEST(RedeSocialTest, DeletaRede){
 
 	ASSERT_TRUE(DeletaRede(r));
 }
+TEST(RedeSocialTest, AdicionarAmizade){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0);
+	Pessoa p2 = CriarPessoa("Pessoa2", 1);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p2);
+	AdicionarAmizade(r, p, p2);
+	ASSERT_EQ(p->amigos->value,p2);
+	ASSERT_EQ(p2->amigos->value,p);
+
+}
+TEST(RedeSocialTest, RemoverAmizade){
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0);
+	Pessoa p2 = CriarPessoa("Pessoa2", 1);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p2);
+	AdicionarAmizade(r, p, p2);
+	ASSERT_TRUE(RemoverAmizade(r, p, p2));
+
+}
+TEST(RedeSocialTest, NotificarTransacao){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0);
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+	Transacao t = CriarTransacao(p, prod, 0);
+
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, NULL);
+	ASSERT_EQ(t, (Transacao)r->transacoes->value);
+
+}
+TEST(RedeSocialTest, AceitarTransacao){
+
+}
+TEST(RedeSocialTest, AceitarOferta){
+
+}
+TEST(RedeSocialTest, IniciarTransacao){
+
+}
+TEST(RedeSocialTest, AvaliarTransacao){
+
+}
+TEST(RedeSocialTest, FiltrarTransacao){
+
+}
+TEST(RedeSocialTest, RedeFile){
+
+}
+TEST(RedeSocialTest, ProdutoByID){
+	Rede r = CriarRede();
+
+	Produto p = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarProduto(r, p);
+
+	ASSERT_EQ(ProdutoByID(r, p->id), p);
+
+}
+TEST(RedeSocialTest, TransacaoByID){
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0);
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+	Transacao t = CriarTransacao(p, prod, 0);
+
+	AdicionarTransacao(r, t);
+	ASSERT_EQ(TransacaoByID(r, t->id), t);
+}
+TEST(RedeSocialTest, PessoaByID){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0);
+
+	AdicionarPessoa(r, p);
+
+	ASSERT_EQ(PessoaByID(r, p->id), p);
+}
+
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

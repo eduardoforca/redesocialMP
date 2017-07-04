@@ -1,3 +1,12 @@
+/** @file redesocial.h
+ *  @brief REDESOCIAL.C header file
+ *
+ *  Implementa uma rede social de transacoes
+ *  
+ *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
+ *  @date 4 Jul 2017
+ */
+
 #ifndef _REDESOCIAL_H_
 #define _REDESOCIAL_H_
 

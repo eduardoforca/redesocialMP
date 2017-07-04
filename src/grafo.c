@@ -1,9 +1,3 @@
-/* Trabalho 1 de Metodos de Programacao **
-** Aluno: Eduardo Sousa da Silva        **
-** Matricula: 13/0108405                */
-
-/* GRAFO.C - Implementation of GRAFO.H*/
-
 #define TRUE 1
 #define FALSE 0
 

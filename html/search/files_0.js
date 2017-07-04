@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['test_5fredesocial_2ecpp',['test_redesocial.cpp',['../test__redesocial_8cpp.html',1,'']]]
+  ['grafo_2eh',['grafo.h',['../grafo_8h.html',1,'']]]
 ];

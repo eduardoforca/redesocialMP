@@ -1,9 +1,10 @@
 var indexSectionsWithContent =
 {
-  0: "eglprtv",
+  0: "eglmprtv",
   1: "eglprtv",
-  2: "t",
-  3: "r"
+  2: "glmt",
+  3: "t",
+  4: "r"
 };
 
 var indexSectionNames =
@@ -11,7 +12,8 @@ var indexSectionNames =
   0: "all",
   1: "classes",
   2: "files",
-  3: "pages"
+  3: "functions",
+  4: "pages"
 };
 
 var indexSectionLabels =
@@ -19,6 +21,7 @@ var indexSectionLabels =
   0: "Todos",
   1: "Classes",
   2: "Arquivos",
-  3: "Páginas"
+  3: "Funções",
+  4: "Páginas"
 };
 

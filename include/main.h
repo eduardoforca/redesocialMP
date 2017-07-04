@@ -1,3 +1,11 @@
+/** @file main.h
+ *  @brief MAIN.C header file
+ *
+ *  Utiliza biblioteca NCURSES para a View da Rede Social
+ *  
+ *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
+ *  @date 4 Jul 2017
+ */
 #ifndef _MAIN_H_
 #define _MAIN_H_
 #include <stdio.h>

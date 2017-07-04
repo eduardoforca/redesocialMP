@@ -1,8 +1,11 @@
-/* Trabalho 1 de Metodos de Programacao **
-** Aluno: Eduardo Sousa da Silva        **
-** Matricula: 13/0108405                */
-
-/* LISTA.H - Header file, implemented by LISTA.C*/
+/** @file lista.h
+ *  @brief LISTA.C header file
+ *
+ *  Implementa uma biblioteca simples de listas genericas
+ *  
+ *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
+ *  @date 4 Jul 2017
+ */
 
 #ifndef _LISTA_H_
 #define _LISTA_H_

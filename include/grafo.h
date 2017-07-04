@@ -1,6 +1,11 @@
-/* Trabalho 1 de Metodos de Programacao **
-** Aluno: Eduardo Sousa da Silva        **
-** Matricula: 13/0108405                */
+/** @file grafo.h
+ *  @brief GRAFO.C header file
+ *
+ *  Implementa uma biblioteca simples de grafos direcionados
+ *  
+ *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
+ *  @date 4 Jul 2017
+ */
 
 /* GRAFO.H - Header file, implemented by GRAFO.C*/
 #ifndef _GRAFO_H_

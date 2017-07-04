@@ -5,7 +5,7 @@
  *  de testes Google Tests
  *  
  *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
- *  @date 5 Jul 2017
+ *  @date 4 Jul 2017
  */
 
 #include <gtest/gtest.h>

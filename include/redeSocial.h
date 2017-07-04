@@ -64,7 +64,7 @@ enum tipo_produto
 
 enum status_transacao
 {
-	PEDIDA, INICIADA, PENDENTE, CONCLUIDA
+	PEDIDA, PENDENTE, CONCLUIDA
 	
 };
 enum conexao
@@ -72,10 +72,10 @@ enum conexao
 	AMIZADE, NEGOCIOS 
 };
 enum filtros_transacao{
-	CATEGORIA, GACLIENTE
+	STATUS_PEDIDA, STATUS_PENDENTE, STATUS_CONCLUIDA
 };
 enum filtros_pessoas{
-	GA, PRESTASERVICO, RATING
+	AMIGO, AMIGO2, JA_FEZ_NEGOCIO, JA_FEZ_NEGOCIO_AMIGO, ACOSTUMADO
 };
 /**
 * @brief Função para criar uma instância de Pessoa
@@ -190,7 +190,7 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros);
 * @param pessoa
 * @details a pessoa aceita a transacao envia uma oferta para o cliente
 **/
-void AceitarTransacao(Rede rede, Transacao transacao);
+void AceitarTransacao(Rede rede, Transacao transacao, Pessoa p);
 /**
 * @brief Função para aceitar oferta
 * @param rede 
@@ -199,6 +199,9 @@ void AceitarTransacao(Rede rede, Transacao transacao);
 * @details o cliente aceita a oferta e a funcao inicializa a transação
 **/
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa);
+
+void ConcluirTransacao(Rede rede, Transacao transacao);
+
 /**
 * @brief Função para concluir transacao
 * @param rede 
@@ -223,7 +226,7 @@ void AvaliarTransacao(Rede rede, Transacao oferta, Pessoa avaliador, char* comen
 * @details filtra as transacoes da rede 
 * @return lista de transacoes filtradas
 **/
-Transacao* FiltrarTransacao(Rede rede, int* filtros);
+List FiltrarTransacao(List transacoes, int status);
 
 Rede RedeFile(char* nomeArquivo);
 /**
@@ -286,4 +289,7 @@ Graph ReadGrafo(FILE*fp);
 **/
 Produto ReadProduto(FILE* fp);
 void ResolvePessoas(Rede r);
+int Amigos(Pessoa p1, Pessoa p2);
+int Conhecidos(Pessoa p1, Pessoa p2);
+int Acostumado(Pessoa p1, Produto prod);
 #endif

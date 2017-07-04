@@ -37,6 +37,7 @@ Transacao CriarTransacao(Pessoa cliente, Produto produto, int id){
 	t->status = PEDIDA;
 	t->id = id;
 	t->ofertas = cria_lista();
+	adiciona_no(&(cliente->transacoes), t);
 
 	return t;
 }
@@ -105,13 +106,16 @@ int DeletaRede(Rede rede){
 }
 void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	int grau = AMIZADE;
-	adiciona_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
-	adiciona_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
-	muda_valor_aresta(rede->pessoas, pessoa1->id, pessoa2->id, &grau);
-	muda_valor_aresta(rede->pessoas, pessoa2->id, pessoa1->id, &grau);
+	int flag;
+	flag = adiciona_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
+	flag &= adiciona_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
+	if(flag){
+		muda_valor_aresta(rede->pessoas, pessoa1->id, pessoa2->id, &grau);
+		muda_valor_aresta(rede->pessoas, pessoa2->id, pessoa1->id, &grau);
 
-	adiciona_no(&(pessoa1->amigos), pessoa2);
-	adiciona_no(&(pessoa2->amigos), pessoa1);
+		adiciona_no(&(pessoa1->amigos), pessoa2);
+		adiciona_no(&(pessoa2->amigos), pessoa1);
+	}
 }
 int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	remove_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
@@ -124,31 +128,89 @@ int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 }
 void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 	List pessoas = cria_lista();
-	for (List n = rede->pessoas->verticesList; n != NULL; n = n->next) { //iterates over all vertices
+	for (List n = rede->pessoas->verticesList; n != NULL; n = n->next) { 
 		Vertex v = (Vertex)n->value;
 		Pessoa p = (Pessoa)v->value;
 		adiciona_no(&pessoas, p);
 	}
 
-	if(filtros[0]){
+	if(filtros[AMIGO]){
 		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { //iterates over all vertices
+		for (List n = pessoas; n != NULL; n = n->next) { 
 			Pessoa p = (Pessoa)n->value;
-			adiciona_no(&pessoas, p);
+			if(Amigos(p, transacao->cliente)){
+				adiciona_no(&nova_lista, p);
+			}
 		}
+		destroi_lista(pessoas);
+		pessoas = nova_lista;
 	}
-	if(filtros[1]){
-		
+	if(filtros[AMIGO2]){
+		List nova_lista = cria_lista();
+		for (List n = pessoas; n != NULL; n = n->next) { 
+			Pessoa p = (Pessoa)n->value;
+			if(p != transacao->cliente){
+				for (List m = p->amigos; m != NULL; m = m->next) { 
+					Pessoa p2 = (Pessoa)m->value;
+					if(Amigos(p2, transacao->cliente)){
+						adiciona_no(&nova_lista, p);
+						break;
+					}
+				}
+			}
+		}
+		destroi_lista(pessoas);
+		pessoas = nova_lista;
 	}
-	if(filtros[2]){
-		
+	if(filtros[JA_FEZ_NEGOCIO]){
+		List nova_lista = cria_lista();
+		for (List n = pessoas; n != NULL; n = n->next) { 
+			Pessoa p = (Pessoa)n->value;
+			if(Conhecidos(p, transacao->cliente)){
+				adiciona_no(&nova_lista, p);
+			}
+		}
+		destroi_lista(pessoas);
+		pessoas = nova_lista;		
 	}
-	if(filtros[3]){
-		
+	if(filtros[JA_FEZ_NEGOCIO_AMIGO]){
+		List nova_lista = cria_lista();
+		for (List n = pessoas; n != NULL; n = n->next) { 
+			Pessoa p = (Pessoa)n->value;
+			if(p != transacao->cliente){
+				for (List m = p->conhecidos; m != NULL; m = m->next) { 
+					Pessoa p2 = (Pessoa)m->value;
+					if(Amigos(p2, transacao->cliente)){
+						adiciona_no(&nova_lista, p);
+						break;
+					}
+				}
+			}
+		}
+		destroi_lista(pessoas);
+		pessoas = nova_lista;
+	}
+	if(filtros[ACOSTUMADO]){
+		List nova_lista = cria_lista();
+		for (List n = pessoas; n != NULL; n = n->next) { 
+			Pessoa p = (Pessoa)n->value;
+			if(p != transacao->cliente){
+				if(Acostumado(p, transacao->produto)){
+					adiciona_no(&nova_lista, p);
+				}
+			}
+		}
+		destroi_lista(pessoas);
+		pessoas = nova_lista;
+	}
+
+	for (List n = pessoas; n != NULL; n = n->next){
+		Pessoa p = (Pessoa)n->value;
+		adiciona_no(&p->notificacoes, transacao);
 	}
 
 }
-void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){//ENVIA OFERTA
+void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){
 
 	adiciona_no(&(transacao->ofertas), pessoa);
 	remove_no_byvalue(&(pessoa->notificacoes), transacao);
@@ -157,7 +219,8 @@ void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){//ENVIA OFE
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
 	destroi_lista(oferta->ofertas);
 	oferta->provedor = pessoa;
-	oferta->status = INICIADA;
+	adiciona_no(&(pessoa->transacoes), oferta);
+	ConcluirTransacao(rede, oferta);
 }
 void ConcluirTransacao(Rede rede, Transacao transacao){
 	int grau = NEGOCIOS;
@@ -184,14 +247,17 @@ void AvaliarTransacao(Rede rede, Transacao transacao, Pessoa avaliador, char* co
 		transacao->provedor->rating_cliente += rating;
 	}
 }
-Transacao* FiltrarTransacao(Rede rede, int* filtros){
-	for(int* i = filtros; *i!= 0; i++){
-		int filtro = *i;
-		switch(filtro){
-			default:
-			break;
+List FiltrarTransacao(List transacoes, int status){
+
+	List nova_lista = cria_lista();
+	for (List n = transacoes; n != NULL; n = n->next) { 
+		Transacao t = (Transacao)n->value;
+		if(t->status == status){
+			adiciona_no(&nova_lista, t);
 		}
 	}
+	return (nova_lista);
+
 }
 Produto ProdutoByID(Rede rede, int id){
 	if (rede->produtos == NULL)
@@ -324,15 +390,15 @@ void WritePessoa(Pessoa p, FILE* fp){
 	int tam = tamanho_list(p->amigos);
    	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->amigos; n != NULL; n = n->next) { 
-		Pessoa p = (Pessoa)n->value;
-		fwrite(&p->id, sizeof(int), 1, fp);
+		Pessoa p2 = (Pessoa)n->value;
+		fwrite(&p2->id, sizeof(int), 1, fp);
 	}
 
 	tam = tamanho_list(p->conhecidos);
    	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->conhecidos; n != NULL; n = n->next) { 
-		Pessoa p = (Pessoa)n->value;
-		fwrite(&p->id, sizeof(int), 1, fp);
+		Pessoa p2 = (Pessoa)n->value;
+		fwrite(&p2->id, sizeof(int), 1, fp);
 	}
 
 
@@ -422,9 +488,9 @@ Pessoa ReadPessoa(FILE* fp){
 
 	List list = cria_lista();
 	for (int i = 0; i < tam; i++) { 
-		int id;
-		fread(&id, sizeof(int), 1, fp);
-		adiciona_no(&list, &id);
+		int* id = (int*)malloc(sizeof(int));
+		fread(id, sizeof(int), 1, fp);
+		adiciona_no(&list, id);
 	}
 	p->amigos = list;
 	
@@ -432,9 +498,9 @@ Pessoa ReadPessoa(FILE* fp){
 
 	list = cria_lista();
 	for (int i = 0; i < tam; i++) { 
-		int id;
-		fread(&id, sizeof(int), 1, fp);
-		adiciona_no(&list, &id);
+		int* id = (int*)malloc(sizeof(int));
+		fread(id, sizeof(int), 1, fp);
+		adiciona_no(&list, id);
 	}
 	p->conhecidos = list;
 
@@ -442,9 +508,9 @@ Pessoa ReadPessoa(FILE* fp){
 
 	list = cria_lista();
 	for (int i = 0; i < tam; i++) { 
-		int id;
-		fread(&id, sizeof(int), 1, fp);
-		adiciona_no(&list, &id);
+		int* id = (int*)malloc(sizeof(int));
+		fread(id, sizeof(int), 1, fp);
+		adiciona_no(&list, id);
 	}
 	p->transacoes = list;
 
@@ -452,9 +518,9 @@ Pessoa ReadPessoa(FILE* fp){
 
 	list = cria_lista();
 	for (int i = 0; i < tam; i++) { 
-		int id;
-		fread(&id, sizeof(int), 1, fp);
-		adiciona_no(&list, &id);
+		int* id = (int*)malloc(sizeof(int));
+		fread(id, sizeof(int), 1, fp);
+		adiciona_no(&list, id);
 	}
 	p->notificacoes = list;
 
@@ -511,6 +577,7 @@ void ResolvePessoas(Rede r){
 		List nova = cria_lista();
 		for (List m = p->amigos; m != NULL; m = m->next) { 
 			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+			free(m->value);
 		}
 		destroi_lista(p->amigos);
 		p->amigos = nova;
@@ -518,6 +585,7 @@ void ResolvePessoas(Rede r){
 		nova = cria_lista();
 		for (List m = p->conhecidos; m != NULL; m = m->next) { 
 			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+			free(m->value);
 		}
 		destroi_lista(p->conhecidos);
 		p->conhecidos = nova;
@@ -525,6 +593,7 @@ void ResolvePessoas(Rede r){
 		nova = cria_lista();
 		for (List m = p->transacoes; m != NULL; m = m->next) { 
 			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+			free(m->value);
 		}
 		destroi_lista(p->transacoes);
 		p->transacoes = nova;
@@ -532,8 +601,36 @@ void ResolvePessoas(Rede r){
 		nova = cria_lista();
 		for (List m = p->notificacoes; m != NULL; m = m->next) { 
 			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+			free(m->value);
 		}
 		destroi_lista(p->notificacoes);
 		p->notificacoes = nova;
 	}
+}
+
+int Amigos(Pessoa p1, Pessoa p2){
+	for (List m = p1->amigos; m != NULL; m = m->next) { 
+		if(((Pessoa)(m->value))->id == p2->id){
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+int Conhecidos(Pessoa p1, Pessoa p2){
+	for (List m = p1->conhecidos; m != NULL; m = m->next) { 
+		if(((Pessoa)(m->value))->id == p2->id){
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+int Acostumado(Pessoa p1, Produto prod){
+	for (List m = p1->transacoes; m != NULL; m = m->next) { 
+		if(((Transacao)(m->value))->produto->id == prod->id){
+			if(((Transacao)(m->value))->provedor->id == p1->id){
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
 }

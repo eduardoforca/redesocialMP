@@ -4,9 +4,6 @@
 #include <ncurses.h>
 #include "main.h"
 
-//No momento nao e possivel notificar os Usuarios, logo nao eh possivel aceitar a transacao e completa-la.
-//Isso pela interface grafica, no fundo temos as ferramentas para isso, menos os filtros que nao foram implementados
-
 Rede rede;
 int main(){
 	int opcao;
@@ -69,17 +66,18 @@ int filtroUserWindow(Transacao t){
 		int filtro;
 		printw("----- ADICIONAR TRANSACAO -----\n");
 		printw("Escolha os filtros(OS FILTROS SAO EXCLUSIVOS):\n");
-		printw(" 1\tAMIGO\t\t\t%c\n", (filtros[0]?'X':'O'));
-		printw(" 2\tAMIGO DE AMIGO\t\t\t%c\n", (filtros[1]?'X':'O'));
-		printw(" 3\tJA FIZ NEGOCIO\t\t\t%c\n", (filtros[2]?'X':'O'));
-		printw(" 4\tAMIGOS JA FIZERAM NEGOCIO\t\t\t%c\n", (filtros[3]?'X':'O'));
+		printw(" 1\tAMIGO\t\t\t\t\t%c\n", (filtros[0]?'X':'O'));
+		printw(" 2\tAMIGO DE AMIGO\t\t\t\t%c\n", (filtros[1]?'X':'O'));
+		printw(" 3\tJA FIZ NEGOCIO\t\t\t\t%c\n", (filtros[2]?'X':'O'));
+		printw(" 4\tAMIGOS JA FIZERAM NEGOCIO\t\t%c\n", (filtros[3]?'X':'O'));
+		printw(" 5\tUSUARIO JA NEGOCIOU ESSE PRODUTO\t%c\n", (filtros[4]?'X':'O'));
 		printw(" 0\tENVIAR\n");
 		scanw("%d", &filtro);
 		if(!filtro){
 			keep = FALSE;
 			NotificarTransacao(rede, t, filtros);
 		}else{
-			filtros[filtro] = !filtros[filtro];
+			filtros[filtro-1] = !filtros[filtro-1];
 		}
 		erase();
 	}while(keep);
@@ -101,6 +99,61 @@ int editPessoa(Pessoa p){
 	return 1;
 
 }
+int pendentesWindow(Pessoa p){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- Avalia Transacoes Pendentes -----\nEscolha uma opcao:\n");
+		printw("1 - Listar Pendencias\n");
+		printw("2 - Avaliar Transacao\n");
+		printw("3 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PENDENTE));
+				getch();
+			}
+			break;
+			case 2:{
+				int id;
+				printw("ID da Transacao:");
+				scanw("%d", &id);
+				erase();
+				Transacao t = TransacaoByID(rede, id);
+				if(t != NULL){
+					if(t->status == PENDENTE &&(t->cliente == p || t->provedor == p)){
+						int rating;
+						char comentario[1000];
+						do{
+							erase();
+							printw("Insira Avaliacao de -5 a 5:\n");
+							scanw("%d", &rating);
+						}while(rating < -5 || rating > 5);
+						scanw("%s", comentario);
+						AvaliarTransacao(rede, t, p, comentario, rating);
+					}else{
+						printw("Transacao Invalida\n");
+						getch();
+					}
+				}else{
+					printw("Transacao nao existe\n");
+					getch();
+				}
+				break;
+			}
+			case 3:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+
+}
 int addTransaction(Pessoa p){
 	WINDOW *win = newwin(3, 10, 0, 0);
 	int opcao, back =0;
@@ -116,6 +169,7 @@ int addTransaction(Pessoa p){
 		switch(opcao){
 			case 1:{
 				listWindow(PRODUTOS, rede->produtos);
+				getch();
 			}
 			break;
 			case 2:{
@@ -185,7 +239,8 @@ amizades, transações*/
 		printw("3 - Nova Transacao\n");
 		printw("4 - Aceitar Transacao\n");
 		printw("5 - Avaliar Transacoes Pendentes\n");
-		printw("6 - Deslogar\n");
+		printw("6 - Ver Ofertas Recebidas\n");
+		printw("7 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
@@ -197,7 +252,16 @@ amizades, transações*/
 			case 3:
 				addTransaction(p);
 				break;
-			case 6:
+			case 4:
+				acceptTransaction(p);
+				break;
+			case 5:	
+				pendentesWindow(p);
+				break;
+			case 6:	
+				offersWindow(p);
+				break;
+			case 7:
 				back = 1;
 			default:break;
 		}
@@ -259,8 +323,6 @@ int listWindow(int type, List lista){
 
 	WINDOW *win;
 	win = newwin(3, 10, 0, 0);
-	erase();
-	printw("---------LISTA----------\n");
 	for (List n = lista; n != NULL; n = n->next) { //iterates over all vertices
 		switch(type){
 			case PESSOA:{
@@ -282,8 +344,6 @@ int listWindow(int type, List lista){
 		}
 		wrefresh(win);
 	}
-
-	getch();
 	endwin();
 	return 0;
 }
@@ -432,12 +492,14 @@ int adminWindow(){
 		switch(opcao){
 			case 2:
 				listWindow(PRODUTOS, rede->produtos);
+				getch();
 			break;
 			case 3:
 				addRemoveWindow();
 			break;
 			case 4:
 				listWindow(TRANSACAO, rede->transacoes);
+				getch();
 			break;
 			case 5:
 				back = 1;
@@ -447,4 +509,104 @@ int adminWindow(){
 	}while(!back);
 	endwin();
 	return back;
+}
+int acceptTransaction(Pessoa p){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- NOTIFICACOES -----\n");
+		listWindow(TRANSACAO, p->notificacoes);
+		printw("Escolha uma opcao:\n");
+		printw("1 - Aceitar Transacao\n");
+		printw("2 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				int id;
+				printw("ID da Transacao:");
+				scanw("%d", &id);
+				erase();
+				Transacao t = TransacaoByID(rede, id);
+				if(t != NULL){
+					if(t->status == PEDIDA){
+						AceitarTransacao(rede, t, p);		
+					}else{
+						printw("Transacao Invalida\n");
+						getch();
+					}
+				}else{
+					printw("Transacao nao existe\n");
+					getch();
+				}
+				break;
+			}
+			break;
+			case 2:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+}
+int offersWindow(Pessoa p){
+
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- Aceitar Ofertas -----\nEscolha uma opcao:\n");
+		printw("1 - Listar Pedidos\n");
+		printw("2 - Aceitar Ofertas\n");
+		printw("3 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PEDIDA));
+				getch();
+			}
+			break;
+			case 2:{
+				int idt;
+				printw("ID da Transacao:");
+				scanw("%d", &idt);
+				erase();
+				Transacao t = TransacaoByID(rede, idt);
+				if(t != NULL){
+					if(t->status == PEDIDA &&t->cliente == p){
+						int idp;
+						listWindow(PESSOA, t->ofertas);
+						printw("Escolha uma oferta:\n");
+						scanw("%d", &idp);
+						if(PessoaByID(rede, idp) != NULL){
+							AceitarOferta(rede, t, PessoaByID(rede, idp));
+						}else{
+							printw("Oferta nao existe\n");
+							getch();
+						}
+					}else{
+						printw("Transacao Invalida\n");
+						getch();
+					}
+				}else{
+					printw("Transacao nao existe\n");
+					getch();
+				}
+				break;
+			}
+			case 3:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+
 }

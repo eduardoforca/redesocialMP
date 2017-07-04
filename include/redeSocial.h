@@ -265,18 +265,42 @@ void SalvaRede(Rede rede, char* nomeArquivo);
 * @details abre arquivo e escreve a transacao nele
 **/
 void WriteTransacao(Transacao t, FILE* fp);
+/**
+* @brief escreve pessoa no arquivo de rede
+* @param pessoa
+* @param arquivo da rede
+* @details abre arquivo e escreve a pessoa nele
+**/
 void WritePessoa(Pessoa p, FILE* fp);
+/**
+* @brief escreve grafo no arquivo de rede
+* @param grafo
+* @param arquivo da rede
+* @details abre arquivo e escreve o grafo nele
+**/
 void WriteGrafo(Graph g, FILE*fp);
 
 /**
 * @brief escreve produto no arquivo de rede
 * @param produto
 * @param arquivo da rede
-* @details abre arquivo e escreve na rede
+* @details abre arquivo e escreve o produto na rede
 **/
 void WriteProduto(Produto p, FILE* fp);
 Transacao ReadTransacao(Rede r, FILE* fp);
+/**
+* @brief le pessoa no arquivo de rede
+* @param arquivo da rede
+* @details abre arquivo e le pessoa da rede nele
+* @return pessoa
+**/
 Pessoa ReadPessoa(FILE* fp);
+/**
+* @brief le grafo no arquivo de rede
+* @param arquivo da rede
+* @details abre arquivo e le grafo da rede nele
+* @return grafo
+**/
 Graph ReadGrafo(FILE*fp);
 /**
 * @brief le produto no arquivo de rede

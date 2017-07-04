@@ -221,8 +221,7 @@ Rede RedeFile(char* nome_arquivo){
    		fread(&tam, sizeof(int), 1, fp);
    		List list = cria_lista();
    		for (int i = 0; i < tam; i++) { 
-			Produto p = (Produto)malloc(sizeof(produto));
-			fread(p, sizeof(Produto), 1, fp);
+			Produto p = ReadProduto(fp);
 			adiciona_no(&list, p);
 		}
 		rede->produtos = list;
@@ -252,7 +251,7 @@ void SalvaRede(Rede rede, char* nomeArquivo){
 	   	fwrite(&tam, sizeof(int), 1, fp);
 	   	for (List n = rede->produtos; n != NULL; n = n->next) { //iterates over all vertices
 			Produto p = (Produto)n->value;
-			fwrite(p, sizeof(Produto), 1, fp);
+			WriteProduto(p, fp);
 		}
 
 	   	tam = tamanho_list(rede->transacoes);
@@ -264,6 +263,22 @@ void SalvaRede(Rede rede, char* nomeArquivo){
 	    fclose (fp);
   	}
 
+}
+
+void WriteProduto(Produto p, FILE* fp){
+	fwrite(&p->id, sizeof(int), 1, fp);
+	fwrite(&p->tipo, sizeof(int), 1, fp);
+	fwrite(p->nome, sizeof(char), 50, fp);
+	fwrite(p->descricao, sizeof(char), 500, fp);
+
+}
+Produto ReadProduto(FILE* fp){
+	Produto p = (Produto)malloc(sizeof(produto));
+	fread(&p->id, sizeof(int), 1, fp);
+	fread(&p->tipo, sizeof(int), 1, fp);
+	fread(p->nome, sizeof(char), 50, fp);
+	fread(p->descricao, sizeof(char), 500, fp);
+	return p;
 }
 void WriteTransacao(Transacao t, FILE* fp){
 	fwrite(&t->id, sizeof(int), 1, fp);
@@ -387,7 +402,7 @@ Transacao ReadTransacao(Rede r, FILE* fp){
 }
 
 Pessoa ReadPessoa(FILE* fp){
-	Pessoa p = (Pessoa)malloc(sizeof(transacao));
+	Pessoa p = (Pessoa)malloc(sizeof(pessoa));
 	fread(&p->id, sizeof(int), 1, fp);
 	fread(p->nome, sizeof(char), 50, fp);
 
@@ -435,6 +450,8 @@ Pessoa ReadPessoa(FILE* fp){
 	fread(&p->rating_provedor, sizeof(float), 1, fp);
 	fread(&p->rating_cliente, sizeof(float), 1, fp);
 
+	fread(&tam, sizeof(int), 1, fp);
+
 	list = cria_lista();
 	for (int i = 0; i < tam; i++) { 
 		char comentario[1000];
@@ -468,7 +485,8 @@ Graph ReadGrafo(FILE*fp){
 		}
 		v->adjList = list2;
 		Pessoa p = ReadPessoa(fp);
-		fread(&v->id, sizeof(int), 1, fp);	
+		fread(&v->id, sizeof(int), 1, fp);
+		v->value = p;
 		adiciona_no(&list, v);	
 	}
 	g->verticesList = list;

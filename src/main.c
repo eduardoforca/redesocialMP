@@ -50,9 +50,10 @@ int main(){
 		}
 	}while(error);
 
+	endwin();
+
 	SalvaRede(rede, "socialnetwork.bin");
 	DeletaRede(rede);
-	endwin();
 	return 0;	
 }
 

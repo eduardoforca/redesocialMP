@@ -251,8 +251,10 @@ void SalvaRede(Rede rede, char* nomeArquivo);
 void WriteTransacao(Transacao t, FILE* fp);
 void WritePessoa(Pessoa p, FILE* fp);
 void WriteGrafo(Graph g, FILE*fp);
+void WriteProduto(Produto p, FILE* fp);
 Transacao ReadTransacao(Rede r, FILE* fp);
 Pessoa ReadPessoa(FILE* fp);
 Graph ReadGrafo(FILE*fp);
+Produto ReadProduto(FILE* fp);
 void ResolvePessoas(Rede r);
 #endif

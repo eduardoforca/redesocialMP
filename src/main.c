@@ -8,10 +8,10 @@ Rede rede;
 int main(){
 	int opcao;
 
-	// rede = RedeFile("socialnetwork.bin");
-	// if(rede == NULL){
+	rede = RedeFile("socialnetwork.bin");
+	if(rede == NULL){
 		rede = CriarRede();
-	// }
+	 }
 
 	initscr();
 

@@ -31,6 +31,8 @@ List cria_lista();
 	Return: a pointer to the head of the list, which is the new node*/
 List adiciona_no(List* a_list, void* value);
 
+int tamanho_list(List a_list);
+
 /*	Definition: Removes a node of a list
 	Parameters: List a_list - list where the node will be removed from
 				int index - location of the node

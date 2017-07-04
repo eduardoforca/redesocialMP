@@ -335,7 +335,29 @@ Rede RedeFile(char* nome_arquivo){
 	FILE* fp = fopen(nome_arquivo,"rb");
 	if (fp!=NULL){
 	    Rede rede = (Rede)malloc(sizeof(rede));
-	    fread(rede, sizeof(rede), 1, fp);
+	    
+	    rede->pessoas = ReadGrafo(fp);
+
+	    int tam;
+   		fread(&tam, sizeof(int), 1, fp);
+   		List list = cria_lista();
+   		for (int i = 0; i < tam; i++) { 
+			Produto p = (Produto)malloc(sizeof(produto));
+			fread(p, sizeof(Produto), 1, fp);
+			adiciona_no(&list, p);
+		}
+		rede->produtos = list;
+
+		fread(&tam, sizeof(int), 1, fp);
+   		list = cria_lista();
+   		for (int i = 0; i < tam; i++) { 
+			Transacao t = ReadTransacao(rede, fp);
+			adiciona_no(&list, t);
+		}
+		rede->transacoes = list;
+
+		ResolvePessoas(rede);
+
 	    fclose (fp);
 	    return rede;
   	}
@@ -346,75 +368,264 @@ void SalvaRede(Rede rede, char* nomeArquivo){
 	FILE* fp = fopen(nomeArquivo,"w+b");
 	if (fp!=NULL){
 	   	
-	   	writeGrafo(rede->pessoas, fp);
-
-	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
-			Transacao t = (Transacao)n->value;
-			writeTransacao(t, fp);
-		}
-	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+	   	WriteGrafo(rede->pessoas, fp);
+	   	int tam = tamanho_list(rede->produtos);
+	   	fwrite(&tam, sizeof(int), 1, fp);
+	   	for (List n = rede->produtos; n != NULL; n = n->next) { //iterates over all vertices
 			Produto p = (Produto)n->value;
 			fwrite(p, sizeof(Produto), 1, fp);
+		}
+
+	   	tam = tamanho_list(rede->transacoes);
+	   	fwrite(&tam, sizeof(int), 1, fp);
+	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+			Transacao t = (Transacao)n->value;
+			WriteTransacao(t, fp);
 		}
 	    fclose (fp);
   	}
 
 }
-void writeTransacao(Transacao t, FILE* fp){
+void WriteTransacao(Transacao t, FILE* fp){
 	fwrite(&t->id, sizeof(int), 1, fp);
-	fwrite(&t->cliente->id, sizeof(int), 1, fp);
-	fwrite(&t->provedor->id, sizeof(int), 1, fp);
+	if(t->cliente != NULL){
+		fwrite(&t->cliente->id, sizeof(int), 1, fp);
+	}else{
+		int w = 0;
+		fwrite(&w, sizeof(int), 1, fp);
+	}
+	if(t->provedor != NULL){
+		fwrite(&t->provedor->id, sizeof(int), 1, fp);
+	}else{
+		int w = 0;
+		fwrite(&w, sizeof(int), 1, fp);
+	}
 	fwrite(&t->status, sizeof(int), 1, fp);
 	fwrite(&t->produto->id, sizeof(int), 1, fp);
 	fwrite(t->comentario_cliente, sizeof(char), 1000, fp);
 	fwrite(t->comentario_provedor, sizeof(char), 1000, fp);
+	int tam = tamanho_list(t->ofertas);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = t->ofertas; n != NULL; n = n->next) { 
 		Pessoa p = (Pessoa)n->value;
 		fwrite(&p->id, sizeof(int), 1, fp);
 	}	
 }
 
-void writePessoa(Pessoa p, FILE* fp){
+void WritePessoa(Pessoa p, FILE* fp){
 	fwrite(&p->id, sizeof(int), 1, fp);
 	fwrite(p->nome, sizeof(char), 50, fp);
+
+	int tam = tamanho_list(p->amigos);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->amigos; n != NULL; n = n->next) { 
 		Pessoa p = (Pessoa)n->value;
 		fwrite(&p->id, sizeof(int), 1, fp);
 	}
+
+	tam = tamanho_list(p->conhecidos);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->conhecidos; n != NULL; n = n->next) { 
 		Pessoa p = (Pessoa)n->value;
 		fwrite(&p->id, sizeof(int), 1, fp);
 	}
+
+
+	tam = tamanho_list(p->transacoes);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->transacoes; n != NULL; n = n->next) { 
 		Transacao t = (Transacao)n->value;
 		fwrite(&t->id, sizeof(int), 1, fp);	
 	}
+
+	tam = tamanho_list(p->notificacoes);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->notificacoes; n != NULL; n = n->next) { 
 		Transacao t = (Transacao)n->value;
 		fwrite(&t->id, sizeof(int), 1, fp);
 	}
 	fwrite(&p->rating_provedor, sizeof(float), 1, fp);
 	fwrite(&p->rating_cliente, sizeof(float), 1, fp);
+
+	tam = tamanho_list(p->comentarios);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = p->comentarios; n != NULL; n = n->next) { 
 		char* comentario = (char*)n->value;
 		fwrite(comentario, sizeof(char), 1000, fp);
 	}	
 }
 
-void writeGrafo(Graph g, FILE*fp){
+void WriteGrafo(Graph g, FILE*fp){
 	fwrite(g->name, sizeof(char), 100, fp);
+	int tam = tamanho_list(g->verticesList);
+   	fwrite(&tam, sizeof(int), 1, fp);
 	for (List n = g->verticesList; n != NULL; n = n->next) { 
 		Vertex v = ((Vertex)n->value);
+
+		tam = tamanho_list(v->adjList);
+   		fwrite(&tam, sizeof(int), 1, fp);
 		for(List m = v->adjList; m != NULL; m = m->next){
 			Edge e = ((Edge)m->value);
-			fwrite((int*)e->value, sizeof(int), 1, fp);
+			fwrite(&(*((int*)e->value)), sizeof(int), 1, fp);
 			fwrite(&e->start, sizeof(int), 1, fp);
-			fwrite(&e->start, sizeof(int), 1, fp);			
+			fwrite(&e->end, sizeof(int), 1, fp);			
 			
 		}
 		Pessoa p = (Pessoa)v->value;
-		writePessoa(p, fp);
+		WritePessoa(p, fp);
 		fwrite(&v->id, sizeof(int), 1, fp);		
 	}
 
+}
+
+Transacao ReadTransacao(Rede r, FILE* fp){
+	Transacao t = (Transacao)malloc(sizeof(transacao)); 
+	fread(&t->id, sizeof(int), 1, fp);
+	int cliente_id, provedor_id, produto_id;
+	fread(&cliente_id, sizeof(int), 1, fp);
+	fread(&provedor_id, sizeof(int), 1, fp);
+
+	t->cliente = PessoaByID(r, cliente_id);
+	t->provedor = PessoaByID(r, provedor_id);
+
+	fread(&t->status, sizeof(int), 1, fp);
+	fread(&produto_id, sizeof(int), 1, fp);
+
+	t->produto = ProdutoByID(r, produto_id);
+
+	fread(t->comentario_cliente, sizeof(char), 1000, fp);
+	fread(t->comentario_provedor, sizeof(char), 1000, fp);
+	int tam;
+   	fread(&tam, sizeof(int), 1, fp);
+   	List list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		int id;
+		fread(&id, sizeof(int), 1, fp);
+		adiciona_no(&list, PessoaByID(r, id));
+	}
+	t->ofertas = list;
+	return t;
+}
+
+Pessoa ReadPessoa(FILE* fp){
+	Pessoa p = (Pessoa)malloc(sizeof(transacao));
+	fread(&p->id, sizeof(int), 1, fp);
+	fread(p->nome, sizeof(char), 50, fp);
+
+	int tam;
+   	fread(&tam, sizeof(int), 1, fp);
+
+	List list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		int id;
+		fread(&id, sizeof(int), 1, fp);
+		adiciona_no(&list, &id);
+	}
+	p->amigos = list;
+	
+	fread(&tam, sizeof(int), 1, fp);
+
+	list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		int id;
+		fread(&id, sizeof(int), 1, fp);
+		adiciona_no(&list, &id);
+	}
+	p->conhecidos = list;
+
+	fread(&tam, sizeof(int), 1, fp);
+
+	list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		int id;
+		fread(&id, sizeof(int), 1, fp);
+		adiciona_no(&list, &id);
+	}
+	p->transacoes = list;
+
+	fread(&tam, sizeof(int), 1, fp);
+
+	list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		int id;
+		fread(&id, sizeof(int), 1, fp);
+		adiciona_no(&list, &id);
+	}
+	p->notificacoes = list;
+
+	fread(&p->rating_provedor, sizeof(float), 1, fp);
+	fread(&p->rating_cliente, sizeof(float), 1, fp);
+
+	list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		char comentario[1000];
+		fread(comentario, sizeof(char), 1000, fp);
+		adiciona_no(&list, comentario);
+	}
+	p->comentarios = list;	
+	return p;
+}
+
+Graph ReadGrafo(FILE*fp){
+	Graph g = (Graph)malloc(sizeof(graph));
+	fread(g->name, sizeof(char), 100, fp);
+	int tam;
+   	fread(&tam, sizeof(int), 1, fp);
+   	List list = cria_lista();
+	for (int i = 0; i < tam; i++) { 
+		Vertex v = (Vertex)malloc(sizeof(vertex));
+
+		int tam2;
+		fread(&tam2, sizeof(int), 1, fp);
+		List list2 = cria_lista();
+		for (int j = 0; j < tam2; j++){
+			Edge e = (Edge)malloc(sizeof(edge));
+			int value;
+			fread(&value, sizeof(int), 1, fp);
+			e->value = &value;
+			fread(&e->start, sizeof(int), 1, fp);
+			fread(&e->end, sizeof(int), 1, fp);	
+			adiciona_no(&list2, e);				
+		}
+		v->adjList = list2;
+		Pessoa p = ReadPessoa(fp);
+		fread(&v->id, sizeof(int), 1, fp);	
+		adiciona_no(&list, v);	
+	}
+	g->verticesList = list;
+
+}
+void ResolvePessoas(Rede r){
+	Graph g = r->pessoas;
+	for (List n = g->verticesList; n != NULL; n = n->next) { 
+		Vertex v = ((Vertex)n->value);
+		Pessoa p = (Pessoa)v->value;
+		List nova = cria_lista();
+		for (List m = p->amigos; m != NULL; m = m->next) { 
+			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+		}
+		destroi_lista(p->amigos);
+		p->amigos = nova;
+
+		nova = cria_lista();
+		for (List m = p->conhecidos; m != NULL; m = m->next) { 
+			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+		}
+		destroi_lista(p->conhecidos);
+		p->conhecidos = nova;
+
+		nova = cria_lista();
+		for (List m = p->transacoes; m != NULL; m = m->next) { 
+			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+		}
+		destroi_lista(p->transacoes);
+		p->transacoes = nova;
+
+		nova = cria_lista();
+		for (List m = p->notificacoes; m != NULL; m = m->next) { 
+			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+		}
+		destroi_lista(p->notificacoes);
+		p->notificacoes = nova;
+	}
 }

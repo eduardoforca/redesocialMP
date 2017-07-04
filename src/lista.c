@@ -24,6 +24,16 @@ List adiciona_no(List *a_list, void* value) {
 	return n;
 }
 
+int tamanho_list(List a_list){
+
+	if (a_list == NULL)
+		return 0;
+
+	int i = 0;
+	for (List n = a_list; n != NULL; n = n->next, i++);
+	return i;
+}
+
 int remove_no(List *a_list, int index) {
 	if (*a_list == NULL)
 		return FALSE;

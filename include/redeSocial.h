@@ -98,7 +98,11 @@ Produto ProdutoByID(Rede rede, int id);
 Transacao TransacaoByID(Rede rede, int id);
 Pessoa PessoaByID(Rede rede, int id);
 void SalvaRede(Rede rede, char* nomeArquivo);
-void writeTransacao(Transacao t, FILE* fp);
-void writePessoa(Pessoa p, FILE* fp);
-void writeGrafo(Graph g, FILE*fp);
+void WriteTransacao(Transacao t, FILE* fp);
+void WritePessoa(Pessoa p, FILE* fp);
+void WriteGrafo(Graph g, FILE*fp);
+Transacao ReadTransacao(Rede r, FILE* fp);
+Pessoa ReadPessoa(FILE* fp);
+Graph ReadGrafo(FILE*fp);
+void ResolvePessoas(Rede r);
 #endif

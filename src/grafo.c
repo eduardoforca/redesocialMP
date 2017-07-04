@@ -111,7 +111,12 @@ int* vizinhos(Graph a_graph, int x) {
 		//allocates the array of neighbours
 		for (List m = v->adjList; m != NULL; m = m->next) {
 			count++;
-			neighbours = (int*)realloc(neighbours, sizeof(int)*count);
+			int* tmp = (int*)realloc(neighbours, sizeof(int)*count);
+			if(tmp != NULL){
+				neighbours = tmp; 
+			}else{
+				free(neighbours);
+			}
 			neighbours[count - 1] = (((Edge)(m->value))->end);
 		}
 	}

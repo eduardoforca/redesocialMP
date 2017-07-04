@@ -350,7 +350,7 @@ TEST(NotificacoesTest, NotificarAmigosAmigos){
 
 
 	int filtros[10] = {0};
-	filtros[1] = 1; //Seta filtro de amigos de amigos
+	filtros[1] = 1; //Seta filtro
 	
 	
 	Transacao t = CriarTransacao(p, prod, 0);
@@ -392,7 +392,7 @@ TEST(NotificacoesTest, NotificarJaFezNegocios){
 	adiciona_no(&(p2->conhecidos), p);
 
 	int filtros[10] = {0};
-	filtros[2] = 1; //Seta filtro de amigos de amigos
+	filtros[2] = 1; //Seta filtro
 	
 	
 	Transacao t = CriarTransacao(p, prod, 0);
@@ -460,6 +460,50 @@ TEST(NotificacoesTest, NotificarJaFezNegociosComAmigos){
 
 }
 
+/**
+ * @brief Testa NotificarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Acostumado
+ */
+TEST(NotificacoesTest, NotificarAcostumado){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Pessoa p2 = CriarPessoa("Pessoa2", 2); //Ja fez transacao desse produto antes
+	Pessoa p3 = CriarPessoa("Pessoa3", 3); 
+	Pessoa p4 = CriarPessoa("Pessoa4", 4); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarPessoa(r, p2);
+	AdicionarPessoa(r, p3);
+	AdicionarPessoa(r, p4);
+	AdicionarProduto(r, prod);
+
+	//SIMULA transacao concluida
+	Transacao t_2 = CriarTransacao(p4, prod, 213);
+	AdicionarTransacao(r, t_2);
+	t_2->provedor = p2;
+	adiciona_no(&(p2->transacoes), t_2);
+
+	int filtros[10] = {0};
+	filtros[4] = 1; //Seta filtro
+	
+	
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, filtros);
+
+	EXPECT_EQ((List)NULL, p->notificacoes);
+	EXPECT_EQ((List)NULL, p1->notificacoes);
+	EXPECT_EQ(t, (Transacao)(p2->notificacoes->value));
+	EXPECT_EQ((List)NULL, p3->notificacoes);
+	EXPECT_EQ((List)NULL, p4->notificacoes);
+
+}
 /**
  * @brief Testa AceitarTransacao()
  * 
@@ -547,7 +591,7 @@ TEST(NegociosTest, ConcluirTransacao){
  * 
  * Ao passar neste teste, é garantido que AvaliarTransacao() modifica o Karma dos usuarios e adiciona comentarios sobre ele
  */
-TEST(NegocioslTest, AvaliarTransacao){
+TEST(NegociosTest, AvaliarTransacao){
 
 	Rede r = CriarRede();
 
@@ -585,19 +629,39 @@ TEST(NegocioslTest, AvaliarTransacao){
  */
 TEST(RedeSocialTest, FiltrarTransacao){
 
-}
-/**
- * @brief Testa RedeFile()
- * 
- * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio com Amigos
- */
-TEST(PersistenciaTest, RedeFile){
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+	Transacao t1 = CriarTransacao(p, prod, 1);
+	Transacao t2 = CriarTransacao(p, prod, 2);
+	Transacao t3 = CriarTransacao(p, prod, 3);
+	Transacao t4 = CriarTransacao(p, prod, 4);
+
+	t1->status = PENDENTE;
+	t2->status = PENDENTE;
+	t3->status = PENDENTE;
+	t4->status = CONCLUIDA;
+
+	List lista = cria_lista();
+
+	adiciona_no(&lista, t1);
+	adiciona_no(&lista, t2);
+	adiciona_no(&lista, t3);
+	adiciona_no(&lista, t4);
+	
+	List lista2 = FiltrarTransacao(lista, PENDENTE);
+
+	ASSERT_EQ(tamanho_list(lista), 4);
+	ASSERT_EQ(tamanho_list(lista2), 3);
 
 }
+
 /**
  * @brief Testa ProdutoByID()
  * 
- * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio com Amigos
+ * Ao passar neste teste, é garantido que ProdutoByID() retorna o produto correto
  */
 TEST(RedeSocialTest, ProdutoByID){
 	Rede r = CriarRede();
@@ -609,6 +673,11 @@ TEST(RedeSocialTest, ProdutoByID){
 	ASSERT_EQ(ProdutoByID(r, p->id), p);
 
 }
+/**
+ * @brief Testa TransacaoByID()
+ * 
+ * Ao passar neste teste, é garantido que TransacaoByID() retorna a transacao correta
+ */
 TEST(RedeSocialTest, TransacaoByID){
 	Rede r = CriarRede();
 
@@ -621,6 +690,11 @@ TEST(RedeSocialTest, TransacaoByID){
 	AdicionarTransacao(r, t);
 	ASSERT_EQ(TransacaoByID(r, t->id), t);
 }
+/**
+ * @brief Testa PessoaByID()
+ * 
+ * Ao passar neste teste, é garantido que PessoaByID() retorna a pessoa correta
+ */
 TEST(RedeSocialTest, PessoaByID){
 
 	Rede r = CriarRede();
@@ -631,7 +705,70 @@ TEST(RedeSocialTest, PessoaByID){
 
 	ASSERT_EQ(PessoaByID(r, p->id), p);
 }
+/**
+ * @brief Testa RedeFile()
+ * 
+ * Ao passar neste teste, é garantido que RedeFile() le corretamente do arquivo gerado por salva rede utilizando todas
+ * as funcoes complementares
+ */
+TEST(PersistenciaTest, RedeFileESalvaRede){
 
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); 
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Pessoa p2 = CriarPessoa("Pessoa2", 2); 
+	Pessoa p3 = CriarPessoa("Pessoa3", 3); 
+	Pessoa p4 = CriarPessoa("Pessoa4", 4); 
+	Produto prod1 = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+	Produto prod2 = CriarProduto("Manga", "Uma manga madura", PRODUTO, 23);
+	Produto prod3 = CriarProduto("Abraco", "Um Abraco para pessoas tristes", SERVICO, 48);
+	Produto prod4 = CriarProduto("Computador Usado", "Um computador de 1994", PRODUTO, 1010);
+
+	Transacao t1 = CriarTransacao(p4, prod2, 50);
+	Transacao t2 = CriarTransacao(p1, prod3, 9);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarPessoa(r, p2);
+	AdicionarPessoa(r, p3);
+	AdicionarPessoa(r, p4);
+
+	AdicionarAmizade(r, p, p4);
+	AdicionarAmizade(r, p1, p4);
+	AdicionarAmizade(r, p3, p2);
+
+	AdicionarProduto(r, prod1);
+	AdicionarProduto(r, prod2);
+	AdicionarProduto(r, prod3);
+	AdicionarProduto(r, prod4);
+
+	AdicionarTransacao(r, t1);
+	AdicionarTransacao(r, t2);
+
+	SalvaRede(r, "TestPersist");
+	Rede r2 = RedeFile("TestPersist");
+
+	ASSERT_NE((Pessoa)NULL, PessoaByID(r2, p->id));
+	ASSERT_NE((Pessoa)NULL, PessoaByID(r2, p1->id));
+	ASSERT_NE((Pessoa)NULL, PessoaByID(r2, p2->id));
+	ASSERT_NE((Pessoa)NULL, PessoaByID(r2, p3->id));
+	ASSERT_NE((Pessoa)NULL, PessoaByID(r2, p4->id));
+
+	ASSERT_NE((Produto)NULL, ProdutoByID(r2, prod1->id));
+	ASSERT_NE((Produto)NULL, ProdutoByID(r2, prod2->id));
+	ASSERT_NE((Produto)NULL, ProdutoByID(r2, prod3->id));
+	ASSERT_NE((Produto)NULL, ProdutoByID(r2, prod4->id));
+
+	ASSERT_NE((Transacao)NULL, TransacaoByID(r2, t2->id));
+	ASSERT_NE((Transacao)NULL, TransacaoByID(r2, t1->id));
+
+
+	ASSERT_TRUE(Amigos(PessoaByID(r2, p->id), PessoaByID(r2, p4->id)));
+	ASSERT_TRUE(Amigos(PessoaByID(r2, p1->id), PessoaByID(r2, p4->id)));
+	ASSERT_TRUE(Amigos(PessoaByID(r2, p3->id), PessoaByID(r2, p2->id)));
+
+}
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

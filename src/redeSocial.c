@@ -595,7 +595,7 @@ Graph ReadGrafo(FILE*fp){
 		adiciona_no(&list, v);	
 	}
 	g->verticesList = list;
-
+	return g;
 }
 void ResolvePessoas(Rede r){
 	Graph g = r->pessoas;

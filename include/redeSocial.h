@@ -1,4 +1,4 @@
-/** @file redesocial.h
+/** @file redeSocial.h
  *  @brief REDESOCIAL.C header file
  *
  *  Implementa uma rede social de transacoes

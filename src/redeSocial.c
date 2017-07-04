@@ -123,16 +123,29 @@ int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	return(flag);
 }
 void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
-	// List pessoas = cria_lista();
-	// for(int* i = filtros; i!=NULL && *i!= 0; i++){
-	// 	int filtro = *i;
-	// 	switch(filtro){
-	// 		default:
-	// 		break;
-	// 	}
-	// }
-	// for(List pess)
-	// adiciona_no(&(p->notificacoes), transacao);
+	List pessoas = cria_lista();
+	for (List n = rede->pessoas->verticesList; n != NULL; n = n->next) { //iterates over all vertices
+		Vertex v = (Vertex)n->value;
+		Pessoa p = (Pessoa)v->value;
+		adiciona_no(&pessoas, p);
+	}
+
+	if(filtros[0]){
+		List nova_lista = cria_lista();
+		for (List n = pessoas; n != NULL; n = n->next) { //iterates over all vertices
+			Pessoa p = (Pessoa)n->value;
+			adiciona_no(&pessoas, p);
+		}
+	}
+	if(filtros[1]){
+		
+	}
+	if(filtros[2]){
+		
+	}
+	if(filtros[3]){
+		
+	}
 
 }
 void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){//ENVIA OFERTA

@@ -209,7 +209,6 @@ Pessoa PessoaByID(Rede rede, int id){
 	return (Pessoa)retorna_valor_vertice(rede->pessoas, id);
 
 }
-
 Rede RedeFile(char* nome_arquivo){
 	FILE* fp = fopen(nome_arquivo,"rb");
 	if (fp!=NULL){
@@ -264,7 +263,6 @@ void SalvaRede(Rede rede, char* nomeArquivo){
   	}
 
 }
-
 void WriteProduto(Produto p, FILE* fp){
 	fwrite(&p->id, sizeof(int), 1, fp);
 	fwrite(&p->tipo, sizeof(int), 1, fp);

@@ -56,7 +56,34 @@ int main(){
 	DeletaRede(rede);
 	return 0;	
 }
-
+int filtroUserWindow(Transacao t){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	erase();
+	wrefresh(win);
+	int keep =TRUE;
+	int filtros[10] = {FALSE};
+	do{
+		int filtro;
+		printw("----- ADICIONAR TRANSACAO -----\n");
+		printw("Escolha os filtros:\n");
+		printw(" 1\tAMIGO\t\t\t%c\n", (filtros[0]?'X':'O'));
+		printw(" 2\tAMIGO DE AMIGO\t\t\t%c\n", (filtros[1]?'X':'O'));
+		printw(" 3\tJA FIZ NEGOCIO\t\t\t%c\n", (filtros[2]?'X':'O'));
+		printw(" 4\tAMIGOS JA FIZERAM NEGOCIO\t\t\t%c\n", (filtros[3]?'X':'O'));
+		printw(" 0\tENVIAR\n");
+		scanw("%d", &filtro);
+		if(!filtro){
+			keep = FALSE;
+			NotificarTransacao(rede, t, filtros);
+		}else{
+			filtros[filtro] = !filtros[filtro];
+		}
+		erase();
+	}while(keep);
+	N
+	endwin();
+	return 1;
+}
 int editPessoa(Pessoa p){
 	WINDOW *win = newwin(3, 10, 0, 0);
 	erase();
@@ -71,7 +98,62 @@ int editPessoa(Pessoa p){
 	return 1;
 
 }
-
+int addTransaction(Pessoa p){
+	WINDOW *win = newwin(3, 10, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- Adicionar Transacao -----\nEscolha uma opcao:\n");
+		printw("1 - Listar Produtos\n");
+		printw("2 - Iniciar Transacao\n");
+		printw("3 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				listWindow(PRODUTOS, rede->produtos);
+			}
+			break;
+			case 2:{
+				int idt, idp;
+				printw("ID da Transacao:");
+				scanw("%d", &idt);
+				printw("ID do Produto:");
+				scanw("%d", &idp);
+				erase();
+				Produto prod = ProdutoByID(rede, idp);
+				Transacao t = TransacaoByID(rede, idt);
+				if(t == NULL){
+					if(prod != NULL){
+						printw("Deseja criar transacao de \"%s\"?\n(0 - NAO, 1- SIM)", prod->nome);
+						scanw("%d", &opcao);
+						switch(opcao){
+							case 1:
+								AdicionarTransacao(rede, CriarTransacao(p, prod, idt));
+								filtroUserWindow(TransacaoByID(rede, idt));
+							break;
+							default:break;
+						}
+					}else{
+						printw("Produto inexistente\n");
+						getch();
+					}
+				}else{
+					printw("ID de transacao repetida\n");
+					getch();
+				}
+				break;
+			}
+			case 3:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+}
 int userMainWindow(Pessoa p){
 /*
 amizades, transações*/
@@ -94,6 +176,7 @@ amizades, transações*/
 		if (p->transacoes != NULL){
 			printw("Transacoes:\t%s\n", p->transacoes);
 		}
+		printw("***Você tem (%d) notificacoes, aceite transacoes****\n", tamanho_list(p->notificacoes));
 		printw("1 - Adicionar Amizade\n");
 		printw("2 - Editar Dados\n");
 		printw("3 - Nova Transacao\n");
@@ -107,6 +190,9 @@ amizades, transações*/
 				break;
 			case 2:
 				editPessoa(p);
+				break;
+			case 3:
+				addTransaction(p);
 				break;
 			case 6:
 				back = 1;

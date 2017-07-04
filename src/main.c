@@ -4,6 +4,9 @@
 #include <ncurses.h>
 #include "main.h"
 
+//No momento nao e possivel notificar os Usuarios, logo nao eh possivel aceitar a transacao e completa-la.
+//Isso pela interface grafica, no fundo temos as ferramentas para isso, menos os filtros que nao foram implementados
+
 Rede rede;
 int main(){
 	int opcao;
@@ -65,7 +68,7 @@ int filtroUserWindow(Transacao t){
 	do{
 		int filtro;
 		printw("----- ADICIONAR TRANSACAO -----\n");
-		printw("Escolha os filtros:\n");
+		printw("Escolha os filtros(OS FILTROS SAO EXCLUSIVOS):\n");
 		printw(" 1\tAMIGO\t\t\t%c\n", (filtros[0]?'X':'O'));
 		printw(" 2\tAMIGO DE AMIGO\t\t\t%c\n", (filtros[1]?'X':'O'));
 		printw(" 3\tJA FIZ NEGOCIO\t\t\t%c\n", (filtros[2]?'X':'O'));
@@ -80,7 +83,7 @@ int filtroUserWindow(Transacao t){
 		}
 		erase();
 	}while(keep);
-	N
+	
 	endwin();
 	return 1;
 }

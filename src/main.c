@@ -4,7 +4,15 @@
 #include <ncurses.h>
 #include "main.h"
 
+#define width 3
+#define length 10
+//TODO
+//Excluir Usuario
+//Excluir Amizade
+//Printar Grafo
+//Criar printer de cada tipo(Pessoa, Produto, Transacao)
 Rede rede;
+
 int main(){
 	int opcao;
 
@@ -17,7 +25,7 @@ int main(){
 
 	WINDOW *main_win;
 
-	main_win = newwin(3, 10, 0, 0);
+	main_win = newwin(width, length, 0, 0);
 	int error = 0;
 
 	do{
@@ -57,7 +65,7 @@ int main(){
 	return 0;	
 }
 int filtroUserWindow(Transacao t){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	erase();
 	wrefresh(win);
 	int keep =TRUE;
@@ -86,7 +94,7 @@ int filtroUserWindow(Transacao t){
 	return 1;
 }
 int editPessoa(Pessoa p){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	erase();
 	wrefresh(win);
 	printw("----- EDITAR CADASTRO -----\n");
@@ -100,7 +108,7 @@ int editPessoa(Pessoa p){
 
 }
 int pendentesWindow(Pessoa p){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	do{
 		erase();
@@ -155,7 +163,7 @@ int pendentesWindow(Pessoa p){
 
 }
 int addTransaction(Pessoa p){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	do{
 		erase();
@@ -187,8 +195,12 @@ int addTransaction(Pessoa p){
 						scanw("%d", &opcao);
 						switch(opcao){
 							case 1:
-								AdicionarTransacao(rede, CriarTransacao(p, prod, idt));
-								filtroUserWindow(TransacaoByID(rede, idt));
+								if(AdicionarTransacao(rede, CriarTransacao(p, prod, idt))){
+									filtroUserWindow(TransacaoByID(rede, idt));
+								}else{
+									printw("Erro ao criar Transacao\n");
+									getch();
+								}
 							break;
 							default:break;
 						}
@@ -220,7 +232,7 @@ amizades, transações*/
 
 	WINDOW *win;
 	int opcao, back =0;
-	win = newwin(3, 10, 0, 0);
+	win = newwin(width, length, 0, 0);
 	do{
 		erase();
 		printw("--------HOME----------\n");
@@ -229,7 +241,7 @@ amizades, transações*/
 			printw("Amizades:\n");
 			listWindow(PESSOA, p->amigos);
 		}	
-		win = newwin(3, 10, 10, 10);
+		win = newwin(width, length, 10, 10);
 		if (p->transacoes != NULL){
 			printw("Transacoes:\t%s\n", p->transacoes);
 		}
@@ -271,7 +283,7 @@ amizades, transações*/
 }
 int amizadeWindow(Pessoa p){
 	WINDOW *win;
-	win = newwin(3, 10, 0, 0);
+	win = newwin(width, length, 0, 0);
 	int opcao, back = 0;
 	int id;
 	erase();
@@ -322,7 +334,7 @@ int listWindow(int type, List lista){
 		return 1;
 
 	WINDOW *win;
-	win = newwin(3, 10, 0, 0);
+	win = newwin(width, length, 0, 0);
 	for (List n = lista; n != NULL; n = n->next) { //iterates over all vertices
 		switch(type){
 			case PESSOA:{
@@ -348,7 +360,7 @@ int listWindow(int type, List lista){
 	return 0;
 }
 int signupWindow(){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	erase();
 	wrefresh(win);
@@ -392,7 +404,7 @@ int signupWindow(){
 	return back;
 }
 int loginWindow(){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0, id;
 	erase();
 	wrefresh(win);
@@ -426,7 +438,7 @@ int loginWindow(){
 	return back;
 }
 int addRemoveWindow(){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	do{
 		erase();
@@ -449,7 +461,10 @@ int addRemoveWindow(){
 				scanw("%d", &id);
 				printw("Tipo do Produto(1 - SERVICO, 2 - PRODUTO):");
 				scanw("%d", &tipo);
-				AdicionarProduto(rede, CriarProduto(nome, descricao, tipo, id));
+				if(!AdicionarProduto(rede, CriarProduto(nome, descricao, tipo, id))){
+					printw("Erro ao Adicionar Produto");
+					getch();
+				}
 			break;
 			}
 			case 2:{
@@ -476,7 +491,7 @@ int addRemoveWindow(){
 	return back;
 }
 int adminWindow(){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back = 0;
 	do{
 		erase();
@@ -511,7 +526,7 @@ int adminWindow(){
 	return back;
 }
 int acceptTransaction(Pessoa p){
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	do{
 		erase();
@@ -555,7 +570,7 @@ int acceptTransaction(Pessoa p){
 }
 int offersWindow(Pessoa p){
 
-	WINDOW *win = newwin(3, 10, 0, 0);
+	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
 	do{
 		erase();

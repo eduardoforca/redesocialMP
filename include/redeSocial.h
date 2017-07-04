@@ -122,14 +122,16 @@ int AdicionarPessoa(Rede rede, Pessoa pessoa);
 * @brief Função para adicionar produto na rede
 * @param[in] rede
 * @param[in] produto
+* @return validação da inserção
 **/
-void AdicionarProduto(Rede rede, Produto produto);
+int AdicionarProduto(Rede rede, Produto produto);
 /**
 * @brief Função para adicionar transacao na rede
 * @param[in] rede
 * @param[in] transacao
+* @return validação da inserção
 **/
-void AdicionarTransacao(Rede rede, Transacao transacao);
+int AdicionarTransacao(Rede rede, Transacao transacao);
 /**
 * @brief Função para excluir pessoa da rede
 * @param rede
@@ -165,7 +167,7 @@ int DeletaRede(Rede rede);
 * @param pessoa 2
 * @details adiciona uma aresta entre as duas pessoas (amizade)
 **/
-void AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
+int AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 /**
 * @brief Função para remover amizades
 * @param rede 

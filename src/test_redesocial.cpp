@@ -126,7 +126,7 @@ TEST(RedeSocialCRUDTest, AdicionarTransacao){
 /**
  * @brief Testa ExcluirPessoa()
  * 
- * Ao passar neste teste, e garantido que ExcluirPessoa() exclui pessoa de rede
+ * Ao passar neste teste, é garantido que ExcluirPessoa() exclui pessoa de rede
  */
 
 TEST(RedeSocialCRUDTest, ExcluirPessoa){
@@ -142,7 +142,7 @@ TEST(RedeSocialCRUDTest, ExcluirPessoa){
 /**
  * @brief Testa ExcluirProduto()
  * 
- * Ao passar neste teste, e garantido que ExcluirProduto() exclui produto de rede
+ * Ao passar neste teste, é garantido que ExcluirProduto() exclui produto de rede
  */
 TEST(RedeSocialCRUDTest, ExcluirProduto){
 	Rede r = CriarRede();
@@ -156,7 +156,7 @@ TEST(RedeSocialCRUDTest, ExcluirProduto){
 /**
  * @brief Testa ExcluirTransacao()
  * 
- * Ao passar neste teste, e garantido que ExcluirTransacao() exclui transacao de rede
+ * Ao passar neste teste, é garantido que ExcluirTransacao() exclui transacao de rede
  */
 TEST(RedeSocialCRUDTest, ExcluirTransacao){
 
@@ -174,7 +174,7 @@ TEST(RedeSocialCRUDTest, ExcluirTransacao){
 /**
  * @brief Testa DeletaRede()
  * 
- * Ao passar neste teste, eh garantido que DeletaRede() limpa a rede e desaloca da memoria
+ * Ao passar neste teste, é garantido que DeletaRede() limpa a rede e desaloca da memoria
  */
 TEST(RedeSocialCRUDTest, DeletaRede){
 	Rede r = CriarRede();
@@ -191,7 +191,7 @@ TEST(RedeSocialCRUDTest, DeletaRede){
 /**
  * @brief Testa AdicionarAmizade()
  * 
- * Ao passar neste teste, eh garantido que AdicionarAmizade():
+ * Ao passar neste teste, é garantido que AdicionarAmizade():
  *  - Adiciona amizade entre duas pessoas
  *  - Nao adiciona amizade repetida
  *  - Nao adiciona amizade para pessoas fora da rede
@@ -215,7 +215,7 @@ TEST(RedeSocialConexoesTest, AdicionarAmizade){
 /**
  * @brief Testa RemoverAmizade()
  * 
- * Ao passar neste teste, eh garantido que RemoverAmizade():
+ * Ao passar neste teste, é garantido que RemoverAmizade():
  *  - Nao remove amizade inexistente
  *  - Remove amizade de pessoas presentes na rede
  */
@@ -243,7 +243,7 @@ TEST(RedeSocialConexoesTest, RemoverAmizade){
 /**
  * @brief Testa NotificarTransacao()
  * 
- * Ao passar neste teste, eh garantido que NotificarTransacao() notifica quando nao ha filtro
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando nao ha filtro
  */
 TEST(NotificacoesTest, NotificarTodos){
 
@@ -266,14 +266,6 @@ TEST(NotificacoesTest, NotificarTodos){
 	AdicionarAmizade(r,p, p1);
 	AdicionarAmizade(r,p1, p2);
 
-	//SIMULA negocio antigo entre p e p3
-	adiciona_no(&(p->conhecidos), p3);
-	adiciona_no(&(p3->conhecidos), p);
-
-	//SIMULA negocio antigo entre p1 e p4
-	adiciona_no(&(p1->conhecidos), p4);
-	adiciona_no(&(p4->conhecidos), p1);
-
 	int filtros[10] = {0}; // Com todos os filtros falsos ele deve notificar a todos
 	
 	Transacao t = CriarTransacao(p, prod, 0);
@@ -286,6 +278,11 @@ TEST(NotificacoesTest, NotificarTodos){
 	EXPECT_EQ(t, (Transacao)(p4->notificacoes->value));
 
 }
+/**
+ * @brief Testa NotificarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Amigos
+ */
 TEST(NotificacoesTest, NotificarAmigos){
 
 	Rede r = CriarRede();
@@ -309,7 +306,7 @@ TEST(NotificacoesTest, NotificarAmigos){
 
 	int filtros[10] = {0};
 	filtros[0] = 1; //Seta filtro de amigos
-	int expected[5] = {0};
+	
 	
 	Transacao t = CriarTransacao(p, prod, 0);
 	AdicionarTransacao(r, t);
@@ -322,6 +319,11 @@ TEST(NotificacoesTest, NotificarAmigos){
 	EXPECT_EQ((List)NULL, p4->notificacoes);
 
 }
+/**
+ * @brief Testa NotificarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Amigos de Amigos
+ */
 TEST(NotificacoesTest, NotificarAmigosAmigos){
 
 	Rede r = CriarRede();
@@ -349,7 +351,7 @@ TEST(NotificacoesTest, NotificarAmigosAmigos){
 
 	int filtros[10] = {0};
 	filtros[1] = 1; //Seta filtro de amigos de amigos
-	int expected[5] = {0};
+	
 	
 	Transacao t = CriarTransacao(p, prod, 0);
 	AdicionarTransacao(r, t);
@@ -362,15 +364,20 @@ TEST(NotificacoesTest, NotificarAmigosAmigos){
 	EXPECT_EQ(t, (Transacao)(p4->notificacoes->value));
 
 }
+/**
+ * @brief Testa NotificarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio
+ */
 TEST(NotificacoesTest, NotificarJaFezNegocios){
 
 	Rede r = CriarRede();
 
 	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
-	Pessoa p1 = CriarPessoa("Pessoa1", 1); //Amigo
-	Pessoa p2 = CriarPessoa("Pessoa2", 2); //Amigo de Amigo
-	Pessoa p3 = CriarPessoa("Pessoa3", 3); //Amigo
-	Pessoa p4 = CriarPessoa("Pessoa4", 4); //Amigo de Amigo
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Pessoa p2 = CriarPessoa("Pessoa2", 2); //Ja fez negocio
+	Pessoa p3 = CriarPessoa("Pessoa3", 3); 
+	Pessoa p4 = CriarPessoa("Pessoa4", 4); 
 	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
 
 	AdicionarPessoa(r, p);
@@ -380,16 +387,66 @@ TEST(NotificacoesTest, NotificarJaFezNegocios){
 	AdicionarPessoa(r, p4);
 	AdicionarProduto(r, prod);
 
+	//SIMULA negocio antigo entre p e p2
+	adiciona_no(&(p->conhecidos), p2);
+	adiciona_no(&(p2->conhecidos), p);
+
+	int filtros[10] = {0};
+	filtros[2] = 1; //Seta filtro de amigos de amigos
+	
+	
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, filtros);
+
+	EXPECT_EQ((List)NULL, p->notificacoes);
+	EXPECT_EQ((List)NULL, p1->notificacoes);
+	EXPECT_EQ(t, (Transacao)(p2->notificacoes->value));
+	EXPECT_EQ((List)NULL, p3->notificacoes);
+	EXPECT_EQ((List)NULL, p4->notificacoes);
+
+}
+/**
+ * @brief Testa NotificarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio com Amigos
+ */
+TEST(NotificacoesTest, NotificarJaFezNegociosComAmigos){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); //Amigo
+	Pessoa p2 = CriarPessoa("Pessoa2", 2); //Ja fez negocio com amigo
+	Pessoa p3 = CriarPessoa("Pessoa3", 3); //Amigo
+	Pessoa p4 = CriarPessoa("Pessoa4", 4); // Ja fez negocio com amigo e com cliente
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarPessoa(r, p2);
+	AdicionarPessoa(r, p3);
+	AdicionarPessoa(r, p4);
+	AdicionarProduto(r, prod);
+
+	//SIMULA negocio antigo entre p e p4
+	adiciona_no(&(p->conhecidos), p4);
+	adiciona_no(&(p4->conhecidos), p);
+
+	//SIMULA negocio antigo entre p1 e p4
+	adiciona_no(&(p1->conhecidos), p4);
+	adiciona_no(&(p4->conhecidos), p1);
+
+	//SIMULA negocio antigo entre p3 e p2
+	adiciona_no(&(p3->conhecidos), p2);
+	adiciona_no(&(p2->conhecidos), p3);
+
 	AdicionarAmizade(r,p, p1);
 	AdicionarAmizade(r,p, p3);
 
-	AdicionarAmizade(r,p1, p2);
-	AdicionarAmizade(r,p3, p4);
-
-
 	int filtros[10] = {0};
-	filtros[1] = 1; //Seta filtro de amigos de amigos
-	int expected[5] = {0};
+	filtros[3] = 1; //Seta filtro de negocios com amigos
+	
 	
 	Transacao t = CriarTransacao(p, prod, 0);
 	AdicionarTransacao(r, t);
@@ -402,24 +459,146 @@ TEST(NotificacoesTest, NotificarJaFezNegocios){
 	EXPECT_EQ(t, (Transacao)(p4->notificacoes->value));
 
 }
-TEST(RedeSocialTest, AceitarTransacao){
+
+/**
+ * @brief Testa AceitarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que AceitaTransacao() envia uma oferta ao cliente e remove transacao das notificacoes
+ */
+TEST(NegociosTest, AceitarTransacao){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarProduto(r, prod);
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, NULL);
+
+	AceitarTransacao(r, t, p1);
+	EXPECT_EQ(p1, (Pessoa)t->ofertas->value);
+	EXPECT_EQ(p1->notificacoes, (List)NULL);
 
 }
-TEST(RedeSocialTest, AceitarOferta){
+/**
+ * @brief Testa AceitarOferta()
+ * 
+ * Ao passar neste teste, é garantido que AceitarOferta() seta o usuario que provera o servico descrito na transacao
+ */
+TEST(NegociosTest, AceitarOferta){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarProduto(r, prod);
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, NULL);
+
+	AceitarTransacao(r, t, p1);
+	AceitarOferta(r, t, p1);
+
+	ASSERT_EQ(t->provedor, p1);
+	ASSERT_EQ((Transacao)p1->transacoes->value, t);
+
 
 }
-TEST(RedeSocialTest, IniciarTransacao){
+/**
+ * @brief Testa ConcluirTransacao()
+ * 
+ * Ao passar neste teste, é garantido que ConcluirTransacao() transforma a transacao em Pendente e Adiciona usuarios como 
+ * conhecidos(Ja fizeram negocios)
+ */
+TEST(NegociosTest, ConcluirTransacao){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarProduto(r, prod);
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, NULL);
+
+	AceitarTransacao(r, t, p1);
+	AceitarOferta(r, t, p1);//AceitarOferta chama ConcluirTransacao
+
+	ASSERT_TRUE(Conhecidos(p, p1));
+	ASSERT_EQ(t->status, PENDENTE);
+
 
 }
-TEST(RedeSocialTest, AvaliarTransacao){
+/**
+ * @brief Testa AvaliarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que AvaliarTransacao() modifica o Karma dos usuarios e adiciona comentarios sobre ele
+ */
+TEST(NegocioslTest, AvaliarTransacao){
+
+	Rede r = CriarRede();
+
+	Pessoa p = CriarPessoa("Pessoa", 0); //Cliente
+	Pessoa p1 = CriarPessoa("Pessoa1", 1); 
+	Produto prod = CriarProduto("Carona para Samambaia", "Uma carona para Q5 da Samambaia", SERVICO, 0);
+
+	AdicionarPessoa(r, p);
+	AdicionarPessoa(r, p1);
+	AdicionarProduto(r, prod);
+	Transacao t = CriarTransacao(p, prod, 0);
+	AdicionarTransacao(r, t);
+	NotificarTransacao(r, t, NULL);
+
+	AceitarTransacao(r, t, p1);
+	AceitarOferta(r, t, p1);
+
+	AvaliarTransacao(r, t, p, "Gostei Muito", 4);
+	AvaliarTransacao(r, t, p1, "Muito rude", -2);
+
+
+	ASSERT_EQ(4, p1->rating_provedor);
+	ASSERT_EQ(-2, p->rating_cliente);	
+	
+	ASSERT_EQ(0,strcmp("Gostei Muito", (char*)(p1->comentarios->value)));
+	ASSERT_EQ(0,strcmp("Muito rude", (char*)(p->comentarios->value)));
+
+	ASSERT_EQ(t->status, CONCLUIDA);
 
 }
+/**
+ * @brief Testa FiltrarTransacao()
+ * 
+ * Ao passar neste teste, é garantido que FiltrarTransacao() retorna apenas as Transacoes aceitas pelo fitro
+ */
 TEST(RedeSocialTest, FiltrarTransacao){
 
 }
-TEST(RedeSocialTest, RedeFile){
+/**
+ * @brief Testa RedeFile()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio com Amigos
+ */
+TEST(PersistenciaTest, RedeFile){
 
 }
+/**
+ * @brief Testa ProdutoByID()
+ * 
+ * Ao passar neste teste, é garantido que NotificarTransacao() notifica quando o filtro é Ja Fez Negocio com Amigos
+ */
 TEST(RedeSocialTest, ProdutoByID){
 	Rede r = CriarRede();
 

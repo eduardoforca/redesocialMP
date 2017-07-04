@@ -154,75 +154,76 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 			adiciona_no(&pessoas, p);
 		}
 	}
-
-	if(filtros[AMIGO]){
-		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { 
-			Pessoa p = (Pessoa)n->value;
-			if(Amigos(p, transacao->cliente)){
-				adiciona_no(&nova_lista, p);
-			}
-		}
-		destroi_lista(pessoas);
-		pessoas = nova_lista;
-	}
-	if(filtros[AMIGO2]){
-		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { 
-			Pessoa p = (Pessoa)n->value;
-			if(p != transacao->cliente){
-				for (List m = p->amigos; m != NULL; m = m->next) { 
-					Pessoa p2 = (Pessoa)m->value;
-					if(Amigos(p2, transacao->cliente)){
-						adiciona_no(&nova_lista, p);
-						break;
-					}
-				}
-			}
-		}
-		destroi_lista(pessoas);
-		pessoas = nova_lista;
-	}
-	if(filtros[JA_FEZ_NEGOCIO]){
-		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { 
-			Pessoa p = (Pessoa)n->value;
-			if(Conhecidos(p, transacao->cliente)){
-				adiciona_no(&nova_lista, p);
-			}
-		}
-		destroi_lista(pessoas);
-		pessoas = nova_lista;		
-	}
-	if(filtros[JA_FEZ_NEGOCIO_AMIGO]){
-		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { 
-			Pessoa p = (Pessoa)n->value;
-			if(p != transacao->cliente){
-				for (List m = p->conhecidos; m != NULL; m = m->next) { 
-					Pessoa p2 = (Pessoa)m->value;
-					if(Amigos(p2, transacao->cliente)){
-						adiciona_no(&nova_lista, p);
-						break;
-					}
-				}
-			}
-		}
-		destroi_lista(pessoas);
-		pessoas = nova_lista;
-	}
-	if(filtros[ACOSTUMADO]){
-		List nova_lista = cria_lista();
-		for (List n = pessoas; n != NULL; n = n->next) { 
-			Pessoa p = (Pessoa)n->value;
-			if(p != transacao->cliente){
-				if(Acostumado(p, transacao->produto)){
+	if(filtros != NULL){
+		if(filtros[AMIGO]){
+			List nova_lista = cria_lista();
+			for (List n = pessoas; n != NULL; n = n->next) { 
+				Pessoa p = (Pessoa)n->value;
+				if(Amigos(p, transacao->cliente)){
 					adiciona_no(&nova_lista, p);
 				}
 			}
+			destroi_lista(pessoas);
+			pessoas = nova_lista;
 		}
-		destroi_lista(pessoas);
-		pessoas = nova_lista;
+		if(filtros[AMIGO2]){
+			List nova_lista = cria_lista();
+			for (List n = pessoas; n != NULL; n = n->next) { 
+				Pessoa p = (Pessoa)n->value;
+				if(p != transacao->cliente){
+					for (List m = p->amigos; m != NULL; m = m->next) { 
+						Pessoa p2 = (Pessoa)m->value;
+						if(Amigos(p2, transacao->cliente)){
+							adiciona_no(&nova_lista, p);
+							break;
+						}
+					}
+				}
+			}
+			destroi_lista(pessoas);
+			pessoas = nova_lista;
+		}
+		if(filtros[JA_FEZ_NEGOCIO]){
+			List nova_lista = cria_lista();
+			for (List n = pessoas; n != NULL; n = n->next) { 
+				Pessoa p = (Pessoa)n->value;
+				if(Conhecidos(p, transacao->cliente)){
+					adiciona_no(&nova_lista, p);
+				}
+			}
+			destroi_lista(pessoas);
+			pessoas = nova_lista;		
+		}
+		if(filtros[JA_FEZ_NEGOCIO_AMIGO]){
+			List nova_lista = cria_lista();
+			for (List n = pessoas; n != NULL; n = n->next) { 
+				Pessoa p = (Pessoa)n->value;
+				if(p != transacao->cliente){
+					for (List m = p->conhecidos; m != NULL; m = m->next) { 
+						Pessoa p2 = (Pessoa)m->value;
+						if(Amigos(p2, transacao->cliente)){
+							adiciona_no(&nova_lista, p);
+							break;
+						}
+					}
+				}
+			}
+			destroi_lista(pessoas);
+			pessoas = nova_lista;
+		}
+		if(filtros[ACOSTUMADO]){
+			List nova_lista = cria_lista();
+			for (List n = pessoas; n != NULL; n = n->next) { 
+				Pessoa p = (Pessoa)n->value;
+				if(p != transacao->cliente){
+					if(Acostumado(p, transacao->produto)){
+						adiciona_no(&nova_lista, p);
+					}
+				}
+			}
+			destroi_lista(pessoas);
+			pessoas = nova_lista;
+		}
 	}
 
 	for (List n = pessoas; n != NULL; n = n->next){
@@ -232,9 +233,11 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 
 }
 void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){
-
-	adiciona_no(&(transacao->ofertas), pessoa);
-	remove_no_byvalue(&(pessoa->notificacoes), transacao);
+	//ASSERTIVA DE ENTRADA: Transacao e Pessoa devem estar na rede
+	if(PessoaByID(rede, pessoa->id)!=NULL && TransacaoByID(rede, transacao->id)!=NULL){
+		adiciona_no(&(transacao->ofertas), pessoa);
+		remove_no_byvalue(&(pessoa->notificacoes), transacao);
+	}
 
 }
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
@@ -246,6 +249,8 @@ void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
 void ConcluirTransacao(Rede rede, Transacao transacao){
 	int grau = NEGOCIOS;
 	transacao->status = PENDENTE;
+
+	//ASSERTIVA: Caso eles ja tenham feito negocio, nao adicionar
 	if(adiciona_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id)){
 		muda_valor_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id, &grau);	
 		adiciona_no(&(transacao->cliente->conhecidos), transacao->provedor);
@@ -261,11 +266,13 @@ void AvaliarTransacao(Rede rede, Transacao transacao, Pessoa avaliador, char* co
 	transacao->status = CONCLUIDA;
 	if(avaliador == transacao->cliente){
 		strcpy(transacao->comentario_cliente, comentario);
+		adiciona_no(&transacao->provedor->comentarios, comentario);
 		transacao->provedor->rating_provedor += rating; 
 
 	}else{
 		strcpy(transacao->comentario_provedor, comentario);
-		transacao->provedor->rating_cliente += rating;
+		adiciona_no(&transacao->cliente->comentarios, comentario);
+		transacao->cliente->rating_cliente += rating;
 	}
 }
 List FiltrarTransacao(List transacoes, int status){

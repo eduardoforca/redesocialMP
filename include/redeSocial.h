@@ -116,6 +116,8 @@ Rede CriarRede();
 * @param[in] pessoa
 * @details insere a pessoa no grafo
 * @return validação da inserção
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int AdicionarPessoa(Rede rede, Pessoa pessoa);
 /**
@@ -123,13 +125,17 @@ int AdicionarPessoa(Rede rede, Pessoa pessoa);
 * @param[in] rede
 * @param[in] produto
 * @return validação da inserção
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int AdicionarProduto(Rede rede, Produto produto);
 /**
-* @brief Função para adicionar transacao na rede
+* @brief Função para adicionar transação na rede
 * @param[in] rede
 * @param[in] transacao
 * @return validação da inserção
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int AdicionarTransacao(Rede rede, Transacao transacao);
 /**
@@ -137,6 +143,8 @@ int AdicionarTransacao(Rede rede, Transacao transacao);
 * @param rede
 * @param pessoa
 * @return a validação da exclusão
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int ExcluirPessoa(Rede rede, Pessoa pessoa);
 /**
@@ -144,13 +152,17 @@ int ExcluirPessoa(Rede rede, Pessoa pessoa);
 * @param rede
 * @param produto
 * @return a validação da exclusão
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int ExcluirProduto(Rede rede, Produto produto);
 /**
-* @brief Função para excluir transacao da rede
+* @brief Função para excluir transação da rede
 * @param rede
 * @param transacao
 * @return a validação da exclusão
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int ExcluirTransacao(Rede rede, Transacao transacao);
 /**
@@ -158,6 +170,8 @@ int ExcluirTransacao(Rede rede, Transacao transacao);
 * @param rede
 * @details remove a rede da memoria
 * @return a validação da exclusão
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int DeletaRede(Rede rede);
 /**
@@ -166,6 +180,9 @@ int DeletaRede(Rede rede);
 * @param pessoa 1
 * @param pessoa 2
 * @details adiciona uma aresta entre as duas pessoas (amizade)
+* @return a validacao da adicao
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 /**
@@ -175,6 +192,8 @@ int AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 * @param pessoa 2
 * @details remove a aresta entre as duas pessoas 
 * @return validação da remoção
+* @retval 0 - FALSE
+* @retval 1 - TRUE
 **/
 int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 /**
@@ -190,7 +209,7 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros);
 * @param rede 
 * @param transacao
 * @param pessoa
-* @details a pessoa aceita a transacao envia uma oferta para o cliente
+* @details a pessoa aceita a transação envia uma oferta para o cliente
 **/
 void AceitarTransacao(Rede rede, Transacao transacao, Pessoa p);
 /**
@@ -202,17 +221,16 @@ void AceitarTransacao(Rede rede, Transacao transacao, Pessoa p);
 **/
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa);
 
+/**
+* @brief Função para concluir transação
+* @param rede 
+* @param transacao
+* @details adiciona uma aresta entre as pessoas envolvidas na transação e deixa a transação pendente para avaliacao
+**/
 void ConcluirTransacao(Rede rede, Transacao transacao);
 
 /**
-* @brief Função para concluir transacao
-* @param rede 
-* @param transacao
-* @details adiciona uma aresta entre as pessoas envolvidas na transacao
-**/
-void IniciarTransacao(Rede rede, Transacao oferta);
-/**
-* @brief Função para avaliar transacao
+* @brief Função para avaliar transação
 * @param rede 
 * @param transacao
 * @param avaliador 
@@ -224,12 +242,19 @@ void AvaliarTransacao(Rede rede, Transacao oferta, Pessoa avaliador, char* comen
 /**
 * @brief Função para filtrar transacoes
 * @param rede 
-* @param filtros
+* @param status
 * @details filtra as transacoes da rede 
 * @return lista de transacoes filtradas
 **/
 List FiltrarTransacao(List transacoes, int status);
 
+/**
+ * @brief Funcao que le arquivo contendo a rede
+ * @details Le arquivo binario contendo as informacoes de persistencia da rede social
+ * 
+ * @param nomeArquivo
+ * @return rede social
+ */
 Rede RedeFile(char* nomeArquivo);
 /**
 * @brief Função para retornar produto por ID
@@ -240,9 +265,9 @@ Rede RedeFile(char* nomeArquivo);
 **/
 Produto ProdutoByID(Rede rede, int id);
 /**
-* @brief Função para retornar transacao por ID
+* @brief Função para retornar transação por ID
 * @param rede 
-* @param id de transacao
+* @param id de transação
 * @details percorre lista de transacoes
 * @return transacao
 **/
@@ -292,6 +317,12 @@ void WriteGrafo(Graph g, FILE*fp);
 * @details abre arquivo e escreve o produto na rede
 **/
 void WriteProduto(Produto p, FILE* fp);
+/**
+* @brief le transacao no arquivo de rede
+* @param arquivo da rede
+* @details abre arquivo e le transacao da rede nele
+* @return transacao
+**/
 Transacao ReadTransacao(Rede r, FILE* fp);
 /**
 * @brief le pessoa no arquivo de rede
@@ -314,8 +345,48 @@ Graph ReadGrafo(FILE*fp);
 * @return produto
 **/
 Produto ReadProduto(FILE* fp);
+
+/**
+ * @brief Funcao complementar da leitura de arquivos
+ * @details Transformar Listas de ids de pessoas no grafo em Listas
+ * de pessoas
+ * 
+ * @param rede contendo as pessoas e referencias
+ */
 void ResolvePessoas(Rede r);
+/**
+ * @brief Funcao que retorna se duas pessoas sao amigas
+ * @details Checa se existe amizade entre pessoas
+ * 
+ * @param p1 Pessoa 1
+ * @param p2 Pessoa 2
+ * 
+ * @retval 0 - FALSE
+ * @retval 1 - TRUE
+ */
 int Amigos(Pessoa p1, Pessoa p2);
+
+/**
+ * @brief Funcao que retorna se duas pessoas ja fizeram negocios
+ * @details Checa se existe relacao de negocios entre pessoas
+ * 
+ * @param p1 Pessoa 1
+ * @param p2 Pessoa 2
+ * 
+ * @retval 0 - FALSE
+ * @retval 1 - TRUE
+ */
 int Conhecidos(Pessoa p1, Pessoa p2);
+
+/**
+ * @brief Funcao que retorna se pessoa é acostumado com um produto
+ * @details Checa se existe se pessoa é acostumada com transacoes de um produto
+ * 
+ * @param p1 Pessoa 1
+ * @param prod produto
+ * 
+ * @retval 0 - FALSE
+ * @retval 1 - TRUE
+ */
 int Acostumado(Pessoa p1, Produto prod);
 #endif

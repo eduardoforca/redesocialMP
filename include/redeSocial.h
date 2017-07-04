@@ -12,7 +12,9 @@ typedef struct pessoa* Pessoa;
 typedef struct transacao* Transacao;
 typedef struct produto* Produto;
 typedef struct rede* Rede;
-
+/**
+* @struct pessoa
+**/
 struct pessoa{
 	int id;
 	char nome[50];
@@ -248,14 +250,40 @@ Transacao TransacaoByID(Rede rede, int id);
 * @return pessoa
 **/
 Pessoa PessoaByID(Rede rede, int id);
+
+/**
+* @brief salva a rede no arquivo
+* @param rede
+* @param string nome do arquivo
+* @details abre arquivo e escreve a rede nele. 
+**/
 void SalvaRede(Rede rede, char* nomeArquivo);
+/**
+* @brief escreve transacao no arquivo de rede
+* @param transacao
+* @param arquivo da rede
+* @details abre arquivo e escreve a transacao nele
+**/
 void WriteTransacao(Transacao t, FILE* fp);
 void WritePessoa(Pessoa p, FILE* fp);
 void WriteGrafo(Graph g, FILE*fp);
+
+/**
+* @brief escreve produto no arquivo de rede
+* @param produto
+* @param arquivo da rede
+* @details abre arquivo e escreve na rede
+**/
 void WriteProduto(Produto p, FILE* fp);
 Transacao ReadTransacao(Rede r, FILE* fp);
 Pessoa ReadPessoa(FILE* fp);
 Graph ReadGrafo(FILE*fp);
+/**
+* @brief le produto no arquivo de rede
+* @param arquivo da rede
+* @details abre arquivo e le produto da rede nele
+* @return produto
+**/
 Produto ReadProduto(FILE* fp);
 void ResolvePessoas(Rede r);
 #endif

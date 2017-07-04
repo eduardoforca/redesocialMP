@@ -25,6 +25,7 @@ struct pessoa{
 	List comentarios;	
 };
 
+
 struct transacao{
 
 	int id;

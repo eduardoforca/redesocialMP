@@ -7,7 +7,6 @@
 #define width 3
 #define length 10
 //TODO
-//Excluir Usuario
 //Excluir Amizade
 //Printar Grafo
 //Criar printer de cada tipo(Pessoa, Produto, Transacao)
@@ -100,7 +99,7 @@ int editPessoa(Pessoa p){
 	printw("----- EDITAR CADASTRO -----\n");
 	char nome[50];
 	printw("Novo nome de Usuario:");
-	scanw("%s", &nome);
+	scanw("%s", nome);
 	strcpy(p->nome, nome);
 	erase();
 	endwin();
@@ -252,7 +251,9 @@ amizades, transações*/
 		printw("4 - Aceitar Transacao\n");
 		printw("5 - Avaliar Transacoes Pendentes\n");
 		printw("6 - Ver Ofertas Recebidas\n");
-		printw("7 - Deslogar\n");
+		printw("7 - Excluir Conta\n");
+		printw("8 - Excluir Amizade\n");
+		printw("9 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
@@ -274,8 +275,14 @@ amizades, transações*/
 				offersWindow(p);
 				break;
 			case 7:
+				back = deleteUserWindow(p);
+				break;
+			case 8:
+				deleteAmizadeWindow(p);
+				break;
+			default:
 				back = 1;
-			default:break;
+				break;
 		}
 	}while(!back);
 	endwin();
@@ -328,6 +335,25 @@ int amizadeWindow(Pessoa p){
 	return 0;
 
 }
+int deleteAmizadeWindow(Pessoa p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	int opcao, back = 0;
+	int id;
+	erase();
+	printw("----- REMOVER AMIZADE -----\nDigite o ID do usuario que deseja remover:\n");
+	scanw("%d", &id);
+	Pessoa n = PessoaByID(rede, id);
+	if(n!= NULL){
+		if(!RemoverAmizade(rede, p, n)){
+			printw("Nao foi possivel remover amizade\n");
+			getch();
+		}
+	}
+	endwin();
+	return 0;
+
+}	
 int listWindow(int type, List lista){
 
 	if (lista == NULL)
@@ -370,7 +396,7 @@ int signupWindow(){
 		char nome[50];
 		int id;
 		printw("Nome do Usuario:");
-		scanw("%s", &nome);
+		scanw("%s", nome);
 		printw("ID do Usuario:");
 		scanw("%d", &id);
 		Pessoa p = PessoaByID(rede, id);
@@ -624,4 +650,19 @@ int offersWindow(Pessoa p){
 	endwin();
 	return back;
 
+}
+int deleteUserWindow(Pessoa p){
+	WINDOW *win = newwin(width, length, 0, 0);
+	erase();
+	wrefresh(win);
+	printw("----- DELETAR CONTA -----\n");
+	int opcao;
+	printw("Deseja Deletar sua Conta?\n (0 - NAO, 1 - SIM)\n");
+	scanw("%d", &opcao);
+	if(opcao){
+		ExcluirPessoa(rede, p);
+	}
+	erase();
+	endwin();
+	return opcao;
 }

@@ -224,10 +224,9 @@ int addTransaction(Pessoa p){
 	endwin();
 	return back;
 }
-int userMainWindow(Pessoa p){
-/*
-amizades, transações*/
 
+
+int userMainWindow(Pessoa p){
 	if (p == NULL)
 		return 1;
 
@@ -290,6 +289,7 @@ amizades, transações*/
 	endwin();
 	return 0;
 }
+
 int amizadeWindow(Pessoa p){
 	WINDOW *win;
 	win = newwin(width, length, 0, 0);
@@ -335,8 +335,8 @@ int amizadeWindow(Pessoa p){
 	}while(!back);
 	endwin();
 	return 0;
-
 }
+
 int deleteAmizadeWindow(Pessoa p){
 	WINDOW *win;
 	win = newwin(width, length, 0, 0);
@@ -354,8 +354,8 @@ int deleteAmizadeWindow(Pessoa p){
 	}
 	endwin();
 	return 0;
-
 }	
+
 int listWindow(int type, List lista){
 
 	if (lista == NULL)
@@ -387,6 +387,7 @@ int listWindow(int type, List lista){
 	endwin();
 	return 0;
 }
+
 int signupWindow(){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
@@ -431,6 +432,7 @@ int signupWindow(){
 	endwin();
 	return back;
 }
+
 int loginWindow(){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0, id;
@@ -465,6 +467,7 @@ int loginWindow(){
 	endwin();
 	return back;
 }
+
 int addRemoveWindow(){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
@@ -518,6 +521,7 @@ int addRemoveWindow(){
 	endwin();
 	return back;
 }
+
 int adminWindow(){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back = 0;
@@ -553,6 +557,7 @@ int adminWindow(){
 	endwin();
 	return back;
 }
+
 int acceptTransaction(Pessoa p){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
@@ -596,6 +601,7 @@ int acceptTransaction(Pessoa p){
 	endwin();
 	return back;
 }
+
 int offersWindow(Pessoa p){
 
 	WINDOW *win = newwin(width, length, 0, 0);
@@ -653,6 +659,7 @@ int offersWindow(Pessoa p){
 	return back;
 
 }
+
 int deleteUserWindow(Pessoa p){
 	WINDOW *win = newwin(width, length, 0, 0);
 	erase();

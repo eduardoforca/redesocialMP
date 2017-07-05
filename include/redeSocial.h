@@ -21,9 +21,7 @@ typedef struct pessoa* Pessoa;
 typedef struct transacao* Transacao;
 typedef struct produto* Produto;
 typedef struct rede* Rede;
-/**
-* @struct pessoa
-**/
+
 struct pessoa{
 	int id;
 	char nome[50];
@@ -120,6 +118,8 @@ Transacao CriarTransacao(Pessoa cliente, Produto produto, int id);
 **/
 Rede CriarRede();
 /**
+*
+* ASSERTIVA DE ENTRADA: Nao pode haver outra pessoas com esse ID na rede
 * @brief Função para adicionar uma pessoa a Rede
 * @param[in] rede
 * @param[in] pessoa
@@ -130,6 +130,8 @@ Rede CriarRede();
 **/
 int AdicionarPessoa(Rede rede, Pessoa pessoa);
 /**
+*
+* ASSERTIVA DE ENTRADA: Nao pode haver outro Produto com esse ID na rede
 * @brief Função para adicionar produto na rede
 * @param[in] rede
 * @param[in] produto
@@ -137,8 +139,11 @@ int AdicionarPessoa(Rede rede, Pessoa pessoa);
 * @retval 0 - FALSE
 * @retval 1 - TRUE
 **/
+
 int AdicionarProduto(Rede rede, Produto produto);
 /**
+*
+* ASSERTIVA DE ENTRADA: Nao pode haver outra Transacao com esse ID na rede, o Produto e o Cliente devem existir na rede
 * @brief Função para adicionar transação na rede
 * @param[in] rede
 * @param[in] transacao
@@ -148,6 +153,8 @@ int AdicionarProduto(Rede rede, Produto produto);
 **/
 int AdicionarTransacao(Rede rede, Transacao transacao);
 /**
+*
+* ASSERTIVA DE ENTRADA: Pessoa deve existir na rede
 * @brief Função para excluir pessoa da rede
 * @param rede
 * @param pessoa
@@ -157,6 +164,8 @@ int AdicionarTransacao(Rede rede, Transacao transacao);
 **/
 int ExcluirPessoa(Rede rede, Pessoa pessoa);
 /**
+*
+* ASSERTIVA DE ENTRADA: Produto deve existir na rede
 * @briefFunção para excluir produto da rede
 * @param rede
 * @param produto
@@ -166,6 +175,8 @@ int ExcluirPessoa(Rede rede, Pessoa pessoa);
 **/
 int ExcluirProduto(Rede rede, Produto produto);
 /**
+*
+* ASSERTIVA DE ENTRADA: Transacao deve existir na rede
 * @brief Função para excluir transação da rede
 * @param rede
 * @param transacao
@@ -184,6 +195,8 @@ int ExcluirTransacao(Rede rede, Transacao transacao);
 **/
 int DeletaRede(Rede rede);
 /**
+*
+* ASSERTIVA DE ENTRADA: Amizade atual nao pode existir e Pessoas devem estar na rede
 * @brief Função para adicionar amizades
 * @param rede 
 * @param pessoa 1
@@ -214,6 +227,8 @@ int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2);
 **/
 void NotificarTransacao(Rede rede, Transacao transacao, int* filtros);
 /**
+*
+* ASSERTIVA DE ENTRADA: Transacao e Pessoa devem estar na rede
 * @brief Função para aceitar transações
 * @param rede 
 * @param transacao
@@ -231,6 +246,8 @@ void AceitarTransacao(Rede rede, Transacao transacao, Pessoa p);
 void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa);
 
 /**
+*
+* ASSERTIVA: Caso eles ja tenham feito negocio, nao adicionar
 * @brief Função para concluir transação
 * @param rede 
 * @param transacao

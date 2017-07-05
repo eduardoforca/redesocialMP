@@ -61,7 +61,7 @@ int remove_no(List* a_list, int index);
 * @param List a_list - list where the node will be removed from
 * @param void* value - generic pointer to the value carried by the node
 * @retval 0 - index not on list
-* @retval	1 -	node removed succesfully
+* @retval 1 -	node removed succesfully
 **/
 int remove_no_byvalue(List* a_list, void* value);
 

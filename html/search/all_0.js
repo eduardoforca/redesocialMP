@@ -3,6 +3,7 @@ var searchData=
   ['aceitaroferta',['AceitarOferta',['../redeSocial_8h.html#abb42700af05efb9035625cf8fe2516d3',1,'redeSocial.c']]],
   ['aceitartransacao',['AceitarTransacao',['../redeSocial_8h.html#a38cc5b49dade9f3f2210fa0364ba0edd',1,'redeSocial.c']]],
   ['acostumado',['Acostumado',['../redeSocial_8h.html#a283b135effb8a01a8af59e9089fd6004',1,'redeSocial.c']]],
+  ['adiciona_5fno',['adiciona_no',['../lista_8h.html#aedda66636f5801bdf0ed249dfe640b2d',1,'lista.c']]],
   ['adicionaramizade',['AdicionarAmizade',['../redeSocial_8h.html#a5cdf3368df3b8eff74e94ed8804ffca0',1,'redeSocial.c']]],
   ['adicionarpessoa',['AdicionarPessoa',['../redeSocial_8h.html#ae8a366a5f5cf83443eaa0e933ddcb0fb',1,'redeSocial.c']]],
   ['adicionarproduto',['AdicionarProduto',['../redeSocial_8h.html#a3b59b1225e5d5f535d759eb921e6a79f',1,'redeSocial.c']]],

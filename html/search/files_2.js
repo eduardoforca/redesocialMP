@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main_2eh',['main.h',['../main_8h.html',1,'']]]
+  ['redesocial_2eh',['redeSocial.h',['../redeSocial_8h.html',1,'']]]
 ];

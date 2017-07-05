@@ -13,6 +13,7 @@ var menudata={children:[
 {text:"d",url:"globals.html#index_d"},
 {text:"e",url:"globals.html#index_e"},
 {text:"f",url:"globals.html#index_f"},
+{text:"l",url:"globals.html#index_l"},
 {text:"n",url:"globals.html#index_n"},
 {text:"p",url:"globals.html#index_p"},
 {text:"r",url:"globals.html#index_r"},
@@ -30,4 +31,5 @@ var menudata={children:[
 {text:"r",url:"globals_func.html#index_r"},
 {text:"s",url:"globals_func.html#index_s"},
 {text:"t",url:"globals_func.html#index_t"},
-{text:"w",url:"globals_func.html#index_w"}]}]}]}]}
+{text:"w",url:"globals_func.html#index_w"}]},
+{text:"Definições de Tipos",url:"globals_type.html"}]}]}]}

@@ -8,6 +8,7 @@ var searchData=
   ['rede',['rede',['../structrede.html',1,'']]],
   ['redefile',['RedeFile',['../redeSocial_8h.html#a0585055e607e7ab43261aa3388a08051',1,'redeSocial.c']]],
   ['redesocial_2eh',['redeSocial.h',['../redeSocial_8h.html',1,'']]],
+  ['remove_5fno',['remove_no',['../lista_8h.html#ac81b7b9877ab1eb604d4d46d150ade2a',1,'lista.c']]],
   ['removeramizade',['RemoverAmizade',['../redeSocial_8h.html#aa0f6edd64f865e73fe829c22bf7ecac0',1,'redeSocial.c']]],
   ['resolvepessoas',['ResolvePessoas',['../redeSocial_8h.html#ad0074a026f78dc5e7c2aec2ac95888b5',1,'redeSocial.c']]]
 ];

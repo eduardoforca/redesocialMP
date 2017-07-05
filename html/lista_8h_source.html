@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.14"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Rede Social: Código-Fonte de include/lista.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Rede Social
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.8.14 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Busca');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">lista.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="lista_8h.html">Vá para a documentação desse arquivo.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#ifndef _LISTA_H_</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define _LISTA_H_</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div><div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">   17</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structlistNode.html">listNode</a>* <a class="code" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a>;</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div><div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structlistNode.html">   24</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structlistNode.html">listNode</a> {</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    List next;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span>* value;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;} *<a class="code" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a>;</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;List <a class="code" href="lista_8h.html#a8064a2b3c98fd4eac3cd25c85ba82eeb">cria_lista</a>();</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;List <a class="code" href="lista_8h.html#aedda66636f5801bdf0ed249dfe640b2d">adiciona_no</a>(List* a_list, <span class="keywordtype">void</span>* value);</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lista_8h.html#afdb1c758c3447c754d7d7e88974aa4c9">tamanho_list</a>(List a_list);</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lista_8h.html#ac81b7b9877ab1eb604d4d46d150ade2a">remove_no</a>(List* a_list, <span class="keywordtype">int</span> index);</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keywordtype">int</span> <a class="code" href="lista_8h.html#a13d349935f3aad5dee580047ee240e27">remove_no_byvalue</a>(List* a_list, <span class="keywordtype">void</span>* value);</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keywordtype">void</span> <a class="code" href="lista_8h.html#a31caf867b2eb22cb4972bcfe75ee535b">destroi_lista</a>(List a_list);</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div><div class="ttc" id="lista_8h_html_aedda66636f5801bdf0ed249dfe640b2d"><div class="ttname"><a href="lista_8h.html#aedda66636f5801bdf0ed249dfe640b2d">adiciona_no</a></div><div class="ttdeci">List adiciona_no(List *a_list, void *value)</div><div class="ttdoc">Appends a node to the beginning of a list, doesn&amp;#39;t modify the list. </div><div class="ttdef"><b>Definition:</b> lista.c:18</div></div>
+<div class="ttc" id="structlistNode_html"><div class="ttname"><a href="structlistNode.html">listNode</a></div><div class="ttdef"><b>Definition:</b> lista.h:24</div></div>
+<div class="ttc" id="lista_8h_html_ac81b7b9877ab1eb604d4d46d150ade2a"><div class="ttname"><a href="lista_8h.html#ac81b7b9877ab1eb604d4d46d150ade2a">remove_no</a></div><div class="ttdeci">int remove_no(List *a_list, int index)</div><div class="ttdoc">Removes a node of a list. </div><div class="ttdef"><b>Definition:</b> lista.c:37</div></div>
+<div class="ttc" id="lista_8h_html_a13d349935f3aad5dee580047ee240e27"><div class="ttname"><a href="lista_8h.html#a13d349935f3aad5dee580047ee240e27">remove_no_byvalue</a></div><div class="ttdeci">int remove_no_byvalue(List *a_list, void *value)</div><div class="ttdoc">Removes a node of a list by value. </div><div class="ttdef"><b>Definition:</b> lista.c:66</div></div>
+<div class="ttc" id="lista_8h_html_a8064a2b3c98fd4eac3cd25c85ba82eeb"><div class="ttname"><a href="lista_8h.html#a8064a2b3c98fd4eac3cd25c85ba82eeb">cria_lista</a></div><div class="ttdeci">List cria_lista()</div><div class="ttdoc">Creates an empty list. </div><div class="ttdef"><b>Definition:</b> lista.c:14</div></div>
+<div class="ttc" id="lista_8h_html_a31caf867b2eb22cb4972bcfe75ee535b"><div class="ttname"><a href="lista_8h.html#a31caf867b2eb22cb4972bcfe75ee535b">destroi_lista</a></div><div class="ttdeci">void destroi_lista(List a_list)</div><div class="ttdoc">Destroys a list from the memory, deallocates all nodes. </div><div class="ttdef"><b>Definition:</b> lista.c:86</div></div>
+<div class="ttc" id="lista_8h_html_afdb1c758c3447c754d7d7e88974aa4c9"><div class="ttname"><a href="lista_8h.html#afdb1c758c3447c754d7d7e88974aa4c9">tamanho_list</a></div><div class="ttdeci">int tamanho_list(List a_list)</div><div class="ttdoc">Finds the size of the list. </div><div class="ttdef"><b>Definition:</b> lista.c:27</div></div>
+<div class="ttc" id="lista_8h_html_a698ff83165b8296011a50bb9aba83964"><div class="ttname"><a href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a></div><div class="ttdeci">struct listNode * List</div><div class="ttdef"><b>Definition:</b> lista.h:17</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.14
+</small></address>
+</body>
+</html>

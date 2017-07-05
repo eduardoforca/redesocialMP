@@ -1,0 +1,81 @@
+\hypertarget{main_8h}{}\section{Referência do Arquivo include/main.h}
+\label{main_8h}\index{include/main.\+h@{include/main.\+h}}
+
+
+M\+A\+I\+N.\+C header file.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rede\+Social.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$ncurses.\+h$>$}\newline
+\subsection*{Enumerações}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8h_a8aaeba5aed18516d10d61fe3139c9d32}\label{main_8h_a8aaeba5aed18516d10d61fe3139c9d32}} 
+enum {\bfseries Types} \{ {\bfseries P\+R\+O\+D\+U\+T\+OS}, 
+{\bfseries T\+R\+A\+N\+S\+A\+C\+AO}, 
+{\bfseries P\+E\+S\+S\+OA}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Funções}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8h_a6d7ca4f13661fee5fb4f051b0dd1e78d}\label{main_8h_a6d7ca4f13661fee5fb4f051b0dd1e78d}} 
+int {\bfseries amizade\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a841c079191389862c5d13fbae896b083}\label{main_8h_a841c079191389862c5d13fbae896b083}} 
+int {\bfseries list\+Window} (int type, \hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} lista)
+\item 
+\mbox{\Hypertarget{main_8h_a2f5557633c0832611cd4eb9c9550091e}\label{main_8h_a2f5557633c0832611cd4eb9c9550091e}} 
+int {\bfseries user\+Main\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a167454d31d573a1d15e8d7267015d4e2}\label{main_8h_a167454d31d573a1d15e8d7267015d4e2}} 
+int {\bfseries signup\+Window} ()
+\item 
+\mbox{\Hypertarget{main_8h_aece7dc8db9529f06541cd08eb376fbc7}\label{main_8h_aece7dc8db9529f06541cd08eb376fbc7}} 
+int {\bfseries login\+Window} ()
+\item 
+\mbox{\Hypertarget{main_8h_a94c3e806ac77f4588320bb7f7b76091e}\label{main_8h_a94c3e806ac77f4588320bb7f7b76091e}} 
+int {\bfseries filtro\+User\+Window} (\hyperlink{structtransacao}{Transacao} t)
+\item 
+\mbox{\Hypertarget{main_8h_a7470f1e635ec258393b2743bc3da2335}\label{main_8h_a7470f1e635ec258393b2743bc3da2335}} 
+int {\bfseries add\+Remove\+Window} ()
+\item 
+\mbox{\Hypertarget{main_8h_a32341996ce8b1665b78b36e406a18961}\label{main_8h_a32341996ce8b1665b78b36e406a18961}} 
+int {\bfseries admin\+Window} ()
+\item 
+\mbox{\Hypertarget{main_8h_ad4d33ea7f782f2a50ee5875cce343173}\label{main_8h_ad4d33ea7f782f2a50ee5875cce343173}} 
+int {\bfseries edit\+Pessoa} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_aa5efc7d9a29de5e3251d06b70c01f9fa}\label{main_8h_aa5efc7d9a29de5e3251d06b70c01f9fa}} 
+int {\bfseries add\+Transaction} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a352cb00583d45c9644b1b35126bad2cd}\label{main_8h_a352cb00583d45c9644b1b35126bad2cd}} 
+int {\bfseries accept\+Transaction} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_af8dee4ac3fb8d408056a3830290bc16a}\label{main_8h_af8dee4ac3fb8d408056a3830290bc16a}} 
+int {\bfseries pendentes\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a93b17ecee0e6d89741f1574c3294a8fb}\label{main_8h_a93b17ecee0e6d89741f1574c3294a8fb}} 
+int {\bfseries offers\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a31a66d2a01f6dc278e6bb6b04766f530}\label{main_8h_a31a66d2a01f6dc278e6bb6b04766f530}} 
+int {\bfseries delete\+User\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\item 
+\mbox{\Hypertarget{main_8h_a31b40ee24394a5841397bb8c2e12ee73}\label{main_8h_a31b40ee24394a5841397bb8c2e12ee73}} 
+int {\bfseries delete\+Amizade\+Window} (\hyperlink{structpessoa}{Pessoa} p)
+\end{DoxyCompactItemize}
+
+
+\subsection{Descrição detalhada}
+M\+A\+I\+N.\+C header file. 
+
+Utiliza biblioteca N\+C\+U\+R\+S\+ES para a View da Rede Social
+
+\begin{DoxyAuthor}{Autor}
+Eduardo Sousa (eduardoforca) Ana Pergentino(\+Ana\+Pergentino) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Data}
+4 Jul 2017 
+\end{DoxyDate}

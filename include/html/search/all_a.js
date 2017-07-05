@@ -9,6 +9,7 @@ var searchData=
   ['redesocial_2eh',['redeSocial.h',['../rede_social_8h.html',1,'']]],
   ['remove_5faresta',['remove_aresta',['../grafo_8h.html#afe5d605e2a79ed2ed12b9eb3a1750e8e',1,'grafo.h']]],
   ['remove_5fno',['remove_no',['../lista_8h.html#ac81b7b9877ab1eb604d4d46d150ade2a',1,'lista.h']]],
+  ['remove_5fno_5fbyvalue',['remove_no_byvalue',['../lista_8h.html#a13d349935f3aad5dee580047ee240e27',1,'lista.h']]],
   ['remove_5fvertice',['remove_vertice',['../grafo_8h.html#a8b455da406f2084612ca78353f83947d',1,'grafo.h']]],
   ['removeramizade',['RemoverAmizade',['../rede_social_8h.html#aa0f6edd64f865e73fe829c22bf7ecac0',1,'redeSocial.h']]],
   ['resolvepessoas',['ResolvePessoas',['../rede_social_8h.html#ad0074a026f78dc5e7c2aec2ac95888b5',1,'redeSocial.h']]],

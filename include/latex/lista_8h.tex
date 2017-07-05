@@ -24,14 +24,12 @@ typedef struct \hyperlink{structlist_node}{list\+Node} $\ast$ \hyperlink{lista_8
 \begin{DoxyCompactList}\small\item\em Creates an empty list. \end{DoxyCompactList}\item 
 \hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} \hyperlink{lista_8h_aedda66636f5801bdf0ed249dfe640b2d}{adiciona\+\_\+no} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} $\ast$a\+\_\+list, void $\ast$value)
 \begin{DoxyCompactList}\small\item\em Appends a node to the beginning of a list, doesn\textquotesingle{}t modify the list. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{lista_8h_afdb1c758c3447c754d7d7e88974aa4c9}\label{lista_8h_afdb1c758c3447c754d7d7e88974aa4c9}} 
-int {\bfseries tamanho\+\_\+list} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} a\+\_\+list)
-\item 
+int \hyperlink{lista_8h_afdb1c758c3447c754d7d7e88974aa4c9}{tamanho\+\_\+list} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} a\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Finds the size of the list. \end{DoxyCompactList}\item 
 int \hyperlink{lista_8h_ac81b7b9877ab1eb604d4d46d150ade2a}{remove\+\_\+no} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} $\ast$a\+\_\+list, int index)
 \begin{DoxyCompactList}\small\item\em Removes a node of a list. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{lista_8h_a13d349935f3aad5dee580047ee240e27}\label{lista_8h_a13d349935f3aad5dee580047ee240e27}} 
-int {\bfseries remove\+\_\+no\+\_\+byvalue} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} $\ast$a\+\_\+list, void $\ast$value)
-\item 
+int \hyperlink{lista_8h_a13d349935f3aad5dee580047ee240e27}{remove\+\_\+no\+\_\+byvalue} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} $\ast$a\+\_\+list, void $\ast$value)
+\begin{DoxyCompactList}\small\item\em Removes a node of a list by value. \end{DoxyCompactList}\item 
 void \hyperlink{lista_8h_a31caf867b2eb22cb4972bcfe75ee535b}{destroi\+\_\+lista} (\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} a\+\_\+list)
 \begin{DoxyCompactList}\small\item\em Destroys a list from the memory, deallocates all nodes. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -129,5 +127,49 @@ Removes a node of a list.
 {\em 0} & -\/ index not on list \\
 \hline
 {\em 1} & -\/ node removed succesfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{lista_8h_a13d349935f3aad5dee580047ee240e27}\label{lista_8h_a13d349935f3aad5dee580047ee240e27}} 
+\index{lista.\+h@{lista.\+h}!remove\+\_\+no\+\_\+byvalue@{remove\+\_\+no\+\_\+byvalue}}
+\index{remove\+\_\+no\+\_\+byvalue@{remove\+\_\+no\+\_\+byvalue}!lista.\+h@{lista.\+h}}
+\subsubsection{\texorpdfstring{remove\+\_\+no\+\_\+byvalue()}{remove\_no\_byvalue()}}
+{\footnotesize\ttfamily int remove\+\_\+no\+\_\+byvalue (\begin{DoxyParamCaption}\item[{\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List} $\ast$}]{a\+\_\+list,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Removes a node of a list by value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em List} & a\+\_\+list -\/ list where the node will be removed from \\
+\hline
+{\em void$\ast$} & value -\/ generic pointer to the value carried by the node \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ index not on list \\
+\hline
+{\em 1} & -\/ node removed succesfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{lista_8h_afdb1c758c3447c754d7d7e88974aa4c9}\label{lista_8h_afdb1c758c3447c754d7d7e88974aa4c9}} 
+\index{lista.\+h@{lista.\+h}!tamanho\+\_\+list@{tamanho\+\_\+list}}
+\index{tamanho\+\_\+list@{tamanho\+\_\+list}!lista.\+h@{lista.\+h}}
+\subsubsection{\texorpdfstring{tamanho\+\_\+list()}{tamanho\_list()}}
+{\footnotesize\ttfamily int tamanho\+\_\+list (\begin{DoxyParamCaption}\item[{\hyperlink{lista_8h_a698ff83165b8296011a50bb9aba83964}{List}}]{a\+\_\+list }\end{DoxyParamCaption})}
+
+
+
+Finds the size of the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em List} & a\+\_\+list -\/ list where the node will be appended \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em tamanho\+\_\+list} & -\/ size of list \\
 \hline
 \end{DoxyRetVals}

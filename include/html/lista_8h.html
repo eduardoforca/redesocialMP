@@ -96,14 +96,14 @@ Functions</h2></td></tr>
 <tr class="memitem:aedda66636f5801bdf0ed249dfe640b2d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lista_8h.html#aedda66636f5801bdf0ed249dfe640b2d">adiciona_no</a> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> *a_list, void *value)</td></tr>
 <tr class="memdesc:aedda66636f5801bdf0ed249dfe640b2d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a node to the beginning of a list, doesn't modify the list.  <a href="#aedda66636f5801bdf0ed249dfe640b2d">More...</a><br /></td></tr>
 <tr class="separator:aedda66636f5801bdf0ed249dfe640b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdb1c758c3447c754d7d7e88974aa4c9"><td class="memItemLeft" align="right" valign="top"><a id="afdb1c758c3447c754d7d7e88974aa4c9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>tamanho_list</b> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> a_list)</td></tr>
+<tr class="memitem:afdb1c758c3447c754d7d7e88974aa4c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lista_8h.html#afdb1c758c3447c754d7d7e88974aa4c9">tamanho_list</a> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> a_list)</td></tr>
+<tr class="memdesc:afdb1c758c3447c754d7d7e88974aa4c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the size of the list.  <a href="#afdb1c758c3447c754d7d7e88974aa4c9">More...</a><br /></td></tr>
 <tr class="separator:afdb1c758c3447c754d7d7e88974aa4c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac81b7b9877ab1eb604d4d46d150ade2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lista_8h.html#ac81b7b9877ab1eb604d4d46d150ade2a">remove_no</a> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> *a_list, int index)</td></tr>
 <tr class="memdesc:ac81b7b9877ab1eb604d4d46d150ade2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a node of a list.  <a href="#ac81b7b9877ab1eb604d4d46d150ade2a">More...</a><br /></td></tr>
 <tr class="separator:ac81b7b9877ab1eb604d4d46d150ade2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13d349935f3aad5dee580047ee240e27"><td class="memItemLeft" align="right" valign="top"><a id="a13d349935f3aad5dee580047ee240e27"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>remove_no_byvalue</b> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> *a_list, void *value)</td></tr>
+<tr class="memitem:a13d349935f3aad5dee580047ee240e27"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lista_8h.html#a13d349935f3aad5dee580047ee240e27">remove_no_byvalue</a> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> *a_list, void *value)</td></tr>
+<tr class="memdesc:a13d349935f3aad5dee580047ee240e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes a node of a list by value.  <a href="#a13d349935f3aad5dee580047ee240e27">More...</a><br /></td></tr>
 <tr class="separator:a13d349935f3aad5dee580047ee240e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31caf867b2eb22cb4972bcfe75ee535b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lista_8h.html#a31caf867b2eb22cb4972bcfe75ee535b">destroi_lista</a> (<a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> a_list)</td></tr>
 <tr class="memdesc:a31caf867b2eb22cb4972bcfe75ee535b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys a list from the memory, deallocates all nodes.  <a href="#a31caf867b2eb22cb4972bcfe75ee535b">More...</a><br /></td></tr>
@@ -253,6 +253,82 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>remove_no_byvalue</b> 
   <table class="retval">
     <tr><td class="paramname">0</td><td>- index not on list </td></tr>
     <tr><td class="paramname">1</td><td>- node removed succesfully </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a13d349935f3aad5dee580047ee240e27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13d349935f3aad5dee580047ee240e27">&#9670;&nbsp;</a></span>remove_no_byvalue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int remove_no_byvalue </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a> *&#160;</td>
+          <td class="paramname"><em>a_list</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes a node of a list by value. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">List</td><td>a_list - list where the node will be removed from </td></tr>
+    <tr><td class="paramname">void*</td><td>value - generic pointer to the value carried by the node </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>- index not on list </td></tr>
+    <tr><td class="paramname">1</td><td>- node removed succesfully </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afdb1c758c3447c754d7d7e88974aa4c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdb1c758c3447c754d7d7e88974aa4c9">&#9670;&nbsp;</a></span>tamanho_list()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int tamanho_list </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lista_8h.html#a698ff83165b8296011a50bb9aba83964">List</a>&#160;</td>
+          <td class="paramname"><em>a_list</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds the size of the list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">List</td><td>a_list - list where the node will be appended </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">tamanho_list</td><td>- size of list </td></tr>
   </table>
   </dd>
 </dl>

@@ -26,14 +26,11 @@ typedef struct listNode {
 	void* value;
 } *List;
 
-
-
 /**
 * @brief Creates an empty list
 * @return a pointer to the empty list created by the function 
 **/
 List cria_lista();
-
 
 /**
 * @brief Appends a node to the beginning of a list, doesn't modify the list
@@ -43,6 +40,11 @@ List cria_lista();
 **/
 List adiciona_no(List* a_list, void* value);
 
+/**
+* @brief Finds the size of the list
+* @param List a_list - list where the node will be appended
+* @retval tamanho_list - size of list
+**/
 int tamanho_list(List a_list);
 
 /**
@@ -54,6 +56,13 @@ int tamanho_list(List a_list);
 **/
 int remove_no(List* a_list, int index);
 
+/**
+* @brief Removes a node of a list by value
+* @param List a_list - list where the node will be removed from
+* @param void* value - generic pointer to the value carried by the node
+* @retval 0 - index not on list
+* @retval	1 -	node removed succesfully
+**/
 int remove_no_byvalue(List* a_list, void* value);
 
 /**

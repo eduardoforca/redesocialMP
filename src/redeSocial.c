@@ -50,8 +50,6 @@ Rede CriarRede(){
 	return r;
 }
 int AdicionarPessoa(Rede rede, Pessoa pessoa){
-
-	//ASSERTIVA DE ENTRADA: Nao pode haver outra pessoas com esse ID na rede
 	if(adiciona_vertice(rede->pessoas, pessoa->id)){
 		muda_valor_vertice(rede->pessoas, pessoa->id, pessoa);
 		return TRUE;
@@ -60,7 +58,6 @@ int AdicionarPessoa(Rede rede, Pessoa pessoa){
 
 }
 int AdicionarProduto(Rede rede, Produto produto){
-	//ASSERTIVA DE ENTRADA: Nao pode haver outro Produto com esse ID na rede
 	if(ProdutoByID(rede, produto->id) == NULL){
 		rede->produtos = adiciona_no(&(rede->produtos), produto);
 		return TRUE;
@@ -69,7 +66,6 @@ int AdicionarProduto(Rede rede, Produto produto){
 
 }
 int AdicionarTransacao(Rede rede, Transacao transacao){
-	//ASSERTIVA DE ENTRADA: Nao pode haver outra Transacao com esse ID na rede, o Produto e o Cliente devem existir na rede
 	if((TransacaoByID(rede, transacao->id) == NULL) &&
 		(ProdutoByID(rede, transacao->produto->id) != NULL)&&
 		(PessoaByID(rede, transacao->cliente->id) != NULL))
@@ -82,7 +78,6 @@ int AdicionarTransacao(Rede rede, Transacao transacao){
 
 }
 int ExcluirPessoa(Rede rede, Pessoa pessoa){
-	//ASSERTIVA DE ENTRADA: Pessoa deve existir na rede
 	if (PessoaByID(rede, pessoa->id) != NULL){
 		for (List m = pessoa->amigos; m != NULL;m = m->next) { 
 			Pessoa amigo = PessoaByID(rede, ((Pessoa)(m->value))->id);
@@ -103,7 +98,6 @@ int ExcluirPessoa(Rede rede, Pessoa pessoa){
 
 }
 int ExcluirProduto(Rede rede, Produto produto){
-	//ASSERTIVA DE ENTRADA: Produto deve existir na rede
 	if(remove_no_byvalue(&(rede->produtos), produto)){
 		free(produto);
 		return TRUE;
@@ -111,7 +105,6 @@ int ExcluirProduto(Rede rede, Produto produto){
 	return FALSE;
 }
 int ExcluirTransacao(Rede rede,Transacao transacao){
-	//ASSERTIVA DE ENTRADA: Transacao deve existir na rede
 	if(remove_no_byvalue(&(rede->transacoes), transacao)){
 		destroi_lista(transacao->ofertas);
 		free(transacao);
@@ -135,7 +128,6 @@ int AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
 	int flag;
 	flag = adiciona_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
 	flag &= adiciona_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
-	//ASSERTIVA DE ENTRADA: Amizade atual nao pode existir e Pessoas devem estar na rede
 	if(flag){
 		muda_valor_aresta(rede->pessoas, pessoa1->id, pessoa2->id, &grau);
 		muda_valor_aresta(rede->pessoas, pessoa2->id, pessoa1->id, &grau);
@@ -242,7 +234,6 @@ void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
 
 }
 void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){
-	//ASSERTIVA DE ENTRADA: Transacao e Pessoa devem estar na rede
 	if(PessoaByID(rede, pessoa->id)!=NULL && TransacaoByID(rede, transacao->id)!=NULL){
 		adiciona_no(&(transacao->ofertas), pessoa);
 		remove_no_byvalue(&(pessoa->notificacoes), transacao);
@@ -258,8 +249,7 @@ void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
 void ConcluirTransacao(Rede rede, Transacao transacao){
 	int grau = NEGOCIOS;
 	transacao->status = PENDENTE;
-
-	//ASSERTIVA: Caso eles ja tenham feito negocio, nao adicionar
+	
 	if(adiciona_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id)){
 		muda_valor_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id, &grau);	
 		adiciona_no(&(transacao->cliente->conhecidos), transacao->provedor);

@@ -63,6 +63,7 @@ int main(){
 	DeletaRede(rede);
 	return 0;	
 }
+
 int filtroUserWindow(Transacao t){
 	WINDOW *win = newwin(width, length, 0, 0);
 	erase();
@@ -92,6 +93,7 @@ int filtroUserWindow(Transacao t){
 	endwin();
 	return 1;
 }
+
 int editPessoa(Pessoa p){
 	WINDOW *win = newwin(width, length, 0, 0);
 	erase();
@@ -104,8 +106,8 @@ int editPessoa(Pessoa p){
 	erase();
 	endwin();
 	return 1;
-
 }
+
 int pendentesWindow(Pessoa p){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;
@@ -159,8 +161,8 @@ int pendentesWindow(Pessoa p){
 	}while(!back);
 	endwin();
 	return back;
-
 }
+
 int addTransaction(Pessoa p){
 	WINDOW *win = newwin(width, length, 0, 0);
 	int opcao, back =0;

@@ -84,6 +84,10 @@ int AdicionarTransacao(Rede rede, Transacao transacao){
 int ExcluirPessoa(Rede rede, Pessoa pessoa){
 	//ASSERTIVA DE ENTRADA: Pessoa deve existir na rede
 	if (remove_vertice(rede->pessoas, pessoa->id)){
+
+		for (List m = pessoa->amigos; m != NULL; m = m->next) { 
+			RemoverAmizade(rede, pessoa,PessoaByID(rede, ((Pessoa)(m->value))->id));
+		}
 		destroi_lista(pessoa->amigos);
 		destroi_lista(pessoa->conhecidos);
 		destroi_lista(pessoa->comentarios);

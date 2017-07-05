@@ -27,6 +27,7 @@ int addTransaction(Pessoa p);
 int acceptTransaction(Pessoa p);
 int pendentesWindow(Pessoa p);
 int offersWindow(Pessoa p);
+int deleteUserWindow(Pessoa p);
 
 enum Types{
 	PRODUTOS, TRANSACAO, PESSOA

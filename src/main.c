@@ -100,7 +100,7 @@ int editPessoa(Pessoa p){
 	printw("----- EDITAR CADASTRO -----\n");
 	char nome[50];
 	printw("Novo nome de Usuario:");
-	scanw("%s", &nome);
+	scanw("%s", nome);
 	strcpy(p->nome, nome);
 	erase();
 	endwin();
@@ -252,7 +252,8 @@ amizades, transações*/
 		printw("4 - Aceitar Transacao\n");
 		printw("5 - Avaliar Transacoes Pendentes\n");
 		printw("6 - Ver Ofertas Recebidas\n");
-		printw("7 - Deslogar\n");
+		printw("7 - Excluir Conta\n");
+		printw("8 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
@@ -274,8 +275,10 @@ amizades, transações*/
 				offersWindow(p);
 				break;
 			case 7:
+				back = deleteUserWindow(p);
+			default:
 				back = 1;
-			default:break;
+				break;
 		}
 	}while(!back);
 	endwin();
@@ -370,7 +373,7 @@ int signupWindow(){
 		char nome[50];
 		int id;
 		printw("Nome do Usuario:");
-		scanw("%s", &nome);
+		scanw("%s", nome);
 		printw("ID do Usuario:");
 		scanw("%d", &id);
 		Pessoa p = PessoaByID(rede, id);
@@ -624,4 +627,19 @@ int offersWindow(Pessoa p){
 	endwin();
 	return back;
 
+}
+int deleteUserWindow(Pessoa p){
+	WINDOW *win = newwin(width, length, 0, 0);
+	erase();
+	wrefresh(win);
+	printw("----- DELETAR CONTA -----\n");
+	int opcao;
+	printw("Deseja Deletar sua Conta?\n (0 - NAO, 1 - SIM)\n");
+	scanw("%d", &opcao);
+	if(opcao){
+		ExcluirPessoa(rede, p);
+	}
+	erase();
+	endwin();
+	return opcao;
 }

@@ -7,4 +7,5 @@ Data 		|	 Horas Trabalhadas	 |	 Tipo Tarefa 		|	 Descrição da Tarefa Realizada
 03/07/2017			1				revisar casos de teste		revisão de testes
 03/07/2017			2				codificar módulo			modularizar as funções
 04/07/2017			1				instrumentar via gcov		implementação do gcov e análise resultados
+04/07/2017			8				implementacao				rework da GUI, checagem de testes
 

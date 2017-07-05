@@ -7,9 +7,6 @@
 #define width 3
 #define length 10
 //TODO
-//Excluir Amizade
-//Printar Grafo
-//Criar printer de cada tipo(Pessoa, Produto, Transacao)
 Rede rede;
 
 int main(){
@@ -19,7 +16,7 @@ int main(){
 	if(rede == NULL){
 		rede = CriarRede();
 	 }
-
+	keypad(stdscr, TRUE);
 	initscr();
 
 	WINDOW *main_win;
@@ -120,7 +117,7 @@ int pendentesWindow(Pessoa p){
 		erase();
 		switch(opcao){
 			case 1:{
-				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PENDENTE));
+				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PENDENTE), 0);
 				getch();
 			}
 			break;
@@ -175,7 +172,7 @@ int addTransaction(Pessoa p){
 		erase();
 		switch(opcao){
 			case 1:{
-				listWindow(PRODUTOS, rede->produtos);
+				listWindow(PRODUTOS, rede->produtos, 2);
 				getch();
 			}
 			break;
@@ -235,14 +232,15 @@ amizades, transações*/
 	do{
 		erase();
 		printw("--------HOME----------\n");
-		printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+		printPessoaSimples(p);
 		if (p->amigos != NULL){
 			printw("Amizades:\n");
-			listWindow(PESSOA, p->amigos);
+			listWindow(PESSOA, p->amigos, 1);
 		}	
 		win = newwin(width, length, 10, 10);
 		if (p->transacoes != NULL){
-			printw("Transacoes:\t%s\n", p->transacoes);
+			printw("Transacoes:\t%s\n");
+			listWindow(TRANSACAO, p->transacoes, 1);
 		}
 		printw("***Você tem (%d) notificacoes, aceite transacoes****\n", tamanho_list(p->notificacoes));
 		printw("1 - Adicionar Amizade\n");
@@ -253,7 +251,8 @@ amizades, transações*/
 		printw("6 - Ver Ofertas Recebidas\n");
 		printw("7 - Excluir Conta\n");
 		printw("8 - Excluir Amizade\n");
-		printw("9 - Deslogar\n");
+		printw("9 - Ver Detalhes\n");
+		printw("0 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
@@ -279,6 +278,9 @@ amizades, transações*/
 				break;
 			case 8:
 				deleteAmizadeWindow(p);
+				break;
+			case 9:
+				detailWindow(p);
 				break;
 			default:
 				back = 1;
@@ -354,7 +356,7 @@ int deleteAmizadeWindow(Pessoa p){
 	return 0;
 
 }	
-int listWindow(int type, List lista){
+int listWindow(int type, List lista, int mode){
 
 	if (lista == NULL)
 		return 1;
@@ -365,17 +367,26 @@ int listWindow(int type, List lista){
 		switch(type){
 			case PESSOA:{
 				Pessoa p = (Pessoa)n->value;
-				printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+				if(mode == 1)
+					printPessoaSimples(p);
+				else
+					printPessoa(p);
 				break;
 			}
 			case PRODUTOS:{
 				Produto p = (Produto)n->value;
-				printw("ID:%d\tNome:\t%s\n", p->id, p->nome);
+				if(mode == 1)
+					printProdutoSimples(p);
+				else
+					printProduto(p);
 				break;
 			}
 			case TRANSACAO:{
 				Transacao p = (Transacao)n->value;
-				printw("ID:%d\tProduto:\t%s\n", p->id, p->produto->nome);
+				if(mode == 1)
+					printTransacaoSimples(p);
+				else
+					printTransacao(p);
 				break;
 			}
 			default:break;
@@ -532,14 +543,14 @@ int adminWindow(){
 		erase();
 		switch(opcao){
 			case 2:
-				listWindow(PRODUTOS, rede->produtos);
+				listWindow(PRODUTOS, rede->produtos, 2);
 				getch();
 			break;
 			case 3:
 				addRemoveWindow();
 			break;
 			case 4:
-				listWindow(TRANSACAO, rede->transacoes);
+				listWindow(TRANSACAO, rede->transacoes, 2);
 				getch();
 			break;
 			case 5:
@@ -557,7 +568,7 @@ int acceptTransaction(Pessoa p){
 	do{
 		erase();
 		printw("----- NOTIFICACOES -----\n");
-		listWindow(TRANSACAO, p->notificacoes);
+		listWindow(TRANSACAO, p->notificacoes, 1);
 		printw("Escolha uma opcao:\n");
 		printw("1 - Aceitar Transacao\n");
 		printw("2 - Voltar\n");
@@ -609,7 +620,7 @@ int offersWindow(Pessoa p){
 		erase();
 		switch(opcao){
 			case 1:{
-				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PEDIDA));
+				listWindow(TRANSACAO, FiltrarTransacao(p->transacoes, STATUS_PEDIDA), 1);
 				getch();
 			}
 			break;
@@ -622,7 +633,7 @@ int offersWindow(Pessoa p){
 				if(t != NULL){
 					if(t->status == PEDIDA &&t->cliente == p){
 						int idp;
-						listWindow(PESSOA, t->ofertas);
+						listWindow(PESSOA, t->ofertas, 2);
 						printw("Escolha uma oferta:\n");
 						scanw("%d", &idp);
 						if(PessoaByID(rede, idp) != NULL){
@@ -665,4 +676,132 @@ int deleteUserWindow(Pessoa p){
 	erase();
 	endwin();
 	return opcao;
+}
+void printPessoaSimples(Pessoa p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printw("-------------------------------------------------------/n");
+	printw("ID:%d\tNome:%s\nKarma Cliente:%d\tKarma Provedor:%d\t\n", p->id, p->nome, p->rating_cliente, p->rating_provedor);
+	printw("-------------------------------------------------------/n");
+	endwin();
+
+}
+void printPessoa(Pessoa p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printPessoaSimples(p);
+	for (List n = p->comentarios; n != NULL; n = n->next) {
+		printw("%s/n/n", (char*)n->value);
+	}
+	printw("-------------------------------------------------------/n");
+	getch();
+	endwin();
+
+}
+void printProdutoSimples(Produto p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printw("-------------------------------------------------------/n");
+	printw("ID:%d\tNome:%s\n", p->id, p->nome, p->descricao);
+	printw("-------------------------------------------------------/n");
+	endwin();
+}
+void printProduto(Produto p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printProdutoSimples(p);
+	printw("Descricao:%s\n", p->descricao);
+	printw("-------------------------------------------------------/n");
+	endwin();
+	getch();
+}
+void printTransacaoSimples(Transacao t){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printw("-------------------------------------------------------/n");
+	printw("ID da Transacao: \tProduto: \tID do Produto:\n", t->id,t->produto->nome,t->produto->id);
+	printw("-------------------------------------------------------/n");
+	endwin();
+
+}
+void printTransacao(Transacao t){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	printTransacaoSimples(t);
+	printw("ID do Cliente:%d\tNome:%s\nID do Provedor:%d\tNome:%s\n", t->cliente->id, t->cliente->nome, t->provedor->id, t->provedor->nome);
+	printw("Opiniao do Cliente: %s/n", t->comentario_cliente);
+	printw("-------------------------------------------------------/n");
+	printw("Opiniao do Provedor: %s/n", t->comentario_provedor);
+	printw("-------------------------------------------------------/n");
+	getch();
+	endwin();
+}
+int detailWindow(Pessoa p){
+	WINDOW *win = newwin(width, length, 0, 0);
+	int opcao, back =0;
+	do{
+		erase();
+		printw("----- Ver Detalhes -----\nEscolha uma opcao:\n");
+		printw("1 - Listar Minhas Transacoes\n");
+		printw("2 - Ver Pessoa\n");
+		printw("3 - Ver Produto\n");
+		printw("4 - Ver Transacao\n");
+		printw("5 - Voltar\n");
+		scanw("%d", &opcao);
+		wrefresh(win);
+		erase();
+		switch(opcao){
+			case 1:{
+				listWindow(TRANSACAO, p->transacoes, 2);
+				getch();
+			}
+			break;
+			case 2:{
+				int id;
+				printw("ID da Pessoa:\n");
+				scanw("%d", &id);
+				Pessoa pess = PessoaByID(rede, id);
+				if(pess != NULL){
+					printPessoa(pess);
+				}else{
+					printw("ID invalido\n");
+					getch();
+				}
+				break;
+			}
+			case 3:{
+				int id;
+				printw("ID do Produto:\n");
+				scanw("%d", &id);
+				Produto prod = ProdutoByID(rede, id);
+				if(prod != NULL){
+					printProduto(prod);
+				}else{
+					printw("ID invalido\n");
+					getch();
+				}
+				break;
+			}
+			case 4:{
+				int id;
+				printw("ID da Transacao:\n");
+				scanw("%d", &id);
+				Transacao t = TransacaoByID(rede, id);
+				if(t != NULL){
+					printTransacao(t);
+				}else{
+					printw("ID invalido\n");
+					getch();
+				}
+				break;
+			}
+			case 5:
+				back = 1;
+			break;
+			default: break;
+		}
+	}while(!back);
+	endwin();
+	return back;
+
 }

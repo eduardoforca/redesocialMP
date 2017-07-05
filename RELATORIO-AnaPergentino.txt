@@ -1,0 +1,7 @@
+Data 		|	 Horas Trabalhadas	 |	 Tipo Tarefa 		|	 Descrição da Tarefa Realizada 
+01/07/2017			3					estudar aulas				estudo de projetos e código
+02/07/2017			2					projetar					protótipo de baixa e levantamento de requisitos
+02/07/2017			4					fazer diagramas			diagrama de classe e caso de uso
+03/07/2017			1					implementação			codificação de funções faltantes na main
+03/07/2017			3					documentar				documentação estilo doxygen
+03/07/2017			2					revisão					revisão de código

@@ -1,0 +1,75 @@
+Eduardo Sousa da Silva - 13/0108405
+Ana Carolina Pergentino - 12/0006634
+
+Github do Projeto: https://github.com/eduardoforca/redesocialMP/
+Documentação Doxygen(contém documentação dos testes): https://eduardoforca.github.io/redesocialMP/html/index.html
+
+-------- README	--------
+Para a execução do programa deve-se primeiro compilá-lo utilizando o arquivo makefile. Para isso é necessário que o compilador g++ assim como o make estejam instalados na máquina. O programa foi testado apenas em Linux, não é esperado que funcione com Windows, devido às bibliotecas.
+
+Para montar o programa deve-se utilizar o comando no terminal:
+
+COMPILA PARA TESTES:
+
+make test
+
+COMPILA PARA EXECUÇÃO GRÁFICA:
+
+make main
+
+Para isto deve-se estar na pasta src, onde o arquivo makefile está presente. Com isso a rotina de testes e romanos.c serão compilados. Para executá-la deve se colocar o seguinte comando no terminal:
+
+./test_redesocialMP
+ou
+./main
+
+De acordo com a sua opção de compilação.
+
+----------------------------------------------
+
+FUNCIONAMENTO BÁSICO DO PROGRAMA:
+
+ - Administradores criam Produtos(Ex:. Caronas, Computadores, Pizzas, Animação de Festas);
+ - Pessoas(clientes) requisitam Produtos por meio de Transações.(Ex:. João precisa de uma carona, Márcio quer comprar um computador);
+ - Pessoas(provedores) recebem NOTIFICAÇÕES de Transação. (Ex:. Felipe(amigo de João) é notificado que João quer uma carona).
+ - Pessoas(provedores) OFERTAM seus serviços a uma Transação. (Ex:. Felipe oferece carona a João);
+ - Pessoas(clientes) ACEITAM ofertas, deixando a Transação como PENDENTE (Ex:. João aceita carona de Felipe)
+ - Pessoas AVALIAM outras após Transação, tornando a Transação concluída.
+
+ - Pessoas podem Criar Conta, Logar, Editar Conta, Criar Transação, Ofertar serviços, Aceitar Ofertas, Avaliar Pessoas, Adicionar/Remover Amizades, Ver Produtos, Ver Pessoas, Ver suas Transações
+
+ - Administrador pode Criar Produto, Excluir Produto, Ver Transações de Todos
+
+
+
+-----------------------------------------------
+
+Os arquivos são:
+        
+|-------Doxyfile - Arquivo de configuração do Doxygen para geração de documentação
+|-------cppcheck.log - Arquivo gerado pelo cppcheck com os erros identificados nos arquivos fonte
+|-------LEIAME.txt - Instruções para compilação e execução
+|-------Diagrama de casos de uso.png
+|-------RELATORIO-EduardoSousa.txt
+|-------RELATORIO-AnaPergentino.txt
+|-------DiagramaClasse.png
+|-------html - Pasta contendo os arquivos html gerados pelo doxygen
+        |-------index.html - Arquivo da página inicial da documentação
+        |-------...
+|-------latex - Pasta contendo os arquivos para a geração do pdf em LaTeX gerados pelo doxygen
+        |-------refman.pdf - Documentação em formato PDF
+|-------include
+	|-------grafo.h - Arquivo header da biblioteca de grafos
+	|-------lista.h - Arquivo header da biblioteca de listas
+	|-------main.h - Arquivo header da View do programa
+	|-------redeSocial.h - Arquivo header da rede social
+|-------src
+	|-------grafo.c - Arquivo implementacao da biblioteca de grafos
+	|-------lista.c - Arquivo implementacao da biblioteca de listas
+	|-------main.c - Arquivo implementacao da View do programa
+	|-------redeSocial.c - Arquivo implementacao da rede social
+	|-------test_redesocial.cpp - Arquivo de implementação da rotina de testes
+	|-------makefile - Arquivo de make para a compilação do programa
+    |-------redeSocial.c.gcov - Arquivo de saída do gcov, mostrando o quanto do código foi cobrido pelos testes(92%)
+	|-------obj - Pasta contendo os objetos necessários para a execução do programa(deve estar vazia antes do primeiro make)
+		|-------...

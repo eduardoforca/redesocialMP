@@ -16,7 +16,7 @@ int amizadeWindow(Pessoa p);
 int listWindow(int type, List lista);
 int userMainWindow(Pessoa p);
 int amizadeWindow(Pessoa p);
-int listWindow(int type, List lista);
+int listWindow(int type, List lista, int mode);
 int signupWindow();
 int loginWindow();
 int filtroUserWindow(Transacao t);
@@ -29,6 +29,13 @@ int pendentesWindow(Pessoa p);
 int offersWindow(Pessoa p);
 int deleteUserWindow(Pessoa p);
 int deleteAmizadeWindow(Pessoa p);
+void printPessoa(Pessoa p);
+void printProduto(Produto p);
+void printTransacao(Transacao t);
+void printPessoaSimples(Pessoa p);
+void printProdutoSimples(Produto p);
+void printTransacaoSimples(Transacao t);
+int detailWindow(Pessoa p);
 
 enum Types{
 	PRODUTOS, TRANSACAO, PESSOA

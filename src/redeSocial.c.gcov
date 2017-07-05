@@ -1,0 +1,669 @@
+        -:    0:Source:redeSocial.c
+        -:    0:Graph:obj/redeSocial.gcno
+        -:    0:Data:obj/redeSocial.gcda
+        -:    0:Runs:2
+        -:    0:Programs:2
+        -:    1:#include "redeSocial.h"
+        -:    2:#include "grafo.h"
+        -:    3:#include "lista.h"
+        -:    4:#include <string.h>
+        -:    5:#include <stdio.h>
+        -:    6:#include <stdlib.h>
+        -:    7:
+        -:    8:#define TRUE 1
+        -:    9:#define FALSE 0
+        -:   10:
+      111:   11:Pessoa CriarPessoa(char* nome, int id){
+      111:   12:	Pessoa p = (Pessoa) malloc(sizeof(pessoa));
+      111:   13:	strcpy(p->nome, nome);
+      111:   14:	p->amigos = cria_lista();
+      111:   15:	p->conhecidos = cria_lista();
+      111:   16:	p->transacoes = cria_lista();
+      111:   17:	p->notificacoes = cria_lista();
+      111:   18:	p->rating_provedor = p->rating_cliente = 0;
+      111:   19:	p->comentarios = cria_lista();
+      111:   20:	p->id = id;
+      111:   21:	return p;
+        -:   22:}
+       47:   23:Produto CriarProduto(char* nome, char* descricao, int tipo, int id){
+       47:   24:	Produto p = (Produto) malloc(sizeof(produto));
+       47:   25:	strcpy(p->nome, nome);
+       47:   26:	strcpy(p->descricao, descricao);
+       47:   27:	p->tipo = tipo;
+       47:   28:	p->id = id;
+        -:   29:
+       47:   30:	return p;
+        -:   31:}
+       42:   32:Transacao CriarTransacao(Pessoa cliente, Produto produto, int id){
+       42:   33:	Transacao t = (Transacao) malloc(sizeof(transacao));
+       42:   34:	t->cliente = cliente;
+       42:   35:	t->produto = produto;
+       42:   36:	t->provedor = NULL;
+       42:   37:	t->status = PEDIDA;
+       42:   38:	t->id = id;
+       42:   39:	t->ofertas = cria_lista();
+       42:   40:	adiciona_no(&(cliente->transacoes), t);
+        -:   41:
+       42:   42:	return t;
+        -:   43:}
+       49:   44:Rede CriarRede(){
+       49:   45:	Rede r = (Rede) malloc (sizeof(rede));
+       49:   46:	r->pessoas = cria_grafo("Pessoas");
+       49:   47:	r->transacoes = cria_lista();
+       49:   48:	r->produtos = cria_lista();
+        -:   49:
+       49:   50:	return r;
+        -:   51:}
+      105:   52:int AdicionarPessoa(Rede rede, Pessoa pessoa){
+        -:   53:
+        -:   54:	//ASSERTIVA DE ENTRADA: Nao pode haver outra pessoas com esse ID na rede
+      105:   55:	if(adiciona_vertice(rede->pessoas, pessoa->id)){
+      103:   56:		muda_valor_vertice(rede->pessoas, pessoa->id, pessoa);
+      103:   57:		return TRUE;
+        -:   58:	}
+        2:   59:	return FALSE;
+        -:   60:
+        -:   61:}
+       43:   62:int AdicionarProduto(Rede rede, Produto produto){
+        -:   63:	//ASSERTIVA DE ENTRADA: Nao pode haver outro Produto com esse ID na rede
+       43:   64:	if(ProdutoByID(rede, produto->id) == NULL){
+       41:   65:		rede->produtos = adiciona_no(&(rede->produtos), produto);
+       41:   66:		return TRUE;
+        -:   67:	} 
+        2:   68:	return FALSE;
+        -:   69:
+        -:   70:}
+       38:   71:int AdicionarTransacao(Rede rede, Transacao transacao){
+        -:   72:	//ASSERTIVA DE ENTRADA: Nao pode haver outra Transacao com esse ID na rede, o Produto e o Cliente devem existir na rede
+      112:   73:	if((TransacaoByID(rede, transacao->id) == NULL) &&
+       70:   74:		(ProdutoByID(rede, transacao->produto->id) != NULL)&&
+       32:   75:		(PessoaByID(rede, transacao->cliente->id) != NULL))
+        -:   76:	{
+        -:   77:
+       32:   78:		rede->transacoes = adiciona_no(&(rede->transacoes), transacao); 
+       32:   79:		return TRUE;
+        -:   80:	}
+        6:   81:	return FALSE;
+        -:   82:
+        -:   83:}
+        4:   84:int ExcluirPessoa(Rede rede, Pessoa pessoa){
+        -:   85:	//ASSERTIVA DE ENTRADA: Pessoa deve existir na rede
+        4:   86:	if (remove_vertice(rede->pessoas, pessoa->id)){
+        2:   87:		destroi_lista(pessoa->amigos);
+        2:   88:		destroi_lista(pessoa->conhecidos);
+        2:   89:		destroi_lista(pessoa->comentarios);
+        2:   90:		free(pessoa);
+        2:   91:		return TRUE;
+        -:   92:	}
+        2:   93:	return FALSE;
+        -:   94:
+        -:   95:}
+        4:   96:int ExcluirProduto(Rede rede, Produto produto){
+        -:   97:	//ASSERTIVA DE ENTRADA: Produto deve existir na rede
+        4:   98:	if(remove_no_byvalue(&(rede->produtos), produto)){
+        2:   99:		free(produto);
+        2:  100:		return TRUE;
+        -:  101:	}
+        2:  102:	return FALSE;
+        -:  103:}
+        4:  104:int ExcluirTransacao(Rede rede,Transacao transacao){
+        -:  105:	//ASSERTIVA DE ENTRADA: Transacao deve existir na rede
+        4:  106:	if(remove_no_byvalue(&(rede->transacoes), transacao)){
+        2:  107:		destroi_lista(transacao->ofertas);
+        2:  108:		free(transacao);
+        2:  109:		return TRUE;
+        -:  110:	}
+        2:  111:	return FALSE;
+        -:  112:}
+        2:  113:int DeletaRede(Rede rede){
+        2:  114:	int flag = FALSE;
+        2:  115:	destroi_lista(rede->produtos);
+        2:  116:	destroi_lista(rede->transacoes);
+        -:  117:
+        2:  118:	flag = destroi_grafo(rede->pessoas);
+        -:  119:
+        2:  120:	free(rede);
+        -:  121:
+        2:  122:	return flag;
+        -:  123:}
+       34:  124:int AdicionarAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
+       34:  125:	int grau = AMIZADE;
+        -:  126:	int flag;
+       34:  127:	flag = adiciona_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
+       34:  128:	flag &= adiciona_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
+        -:  129:	//ASSERTIVA DE ENTRADA: Amizade atual nao pode existir e Pessoas devem estar na rede
+       34:  130:	if(flag){
+       30:  131:		muda_valor_aresta(rede->pessoas, pessoa1->id, pessoa2->id, &grau);
+       30:  132:		muda_valor_aresta(rede->pessoas, pessoa2->id, pessoa1->id, &grau);
+        -:  133:
+       30:  134:		adiciona_no(&(pessoa1->amigos), pessoa2);
+       30:  135:		adiciona_no(&(pessoa2->amigos), pessoa1);
+        -:  136:	}
+       34:  137:	return flag;
+        -:  138:}
+        6:  139:int RemoverAmizade(Rede rede, Pessoa pessoa1, Pessoa pessoa2){
+        6:  140:	remove_aresta(rede->pessoas, pessoa1->id, pessoa2->id);
+        6:  141:	remove_aresta(rede->pessoas, pessoa2->id, pessoa1->id);
+        -:  142:
+        6:  143:	int flag = TRUE;
+        6:  144:	flag&=remove_no_byvalue(&(pessoa1->amigos), pessoa2);
+        6:  145:	flag&=remove_no_byvalue(&(pessoa2->amigos), pessoa1);
+        6:  146:	return(flag);
+        -:  147:}
+       19:  148:void NotificarTransacao(Rede rede, Transacao transacao, int* filtros){
+       19:  149:	List pessoas = cria_lista();
+       90:  150:	for (List n = rede->pessoas->verticesList; n != NULL; n = n->next) { 
+       71:  151:		Vertex v = (Vertex)n->value;
+       71:  152:		Pessoa p = (Pessoa)v->value;
+       71:  153:		if(p != transacao->cliente){
+       52:  154:			adiciona_no(&pessoas, p);
+        -:  155:		}
+        -:  156:	}
+       19:  157:	if(filtros != NULL){
+       11:  158:		if(filtros[AMIGO]){
+        2:  159:			List nova_lista = cria_lista();
+       10:  160:			for (List n = pessoas; n != NULL; n = n->next) { 
+        8:  161:				Pessoa p = (Pessoa)n->value;
+        8:  162:				if(Amigos(p, transacao->cliente)){
+        4:  163:					adiciona_no(&nova_lista, p);
+        -:  164:				}
+        -:  165:			}
+        2:  166:			destroi_lista(pessoas);
+        2:  167:			pessoas = nova_lista;
+        -:  168:		}
+       11:  169:		if(filtros[AMIGO2]){
+        2:  170:			List nova_lista = cria_lista();
+       10:  171:			for (List n = pessoas; n != NULL; n = n->next) { 
+        8:  172:				Pessoa p = (Pessoa)n->value;
+        8:  173:				if(p != transacao->cliente){
+       16:  174:					for (List m = p->amigos; m != NULL; m = m->next) { 
+       12:  175:						Pessoa p2 = (Pessoa)m->value;
+       12:  176:						if(Amigos(p2, transacao->cliente)){
+        4:  177:							adiciona_no(&nova_lista, p);
+        4:  178:							break;
+        -:  179:						}
+        -:  180:					}
+        -:  181:				}
+        -:  182:			}
+        2:  183:			destroi_lista(pessoas);
+        2:  184:			pessoas = nova_lista;
+        -:  185:		}
+       11:  186:		if(filtros[JA_FEZ_NEGOCIO]){
+        2:  187:			List nova_lista = cria_lista();
+       10:  188:			for (List n = pessoas; n != NULL; n = n->next) { 
+        8:  189:				Pessoa p = (Pessoa)n->value;
+        8:  190:				if(Conhecidos(p, transacao->cliente)){
+        2:  191:					adiciona_no(&nova_lista, p);
+        -:  192:				}
+        -:  193:			}
+        2:  194:			destroi_lista(pessoas);
+        2:  195:			pessoas = nova_lista;		
+        -:  196:		}
+       11:  197:		if(filtros[JA_FEZ_NEGOCIO_AMIGO]){
+        2:  198:			List nova_lista = cria_lista();
+       10:  199:			for (List n = pessoas; n != NULL; n = n->next) { 
+        8:  200:				Pessoa p = (Pessoa)n->value;
+        8:  201:				if(p != transacao->cliente){
+       12:  202:					for (List m = p->conhecidos; m != NULL; m = m->next) { 
+        8:  203:						Pessoa p2 = (Pessoa)m->value;
+        8:  204:						if(Amigos(p2, transacao->cliente)){
+        4:  205:							adiciona_no(&nova_lista, p);
+        4:  206:							break;
+        -:  207:						}
+        -:  208:					}
+        -:  209:				}
+        -:  210:			}
+        2:  211:			destroi_lista(pessoas);
+        2:  212:			pessoas = nova_lista;
+        -:  213:		}
+       11:  214:		if(filtros[ACOSTUMADO]){
+        1:  215:			List nova_lista = cria_lista();
+        5:  216:			for (List n = pessoas; n != NULL; n = n->next) { 
+        4:  217:				Pessoa p = (Pessoa)n->value;
+        4:  218:				if(p != transacao->cliente){
+        4:  219:					if(Acostumado(p, transacao->produto)){
+        1:  220:						adiciona_no(&nova_lista, p);
+        -:  221:					}
+        -:  222:				}
+        -:  223:			}
+        1:  224:			destroi_lista(pessoas);
+        1:  225:			pessoas = nova_lista;
+        -:  226:		}
+        -:  227:	}
+        -:  228:
+       50:  229:	for (List n = pessoas; n != NULL; n = n->next){
+       31:  230:		Pessoa p = (Pessoa)n->value;
+       31:  231:		adiciona_no(&p->notificacoes, transacao);
+        -:  232:	}
+        -:  233:
+       19:  234:}
+        8:  235:void AceitarTransacao(Rede rede, Transacao transacao, Pessoa pessoa){
+        -:  236:	//ASSERTIVA DE ENTRADA: Transacao e Pessoa devem estar na rede
+        8:  237:	if(PessoaByID(rede, pessoa->id)!=NULL && TransacaoByID(rede, transacao->id)!=NULL){
+        8:  238:		adiciona_no(&(transacao->ofertas), pessoa);
+        8:  239:		remove_no_byvalue(&(pessoa->notificacoes), transacao);
+        -:  240:	}
+        -:  241:
+        8:  242:}
+        6:  243:void AceitarOferta(Rede rede, Transacao oferta, Pessoa pessoa){
+        6:  244:	destroi_lista(oferta->ofertas);
+        6:  245:	oferta->provedor = pessoa;
+        6:  246:	adiciona_no(&(pessoa->transacoes), oferta);
+        6:  247:	ConcluirTransacao(rede, oferta);
+        6:  248:}
+        6:  249:void ConcluirTransacao(Rede rede, Transacao transacao){
+        6:  250:	int grau = NEGOCIOS;
+        6:  251:	transacao->status = PENDENTE;
+        -:  252:
+        -:  253:	//ASSERTIVA: Caso eles ja tenham feito negocio, nao adicionar
+        6:  254:	if(adiciona_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id)){
+        6:  255:		muda_valor_aresta(rede->pessoas, transacao->cliente->id, transacao->provedor->id, &grau);	
+        6:  256:		adiciona_no(&(transacao->cliente->conhecidos), transacao->provedor);
+        -:  257:	}
+        -:  258:
+        6:  259:	if(adiciona_aresta(rede->pessoas, transacao->provedor->id, transacao->cliente->id)){		
+        6:  260:		muda_valor_aresta(rede->pessoas, transacao->provedor->id, transacao->cliente->id, &grau);
+        6:  261:		adiciona_no(&(transacao->provedor->conhecidos), transacao->cliente);
+        -:  262:	}
+        -:  263:	
+        6:  264:}
+        4:  265:void AvaliarTransacao(Rede rede, Transacao transacao, Pessoa avaliador, char* comentario, int rating){
+        4:  266:	transacao->status = CONCLUIDA;
+        4:  267:	if(avaliador == transacao->cliente){
+        2:  268:		strcpy(transacao->comentario_cliente, comentario);
+        2:  269:		adiciona_no(&transacao->provedor->comentarios, comentario);
+        2:  270:		transacao->provedor->rating_provedor += rating; 
+        -:  271:
+        -:  272:	}else{
+        2:  273:		strcpy(transacao->comentario_provedor, comentario);
+        2:  274:		adiciona_no(&transacao->cliente->comentarios, comentario);
+        2:  275:		transacao->cliente->rating_cliente += rating;
+        -:  276:	}
+        4:  277:}
+        2:  278:List FiltrarTransacao(List transacoes, int status){
+        -:  279:
+        2:  280:	List nova_lista = cria_lista();
+       10:  281:	for (List n = transacoes; n != NULL; n = n->next) { 
+        8:  282:		Transacao t = (Transacao)n->value;
+        8:  283:		if(t->status == status){
+        6:  284:			adiciona_no(&nova_lista, t);
+        -:  285:		}
+        -:  286:	}
+        2:  287:	return (nova_lista);
+        -:  288:
+        -:  289:}
+       93:  290:Produto ProdutoByID(Rede rede, int id){
+       93:  291:	if (rede->produtos == NULL)
+       39:  292:		return NULL;
+        -:  293:
+       90:  294:	for (List n = rede->produtos; n != NULL; n = n->next) { //iterates over all vertices
+       84:  295:		Produto p = (Produto)n->value;
+       84:  296:		if (p->id == id) {
+       48:  297:			return p;
+        -:  298:		}
+        -:  299:	}
+        6:  300:	return NULL;
+        -:  301:}
+        -:  302:
+       56:  303:Transacao TransacaoByID(Rede rede, int id){
+       56:  304:	if (rede->transacoes == NULL)
+       33:  305:		return NULL;
+        -:  306:
+       30:  307:	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+       27:  308:		Transacao p = (Transacao)n->value;
+       27:  309:		if (p->id == id) {
+       20:  310:			return p;
+        -:  311:		}
+        -:  312:	}
+        3:  313:	return NULL;
+        -:  314:}
+       84:  315:Pessoa PessoaByID(Rede rede, int id){
+       84:  316:	return (Pessoa)retorna_valor_vertice(rede->pessoas, id);
+        -:  317:
+        -:  318:}
+        2:  319:Rede RedeFile(char* nome_arquivo){
+        2:  320:	FILE* fp = fopen(nome_arquivo,"rb");
+        2:  321:	if (fp!=NULL){
+        2:  322:	    Rede rede = (Rede)malloc(sizeof(rede));
+        -:  323:	    
+        2:  324:	    rede->pessoas = ReadGrafo(fp);
+        -:  325:
+        -:  326:	    int tam;
+        2:  327:   		fread(&tam, sizeof(int), 1, fp);
+        2:  328:   		List list = cria_lista();
+       10:  329:   		for (int i = 0; i < tam; i++) { 
+        8:  330:			Produto p = ReadProduto(fp);
+        8:  331:			adiciona_no(&list, p);
+        -:  332:		}
+        2:  333:		rede->produtos = list;
+        -:  334:
+        2:  335:		fread(&tam, sizeof(int), 1, fp);
+        2:  336:   		list = cria_lista();
+        6:  337:   		for (int i = 0; i < tam; i++) { 
+        4:  338:			Transacao t = ReadTransacao(rede, fp);
+        4:  339:			adiciona_no(&list, t);
+        -:  340:		}
+        2:  341:		rede->transacoes = list;
+        -:  342:
+        2:  343:		ResolvePessoas(rede);
+        -:  344:
+        2:  345:	    fclose (fp);
+        2:  346:	    return rede;
+        -:  347:  	}
+    #####:  348:  	return NULL;
+        -:  349:}
+        2:  350:void SalvaRede(Rede rede, char* nomeArquivo){
+        -:  351:
+        2:  352:	FILE* fp = fopen(nomeArquivo,"w+b");
+        2:  353:	if (fp!=NULL){
+        -:  354:	   	
+        2:  355:	   	WriteGrafo(rede->pessoas, fp);
+        2:  356:	   	int tam = tamanho_list(rede->produtos);
+        2:  357:	   	fwrite(&tam, sizeof(int), 1, fp);
+       10:  358:	   	for (List n = rede->produtos; n != NULL; n = n->next) { //iterates over all vertices
+        8:  359:			Produto p = (Produto)n->value;
+        8:  360:			WriteProduto(p, fp);
+        -:  361:		}
+        -:  362:
+        2:  363:	   	tam = tamanho_list(rede->transacoes);
+        2:  364:	   	fwrite(&tam, sizeof(int), 1, fp);
+        6:  365:	   	for (List n = rede->transacoes; n != NULL; n = n->next) { //iterates over all vertices
+        4:  366:			Transacao t = (Transacao)n->value;
+        4:  367:			WriteTransacao(t, fp);
+        -:  368:		}
+        2:  369:	    fclose (fp);
+        -:  370:  	}
+        -:  371:
+        2:  372:}
+        8:  373:void WriteProduto(Produto p, FILE* fp){
+        8:  374:	fwrite(&p->id, sizeof(int), 1, fp);
+        8:  375:	fwrite(&p->tipo, sizeof(int), 1, fp);
+        8:  376:	fwrite(p->nome, sizeof(char), 50, fp);
+        8:  377:	fwrite(p->descricao, sizeof(char), 500, fp);
+        -:  378:
+        8:  379:}
+        8:  380:Produto ReadProduto(FILE* fp){
+        8:  381:	Produto p = (Produto)malloc(sizeof(produto));
+        8:  382:	fread(&p->id, sizeof(int), 1, fp);
+        8:  383:	fread(&p->tipo, sizeof(int), 1, fp);
+        8:  384:	fread(p->nome, sizeof(char), 50, fp);
+        8:  385:	fread(p->descricao, sizeof(char), 500, fp);
+        8:  386:	return p;
+        -:  387:}
+        4:  388:void WriteTransacao(Transacao t, FILE* fp){
+        4:  389:	fwrite(&t->id, sizeof(int), 1, fp);
+        4:  390:	if(t->cliente != NULL){
+        4:  391:		fwrite(&t->cliente->id, sizeof(int), 1, fp);
+        -:  392:	}else{
+    #####:  393:		int w = 0;
+    #####:  394:		fwrite(&w, sizeof(int), 1, fp);
+        -:  395:	}
+        4:  396:	if(t->provedor != NULL){
+    #####:  397:		fwrite(&t->provedor->id, sizeof(int), 1, fp);
+        -:  398:	}else{
+        4:  399:		int w = 0;
+        4:  400:		fwrite(&w, sizeof(int), 1, fp);
+        -:  401:	}
+        4:  402:	fwrite(&t->status, sizeof(int), 1, fp);
+        4:  403:	fwrite(&t->produto->id, sizeof(int), 1, fp);
+        4:  404:	fwrite(t->comentario_cliente, sizeof(char), 1000, fp);
+        4:  405:	fwrite(t->comentario_provedor, sizeof(char), 1000, fp);
+        4:  406:	int tam = tamanho_list(t->ofertas);
+        4:  407:   	fwrite(&tam, sizeof(int), 1, fp);
+        4:  408:	for (List n = t->ofertas; n != NULL; n = n->next) { 
+    #####:  409:		Pessoa p = (Pessoa)n->value;
+    #####:  410:		fwrite(&p->id, sizeof(int), 1, fp);
+        -:  411:	}	
+        4:  412:}
+        -:  413:
+       10:  414:void WritePessoa(Pessoa p, FILE* fp){
+       10:  415:	fwrite(&p->id, sizeof(int), 1, fp);
+       10:  416:	fwrite(p->nome, sizeof(char), 50, fp);
+        -:  417:
+       10:  418:	int tam = tamanho_list(p->amigos);
+       10:  419:   	fwrite(&tam, sizeof(int), 1, fp);
+       22:  420:	for (List n = p->amigos; n != NULL; n = n->next) { 
+       12:  421:		Pessoa p2 = (Pessoa)n->value;
+       12:  422:		fwrite(&p2->id, sizeof(int), 1, fp);
+        -:  423:	}
+        -:  424:
+       10:  425:	tam = tamanho_list(p->conhecidos);
+       10:  426:   	fwrite(&tam, sizeof(int), 1, fp);
+       10:  427:	for (List n = p->conhecidos; n != NULL; n = n->next) { 
+    #####:  428:		Pessoa p2 = (Pessoa)n->value;
+    #####:  429:		fwrite(&p2->id, sizeof(int), 1, fp);
+        -:  430:	}
+        -:  431:
+        -:  432:
+       10:  433:	tam = tamanho_list(p->transacoes);
+       10:  434:   	fwrite(&tam, sizeof(int), 1, fp);
+       14:  435:	for (List n = p->transacoes; n != NULL; n = n->next) { 
+        4:  436:		Transacao t = (Transacao)n->value;
+        4:  437:		fwrite(&t->id, sizeof(int), 1, fp);	
+        -:  438:	}
+        -:  439:
+       10:  440:	tam = tamanho_list(p->notificacoes);
+       10:  441:   	fwrite(&tam, sizeof(int), 1, fp);
+       10:  442:	for (List n = p->notificacoes; n != NULL; n = n->next) { 
+    #####:  443:		Transacao t = (Transacao)n->value;
+    #####:  444:		fwrite(&t->id, sizeof(int), 1, fp);
+        -:  445:	}
+       10:  446:	fwrite(&p->rating_provedor, sizeof(float), 1, fp);
+       10:  447:	fwrite(&p->rating_cliente, sizeof(float), 1, fp);
+        -:  448:
+       10:  449:	tam = tamanho_list(p->comentarios);
+       10:  450:   	fwrite(&tam, sizeof(int), 1, fp);
+       10:  451:	for (List n = p->comentarios; n != NULL; n = n->next) { 
+    #####:  452:		char* comentario = (char*)n->value;
+    #####:  453:		fwrite(comentario, sizeof(char), 1000, fp);
+        -:  454:	}	
+       10:  455:}
+        -:  456:
+        2:  457:void WriteGrafo(Graph g, FILE*fp){
+        2:  458:	fwrite(g->name, sizeof(char), 100, fp);
+        2:  459:	int tam = tamanho_list(g->verticesList);
+        2:  460:   	fwrite(&tam, sizeof(int), 1, fp);
+       12:  461:	for (List n = g->verticesList; n != NULL; n = n->next) { 
+       10:  462:		Vertex v = ((Vertex)n->value);
+        -:  463:
+       10:  464:		tam = tamanho_list(v->adjList);
+       10:  465:   		fwrite(&tam, sizeof(int), 1, fp);
+       22:  466:		for(List m = v->adjList; m != NULL; m = m->next){
+       12:  467:			Edge e = ((Edge)m->value);
+       12:  468:			fwrite(&(*((int*)e->value)), sizeof(int), 1, fp);
+       12:  469:			fwrite(&e->start, sizeof(int), 1, fp);
+       12:  470:			fwrite(&e->end, sizeof(int), 1, fp);			
+        -:  471:			
+        -:  472:		}
+       10:  473:		Pessoa p = (Pessoa)v->value;
+       10:  474:		WritePessoa(p, fp);
+       10:  475:		fwrite(&v->id, sizeof(int), 1, fp);		
+        -:  476:	}
+        -:  477:
+        2:  478:}
+        -:  479:
+        4:  480:Transacao ReadTransacao(Rede r, FILE* fp){
+        4:  481:	Transacao t = (Transacao)malloc(sizeof(transacao)); 
+        4:  482:	fread(&t->id, sizeof(int), 1, fp);
+        -:  483:	int cliente_id, provedor_id, produto_id;
+        4:  484:	fread(&cliente_id, sizeof(int), 1, fp);
+        4:  485:	fread(&provedor_id, sizeof(int), 1, fp);
+        -:  486:
+        4:  487:	t->cliente = PessoaByID(r, cliente_id);
+        4:  488:	t->provedor = PessoaByID(r, provedor_id);
+        -:  489:
+        4:  490:	fread(&t->status, sizeof(int), 1, fp);
+        4:  491:	fread(&produto_id, sizeof(int), 1, fp);
+        -:  492:
+        4:  493:	t->produto = ProdutoByID(r, produto_id);
+        -:  494:
+        4:  495:	fread(t->comentario_cliente, sizeof(char), 1000, fp);
+        4:  496:	fread(t->comentario_provedor, sizeof(char), 1000, fp);
+        -:  497:	int tam;
+        4:  498:   	fread(&tam, sizeof(int), 1, fp);
+        4:  499:   	List list = cria_lista();
+        4:  500:	for (int i = 0; i < tam; i++) { 
+        -:  501:		int id;
+    #####:  502:		fread(&id, sizeof(int), 1, fp);
+    #####:  503:		adiciona_no(&list, PessoaByID(r, id));
+        -:  504:	}
+        4:  505:	t->ofertas = list;
+        4:  506:	return t;
+        -:  507:}
+        -:  508:
+       10:  509:Pessoa ReadPessoa(FILE* fp){
+       10:  510:	Pessoa p = (Pessoa)malloc(sizeof(pessoa));
+       10:  511:	fread(&p->id, sizeof(int), 1, fp);
+       10:  512:	fread(p->nome, sizeof(char), 50, fp);
+        -:  513:
+        -:  514:	int tam;
+       10:  515:   	fread(&tam, sizeof(int), 1, fp);
+        -:  516:
+       10:  517:	List list = cria_lista();
+       22:  518:	for (int i = 0; i < tam; i++) { 
+       12:  519:		int* id = (int*)malloc(sizeof(int));
+       12:  520:		fread(id, sizeof(int), 1, fp);
+       12:  521:		adiciona_no(&list, id);
+        -:  522:	}
+       10:  523:	p->amigos = list;
+        -:  524:	
+       10:  525:	fread(&tam, sizeof(int), 1, fp);
+        -:  526:
+       10:  527:	list = cria_lista();
+       10:  528:	for (int i = 0; i < tam; i++) { 
+    #####:  529:		int* id = (int*)malloc(sizeof(int));
+    #####:  530:		fread(id, sizeof(int), 1, fp);
+    #####:  531:		adiciona_no(&list, id);
+        -:  532:	}
+       10:  533:	p->conhecidos = list;
+        -:  534:
+       10:  535:	fread(&tam, sizeof(int), 1, fp);
+        -:  536:
+       10:  537:	list = cria_lista();
+       14:  538:	for (int i = 0; i < tam; i++) { 
+        4:  539:		int* id = (int*)malloc(sizeof(int));
+        4:  540:		fread(id, sizeof(int), 1, fp);
+        4:  541:		adiciona_no(&list, id);
+        -:  542:	}
+       10:  543:	p->transacoes = list;
+        -:  544:
+       10:  545:	fread(&tam, sizeof(int), 1, fp);
+        -:  546:
+       10:  547:	list = cria_lista();
+       10:  548:	for (int i = 0; i < tam; i++) { 
+    #####:  549:		int* id = (int*)malloc(sizeof(int));
+    #####:  550:		fread(id, sizeof(int), 1, fp);
+    #####:  551:		adiciona_no(&list, id);
+        -:  552:	}
+       10:  553:	p->notificacoes = list;
+        -:  554:
+       10:  555:	fread(&p->rating_provedor, sizeof(float), 1, fp);
+       10:  556:	fread(&p->rating_cliente, sizeof(float), 1, fp);
+        -:  557:
+       10:  558:	fread(&tam, sizeof(int), 1, fp);
+        -:  559:
+       10:  560:	list = cria_lista();
+       10:  561:	for (int i = 0; i < tam; i++) { 
+        -:  562:		char comentario[1000];
+    #####:  563:		fread(comentario, sizeof(char), 1000, fp);
+    #####:  564:		adiciona_no(&list, comentario);
+        -:  565:	}
+       10:  566:	p->comentarios = list;	
+       10:  567:	return p;
+        -:  568:}
+        -:  569:
+        2:  570:Graph ReadGrafo(FILE*fp){
+        2:  571:	Graph g = (Graph)malloc(sizeof(graph));
+        2:  572:	fread(g->name, sizeof(char), 100, fp);
+        -:  573:	int tam;
+        2:  574:   	fread(&tam, sizeof(int), 1, fp);
+        2:  575:   	List list = cria_lista();
+       12:  576:	for (int i = 0; i < tam; i++) { 
+       10:  577:		Vertex v = (Vertex)malloc(sizeof(vertex));
+        -:  578:
+        -:  579:		int tam2;
+       10:  580:		fread(&tam2, sizeof(int), 1, fp);
+       10:  581:		List list2 = cria_lista();
+       22:  582:		for (int j = 0; j < tam2; j++){
+       12:  583:			Edge e = (Edge)malloc(sizeof(edge));
+        -:  584:			int value;
+       12:  585:			fread(&value, sizeof(int), 1, fp);
+       12:  586:			e->value = &value;
+       12:  587:			fread(&e->start, sizeof(int), 1, fp);
+       12:  588:			fread(&e->end, sizeof(int), 1, fp);	
+       12:  589:			adiciona_no(&list2, e);				
+        -:  590:		}
+       10:  591:		v->adjList = list2;
+       10:  592:		Pessoa p = ReadPessoa(fp);
+       10:  593:		fread(&v->id, sizeof(int), 1, fp);
+       10:  594:		v->value = p;
+       10:  595:		adiciona_no(&list, v);	
+        -:  596:	}
+        2:  597:	g->verticesList = list;
+        2:  598:	return g;
+        -:  599:}
+        2:  600:void ResolvePessoas(Rede r){
+        2:  601:	Graph g = r->pessoas;
+       12:  602:	for (List n = g->verticesList; n != NULL; n = n->next) { 
+       10:  603:		Vertex v = ((Vertex)n->value);
+       10:  604:		Pessoa p = (Pessoa)v->value;
+       10:  605:		List nova = cria_lista();
+       22:  606:		for (List m = p->amigos; m != NULL; m = m->next) { 
+       12:  607:			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+       12:  608:			free(m->value);
+        -:  609:		}
+       10:  610:		destroi_lista(p->amigos);
+       10:  611:		p->amigos = nova;
+        -:  612:
+       10:  613:		nova = cria_lista();
+       10:  614:		for (List m = p->conhecidos; m != NULL; m = m->next) { 
+    #####:  615:			adiciona_no(&nova,PessoaByID(r, *((int*)(m->value))));
+    #####:  616:			free(m->value);
+        -:  617:		}
+       10:  618:		destroi_lista(p->conhecidos);
+       10:  619:		p->conhecidos = nova;
+        -:  620:
+       10:  621:		nova = cria_lista();
+       14:  622:		for (List m = p->transacoes; m != NULL; m = m->next) { 
+        4:  623:			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+        4:  624:			free(m->value);
+        -:  625:		}
+       10:  626:		destroi_lista(p->transacoes);
+       10:  627:		p->transacoes = nova;
+        -:  628:
+       10:  629:		nova = cria_lista();
+       10:  630:		for (List m = p->notificacoes; m != NULL; m = m->next) { 
+    #####:  631:			adiciona_no(&nova,TransacaoByID(r, *((int*)(m->value))));
+    #####:  632:			free(m->value);
+        -:  633:		}
+       10:  634:		destroi_lista(p->notificacoes);
+       10:  635:		p->notificacoes = nova;
+        -:  636:	}
+        2:  637:}
+        -:  638:
+       40:  639:int Amigos(Pessoa p1, Pessoa p2){
+       56:  640:	for (List m = p1->amigos; m != NULL; m = m->next) { 
+       38:  641:		if(((Pessoa)(m->value))->id == p2->id){
+       22:  642:			return TRUE;
+        -:  643:		}
+        -:  644:	}
+       18:  645:	return FALSE;
+        -:  646:}
+       10:  647:int Conhecidos(Pessoa p1, Pessoa p2){
+       10:  648:	for (List m = p1->conhecidos; m != NULL; m = m->next) { 
+        4:  649:		if(((Pessoa)(m->value))->id == p2->id){
+        4:  650:			return TRUE;
+        -:  651:		}
+        -:  652:	}
+        6:  653:	return FALSE;
+        -:  654:}
+        4:  655:int Acostumado(Pessoa p1, Produto prod){
+        5:  656:	for (List m = p1->transacoes; m != NULL; m = m->next) { 
+        2:  657:		if(((Transacao)(m->value))->produto->id == prod->id){
+        2:  658:			if(((Transacao)(m->value))->provedor->id == p1->id){
+        1:  659:				return TRUE;
+        -:  660:			}
+        -:  661:		}
+        -:  662:	}
+        3:  663:	return FALSE;
+        -:  664:}

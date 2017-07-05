@@ -1,0 +1,10 @@
+Data 		|	 Horas Trabalhadas	 |	 Tipo Tarefa 		|	 Descrição da Tarefa Realizada 
+01/07/2017			4				estudar aulas				estudo de projetos e código
+02/07/2017			3:30				implementação			codificação rede social
+02/07/2017			3				implementação			codificação main
+02/07/2017			2				realizar testes				implementação gtest
+03/07/2017			3				revisão					revisão de código
+03/07/2017			1				revisar casos de teste		revisão de testes
+03/07/2017			2				codificar módulo			modularizar as funções
+04/07/2017			1				instrumentar via gcov		implementação do gcov e análise resultados
+

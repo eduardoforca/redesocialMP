@@ -7,7 +7,6 @@
 #define width 3
 #define length 10
 //TODO
-//Excluir Usuario
 //Excluir Amizade
 //Printar Grafo
 //Criar printer de cada tipo(Pessoa, Produto, Transacao)
@@ -253,7 +252,8 @@ amizades, transações*/
 		printw("5 - Avaliar Transacoes Pendentes\n");
 		printw("6 - Ver Ofertas Recebidas\n");
 		printw("7 - Excluir Conta\n");
-		printw("8 - Deslogar\n");
+		printw("8 - Excluir Amizade\n");
+		printw("9 - Deslogar\n");
 		scanw("%d", &opcao);	
 		switch(opcao){
 			case 1:
@@ -276,6 +276,10 @@ amizades, transações*/
 				break;
 			case 7:
 				back = deleteUserWindow(p);
+				break;
+			case 8:
+				deleteAmizadeWindow(p);
+				break;
 			default:
 				back = 1;
 				break;
@@ -331,6 +335,25 @@ int amizadeWindow(Pessoa p){
 	return 0;
 
 }
+int deleteAmizadeWindow(Pessoa p){
+	WINDOW *win;
+	win = newwin(width, length, 0, 0);
+	int opcao, back = 0;
+	int id;
+	erase();
+	printw("----- REMOVER AMIZADE -----\nDigite o ID do usuario que deseja remover:\n");
+	scanw("%d", &id);
+	Pessoa n = PessoaByID(rede, id);
+	if(n!= NULL){
+		if(!RemoverAmizade(rede, p, n)){
+			printw("Nao foi possivel remover amizade\n");
+			getch();
+		}
+	}
+	endwin();
+	return 0;
+
+}	
 int listWindow(int type, List lista){
 
 	if (lista == NULL)

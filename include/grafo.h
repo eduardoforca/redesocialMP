@@ -1,20 +1,18 @@
-/*** @file grafo.h
+/** @file grafo.h
  *  @brief GRAFO.C header file
  *
  *  Implementa uma biblioteca simples de grafos direcionados
  *  
  *	@author Eduardo Sousa (eduardoforca) Ana Pergentino(AnaPergentino)
  *  @date 4 Jul 2017
- 
 **/
 
-/** GRAFO.H - Header file, implemented by GRAFO.C
-**/
 #ifndef _GRAFO_H_
 #define _GRAFO_H_
 #include "lista.h"
 
-/**	Graph is defined as a pointer to a struct graph
+/**	
+* Graph is defined as a pointer to a struct graph
 **/
 typedef struct graph *Graph;
 
@@ -28,7 +26,8 @@ struct graph {
 	char name[100];
 };
 
-/**	Edge is defined as a pointer to an edge
+/**	
+*   Edge is defined as a pointer to an edge
 *	@brief Edge of a graph, connects two vertices
 *	@var void* value - generic value to be stored on the edge
 *	@var int start, end - identifiers of the vertices on the start and end of the edge(for a directed graph)
@@ -38,7 +37,8 @@ typedef struct edge {
 	int start, end;
 } *Edge;
 
-/**	Vertex is defined as a pointer to a vertex
+/**	
+*	Vertex is defined as a pointer to a vertex
 *	@brief Vertex of a graph, or a node
 *	@var void* value - generic value to be stored on the vertex
 *	@var int id - identifier of the vertex(defined by user, must be unique)

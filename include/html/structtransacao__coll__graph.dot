@@ -1,0 +1,14 @@
+digraph "transacao"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="transacao",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" produto" ,fontname="Helvetica"];
+  Node2 [label="produto",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structproduto.html"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ofertas" ,fontname="Helvetica"];
+  Node3 [label="listNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structlist_node.html"];
+  Node3 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" next" ,fontname="Helvetica"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" provedor\ncliente" ,fontname="Helvetica"];
+  Node4 [label="pessoa",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structpessoa.html"];
+  Node3 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" comentarios\ntransacoes\nnotificacoes\nconhecidos\namigos" ,fontname="Helvetica"];
+}

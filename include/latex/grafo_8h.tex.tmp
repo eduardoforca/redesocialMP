@@ -1,0 +1,398 @@
+\hypertarget{grafo_8h}{}\section{grafo.\+h File Reference}
+\label{grafo_8h}\index{grafo.\+h@{grafo.\+h}}
+
+
+G\+R\+A\+F\+O.\+C header file.  
+
+
+{\ttfamily \#include \char`\"{}lista.\+h\char`\"{}}\newline
+Include dependency graph for grafo.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structgraph}{graph}
+\item 
+struct \hyperlink{structedge}{edge}
+\item 
+struct \hyperlink{structvertex}{vertex}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structgraph}{graph} $\ast$ \hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}
+\item 
+\mbox{\Hypertarget{grafo_8h_a57feb013d9c93edaec10c6a9d26939b4}\label{grafo_8h_a57feb013d9c93edaec10c6a9d26939b4}} 
+typedef struct \hyperlink{structedge}{edge} $\ast$ {\bfseries Edge}
+\item 
+\mbox{\Hypertarget{grafo_8h_a4bfeedba77a0d022f91c55ecfb403592}\label{grafo_8h_a4bfeedba77a0d022f91c55ecfb403592}} 
+typedef struct \hyperlink{structvertex}{vertex} $\ast$ {\bfseries Vertex}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} \hyperlink{grafo_8h_a3b5422483486eebc937bed532e65a486}{cria\+\_\+grafo} (char $\ast$name)
+\begin{DoxyCompactList}\small\item\em Creates an empty graph called nome. \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{grafo_8h_a594786b5cf00b5d8ea101a05505dc779}{retorna\+\_\+nome\+\_\+grafo} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph)
+\begin{DoxyCompactList}\small\item\em Returns the name of a graph. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_af7bb6fdd49384fbf8007b5ad202ff102}{destroi\+\_\+grafo} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph)
+\begin{DoxyCompactList}\small\item\em Removes a graph from memory. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_a7cc7e657d3d5dc705cf25546e27337d2}{adjacente} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, int y)
+\begin{DoxyCompactList}\small\item\em Checks if two vertices on a graph are adjacentsc. \end{DoxyCompactList}\item 
+int $\ast$ \hyperlink{grafo_8h_a25a56a53584a055cbe2333e2ae1320cf}{vizinhos} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x)
+\begin{DoxyCompactList}\small\item\em Returns all vertices neighbour to x. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_ae7e92d223e7b348c9c08377feba0f52b}{adiciona\+\_\+vertice} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x)
+\begin{DoxyCompactList}\small\item\em Adds a new vertex to a graph. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_a8b455da406f2084612ca78353f83947d}{remove\+\_\+vertice} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x)
+\begin{DoxyCompactList}\small\item\em Removes a vertex from a graph. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_a9b72376df380dd8afa89d55b7cca9380}{adiciona\+\_\+aresta} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, int y)
+\begin{DoxyCompactList}\small\item\em Adds an edge to a graph. \end{DoxyCompactList}\item 
+int \hyperlink{grafo_8h_afe5d605e2a79ed2ed12b9eb3a1750e8e}{remove\+\_\+aresta} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, int y)
+\begin{DoxyCompactList}\small\item\em Removes an edge from a graph. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{grafo_8h_a86b1db712a0bdb3f6fd87b564a4f2623}{retorna\+\_\+valor\+\_\+vertice} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x)
+\begin{DoxyCompactList}\small\item\em Returns the value of a vertex matched by an identifier. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{grafo_8h_ad0c365fee55b1055abc3423668754a54}{muda\+\_\+valor\+\_\+vertice} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, void $\ast$v)
+\begin{DoxyCompactList}\small\item\em Changes the value stored on a vertex in a graph. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{grafo_8h_aed5ba742fbc0d997aa1e6c0280b32fa4}{retorna\+\_\+valor\+\_\+aresta} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, int y)
+\begin{DoxyCompactList}\small\item\em Returns the value of the edge linking two vertices. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{grafo_8h_a4095b186126c63f6d65ce7556f558493}{muda\+\_\+valor\+\_\+aresta} (\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} a\+\_\+graph, int x, int y, void $\ast$v)
+\begin{DoxyCompactList}\small\item\em Changes the value stored on a edge in a graph. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+G\+R\+A\+F\+O.\+C header file. 
+
+Implementa uma biblioteca simples de grafos direcionados
+
+\begin{DoxyAuthor}{Author}
+Eduardo Sousa (eduardoforca) Ana Pergentino(\+Ana\+Pergentino) 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+4 Jul 2017 
+\end{DoxyDate}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}\label{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}} 
+\index{grafo.\+h@{grafo.\+h}!Graph@{Graph}}
+\index{Graph@{Graph}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{Graph}{Graph}}
+{\footnotesize\ttfamily typedef struct \hyperlink{structgraph}{graph}$\ast$ \hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}
+
+Graph is defined as a pointer to a struct graph 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{grafo_8h_a9b72376df380dd8afa89d55b7cca9380}\label{grafo_8h_a9b72376df380dd8afa89d55b7cca9380}} 
+\index{grafo.\+h@{grafo.\+h}!adiciona\+\_\+aresta@{adiciona\+\_\+aresta}}
+\index{adiciona\+\_\+aresta@{adiciona\+\_\+aresta}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{adiciona\+\_\+aresta()}{adiciona\_aresta()}}
+{\footnotesize\ttfamily int adiciona\+\_\+aresta (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Adds an edge to a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the edge will be added \\
+\hline
+{\em int} & x -\/ Identifiers of the vertices linked by the edge \\
+\hline
+{\em int} & y -\/ Identifiers of the vertices linked by the edge \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ Couldn\textquotesingle{}t add edge \\
+\hline
+{\em 1} & -\/ Edge added successfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_ae7e92d223e7b348c9c08377feba0f52b}\label{grafo_8h_ae7e92d223e7b348c9c08377feba0f52b}} 
+\index{grafo.\+h@{grafo.\+h}!adiciona\+\_\+vertice@{adiciona\+\_\+vertice}}
+\index{adiciona\+\_\+vertice@{adiciona\+\_\+vertice}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{adiciona\+\_\+vertice()}{adiciona\_vertice()}}
+{\footnotesize\ttfamily int adiciona\+\_\+vertice (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Adds a new vertex to a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the vertex will be added \\
+\hline
+{\em int} & x -\/ Identifier of the vertex to be added \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ Couldn\textquotesingle{}t add vertex \\
+\hline
+{\em 1} & -\/ Vertex added successfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a7cc7e657d3d5dc705cf25546e27337d2}\label{grafo_8h_a7cc7e657d3d5dc705cf25546e27337d2}} 
+\index{grafo.\+h@{grafo.\+h}!adjacente@{adjacente}}
+\index{adjacente@{adjacente}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{adjacente()}{adjacente()}}
+{\footnotesize\ttfamily int adjacente (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Checks if two vertices on a graph are adjacentsc. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ The graph to be checked \\
+\hline
+{\em int} & x -\/ Identifiers of the vertices linked by the edge to be checked \\
+\hline
+{\em int} & y -\/ Identifiers of the vertices linked by the edge to be checked \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ x and y are not adjacent \\
+\hline
+{\em 1} & -\/ x and y are indeed adjacent \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a3b5422483486eebc937bed532e65a486}\label{grafo_8h_a3b5422483486eebc937bed532e65a486}} 
+\index{grafo.\+h@{grafo.\+h}!cria\+\_\+grafo@{cria\+\_\+grafo}}
+\index{cria\+\_\+grafo@{cria\+\_\+grafo}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{cria\+\_\+grafo()}{cria\_grafo()}}
+{\footnotesize\ttfamily \hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph} cria\+\_\+grafo (\begin{DoxyParamCaption}\item[{char $\ast$}]{name }\end{DoxyParamCaption})}
+
+
+
+Creates an empty graph called nome. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em char$\ast$} & nome -\/ string containing the name of the graph \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the empty graph created by the function 
+\end{DoxyReturn}
+\mbox{\Hypertarget{grafo_8h_af7bb6fdd49384fbf8007b5ad202ff102}\label{grafo_8h_af7bb6fdd49384fbf8007b5ad202ff102}} 
+\index{grafo.\+h@{grafo.\+h}!destroi\+\_\+grafo@{destroi\+\_\+grafo}}
+\index{destroi\+\_\+grafo@{destroi\+\_\+grafo}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{destroi\+\_\+grafo()}{destroi\_grafo()}}
+{\footnotesize\ttfamily int destroi\+\_\+grafo (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph }\end{DoxyParamCaption})}
+
+
+
+Removes a graph from memory. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ The pointer to the graph you want to destroy \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ a\+\_\+graph couldn\textquotesingle{}t be destroyed \\
+\hline
+{\em 1} & -\/ a\+\_\+graph was successfull destroyed \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a4095b186126c63f6d65ce7556f558493}\label{grafo_8h_a4095b186126c63f6d65ce7556f558493}} 
+\index{grafo.\+h@{grafo.\+h}!muda\+\_\+valor\+\_\+aresta@{muda\+\_\+valor\+\_\+aresta}}
+\index{muda\+\_\+valor\+\_\+aresta@{muda\+\_\+valor\+\_\+aresta}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{muda\+\_\+valor\+\_\+aresta()}{muda\_valor\_aresta()}}
+{\footnotesize\ttfamily void$\ast$ muda\+\_\+valor\+\_\+aresta (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{void $\ast$}]{v }\end{DoxyParamCaption})}
+
+
+
+Changes the value stored on a edge in a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the edge linking x and y is located \\
+\hline
+{\em int} & x -\/ Identifiers of the vertices linked by the edge \\
+\hline
+{\em int} & y -\/ Identifiers of the vertices linked by the edge \\
+\hline
+{\em void$\ast$} & v -\/ new value of the edge linking x and y \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ e -\/ new value on the edge linking x and y 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em N\+U\+LL} & -\/ couldn\textquotesingle{}t change the value of the edge on a\+\_\+graph \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_ad0c365fee55b1055abc3423668754a54}\label{grafo_8h_ad0c365fee55b1055abc3423668754a54}} 
+\index{grafo.\+h@{grafo.\+h}!muda\+\_\+valor\+\_\+vertice@{muda\+\_\+valor\+\_\+vertice}}
+\index{muda\+\_\+valor\+\_\+vertice@{muda\+\_\+valor\+\_\+vertice}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{muda\+\_\+valor\+\_\+vertice()}{muda\_valor\_vertice()}}
+{\footnotesize\ttfamily void$\ast$ muda\+\_\+valor\+\_\+vertice (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{void $\ast$}]{v }\end{DoxyParamCaption})}
+
+
+
+Changes the value stored on a vertex in a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the vertex is located \\
+\hline
+{\em int} & x -\/ Vertex identifier \\
+\hline
+{\em void$\ast$} & v -\/ new value on x \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ v -\/ new value on x 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em N\+U\+LL} & -\/ Couldn\textquotesingle{}t change value of x \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_afe5d605e2a79ed2ed12b9eb3a1750e8e}\label{grafo_8h_afe5d605e2a79ed2ed12b9eb3a1750e8e}} 
+\index{grafo.\+h@{grafo.\+h}!remove\+\_\+aresta@{remove\+\_\+aresta}}
+\index{remove\+\_\+aresta@{remove\+\_\+aresta}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{remove\+\_\+aresta()}{remove\_aresta()}}
+{\footnotesize\ttfamily int remove\+\_\+aresta (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Removes an edge from a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph from where the edge will be removed \\
+\hline
+{\em int} & x -\/ Identifiers of the vertices linked by the edge \\
+\hline
+{\em int} & y -\/ Identifiers of the vertices linked by the edge \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ Couldn\textquotesingle{}t remove edge \\
+\hline
+{\em 1} & -\/ Edge removed successfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a8b455da406f2084612ca78353f83947d}\label{grafo_8h_a8b455da406f2084612ca78353f83947d}} 
+\index{grafo.\+h@{grafo.\+h}!remove\+\_\+vertice@{remove\+\_\+vertice}}
+\index{remove\+\_\+vertice@{remove\+\_\+vertice}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{remove\+\_\+vertice()}{remove\_vertice()}}
+{\footnotesize\ttfamily int remove\+\_\+vertice (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Removes a vertex from a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph from where the vertex will be removed \\
+\hline
+{\em int} & x -\/ Identifier of the vertex to be removed \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em 0} & -\/ Couldn\textquotesingle{}t remove vertex \\
+\hline
+{\em 1} & -\/ Vertex removed successfully \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a594786b5cf00b5d8ea101a05505dc779}\label{grafo_8h_a594786b5cf00b5d8ea101a05505dc779}} 
+\index{grafo.\+h@{grafo.\+h}!retorna\+\_\+nome\+\_\+grafo@{retorna\+\_\+nome\+\_\+grafo}}
+\index{retorna\+\_\+nome\+\_\+grafo@{retorna\+\_\+nome\+\_\+grafo}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{retorna\+\_\+nome\+\_\+grafo()}{retorna\_nome\_grafo()}}
+{\footnotesize\ttfamily char$\ast$ retorna\+\_\+nome\+\_\+grafo (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph }\end{DoxyParamCaption})}
+
+
+
+Returns the name of a graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ The pointer to the graph from which you want to get the name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a string containing the name of a\+\_\+graph 
+\end{DoxyReturn}
+\mbox{\Hypertarget{grafo_8h_aed5ba742fbc0d997aa1e6c0280b32fa4}\label{grafo_8h_aed5ba742fbc0d997aa1e6c0280b32fa4}} 
+\index{grafo.\+h@{grafo.\+h}!retorna\+\_\+valor\+\_\+aresta@{retorna\+\_\+valor\+\_\+aresta}}
+\index{retorna\+\_\+valor\+\_\+aresta@{retorna\+\_\+valor\+\_\+aresta}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{retorna\+\_\+valor\+\_\+aresta()}{retorna\_valor\_aresta()}}
+{\footnotesize\ttfamily void$\ast$ retorna\+\_\+valor\+\_\+aresta (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+
+
+Returns the value of the edge linking two vertices. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the edge is located \\
+\hline
+{\em int} & x -\/ Identifiers of the vertices linked by the edge \\
+\hline
+{\em int} & y -\/ Identifiers of the vertices linked by the edge \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ e -\/ value on the edge linking x and y 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em N\+U\+LL} & -\/ couldn\textquotesingle{}t find the edge on a\+\_\+graph \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a86b1db712a0bdb3f6fd87b564a4f2623}\label{grafo_8h_a86b1db712a0bdb3f6fd87b564a4f2623}} 
+\index{grafo.\+h@{grafo.\+h}!retorna\+\_\+valor\+\_\+vertice@{retorna\+\_\+valor\+\_\+vertice}}
+\index{retorna\+\_\+valor\+\_\+vertice@{retorna\+\_\+valor\+\_\+vertice}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{retorna\+\_\+valor\+\_\+vertice()}{retorna\_valor\_vertice()}}
+{\footnotesize\ttfamily void$\ast$ retorna\+\_\+valor\+\_\+vertice (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Returns the value of a vertex matched by an identifier. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph where the vertex is located \\
+\hline
+{\em int} & x -\/ Vertex identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ v -\/ value on vertex x 
+\end{DoxyReturn}
+
+\begin{DoxyRetVals}{Return values}
+{\em N\+U\+LL} & -\/ Couldn\textquotesingle{}t find x on a\+\_\+graph \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{grafo_8h_a25a56a53584a055cbe2333e2ae1320cf}\label{grafo_8h_a25a56a53584a055cbe2333e2ae1320cf}} 
+\index{grafo.\+h@{grafo.\+h}!vizinhos@{vizinhos}}
+\index{vizinhos@{vizinhos}!grafo.\+h@{grafo.\+h}}
+\subsubsection{\texorpdfstring{vizinhos()}{vizinhos()}}
+{\footnotesize\ttfamily int$\ast$ vizinhos (\begin{DoxyParamCaption}\item[{\hyperlink{grafo_8h_ae8a75164dd0ab110cf74a450957fcbbd}{Graph}}]{a\+\_\+graph,  }\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Returns all vertices neighbour to x. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Graph} & a\+\_\+graph -\/ graph to be checked \\
+\hline
+{\em int} & x -\/ Identifier of the vertex to be checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Array of the identifiers of the vertices neighbour to x, caller function should deal with memory deallocation of this array 
+\end{DoxyReturn}

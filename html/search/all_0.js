@@ -1,8 +1,11 @@
 var searchData=
 [
+  ['accepttransaction',['acceptTransaction',['../main_8h.html#a352cb00583d45c9644b1b35126bad2cd',1,'main.c']]],
   ['aceitaroferta',['AceitarOferta',['../redeSocial_8h.html#abb42700af05efb9035625cf8fe2516d3',1,'redeSocial.c']]],
   ['aceitartransacao',['AceitarTransacao',['../redeSocial_8h.html#a38cc5b49dade9f3f2210fa0364ba0edd',1,'redeSocial.c']]],
   ['acostumado',['Acostumado',['../redeSocial_8h.html#a283b135effb8a01a8af59e9089fd6004',1,'redeSocial.c']]],
+  ['addremovewindow',['addRemoveWindow',['../main_8h.html#a7470f1e635ec258393b2743bc3da2335',1,'main.c']]],
+  ['addtransaction',['addTransaction',['../main_8h.html#aa5efc7d9a29de5e3251d06b70c01f9fa',1,'main.c']]],
   ['adiciona_5faresta',['adiciona_aresta',['../grafo_8h.html#a9b72376df380dd8afa89d55b7cca9380',1,'grafo.c']]],
   ['adiciona_5fno',['adiciona_no',['../lista_8h.html#aedda66636f5801bdf0ed249dfe640b2d',1,'lista.c']]],
   ['adiciona_5fvertice',['adiciona_vertice',['../grafo_8h.html#ae7e92d223e7b348c9c08377feba0f52b',1,'grafo.c']]],
@@ -11,6 +14,8 @@ var searchData=
   ['adicionarproduto',['AdicionarProduto',['../redeSocial_8h.html#a3b59b1225e5d5f535d759eb921e6a79f',1,'redeSocial.c']]],
   ['adicionartransacao',['AdicionarTransacao',['../redeSocial_8h.html#a16868562e7a6fced6dfa6476c0dc1056',1,'redeSocial.c']]],
   ['adjacente',['adjacente',['../grafo_8h.html#a7cc7e657d3d5dc705cf25546e27337d2',1,'grafo.c']]],
+  ['adminwindow',['adminWindow',['../main_8h.html#a32341996ce8b1665b78b36e406a18961',1,'main.c']]],
   ['amigos',['Amigos',['../redeSocial_8h.html#abb606e98b25dd4a00d05aebb4c5f348b',1,'redeSocial.c']]],
+  ['amizadewindow',['amizadeWindow',['../main_8h.html#a6d7ca4f13661fee5fb4f051b0dd1e78d',1,'main.c']]],
   ['avaliartransacao',['AvaliarTransacao',['../redeSocial_8h.html#a06783bb6fd86022d1fca360a482f1d06',1,'redeSocial.c']]]
 ];

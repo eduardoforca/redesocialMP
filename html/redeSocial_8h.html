@@ -334,7 +334,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para aceitar transações. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Transacao e Pessoa devem estar na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">transacao</td><td></td></tr>
@@ -424,7 +424,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para adicionar amizades. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Amizade atual nao pode existir e Pessoas devem estar na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">pessoa</td><td>1 </td></tr>
@@ -470,7 +470,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para adicionar uma pessoa a Rede. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Nao pode haver outra pessoas com esse ID na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">pessoa</td><td></td></tr>
@@ -515,7 +515,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para adicionar produto na rede. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Nao pode haver outro Produto com esse ID na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">produto</td><td></td></tr>
@@ -560,7 +560,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para adicionar transação na rede. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Nao pode haver outra Transacao com esse ID na rede, o Produto e o Cliente devem existir na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">transacao</td><td></td></tr>
@@ -709,7 +709,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para concluir transação. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA: Caso eles ja tenham feito negocio, nao adicionar </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">transacao</td><td></td></tr>
@@ -981,7 +981,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para excluir pessoa da rede. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Pessoa deve existir na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">pessoa</td><td></td></tr>
@@ -1024,7 +1024,7 @@ Funções</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>ção para excluir produto da rede </p><dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Produto deve existir na rede ção para excluir produto da rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">produto</td><td></td></tr>
@@ -1069,7 +1069,7 @@ Funções</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Função para excluir transação da rede. </p>
-<dl class="params"><dt>Parâmetros</dt><dd>
+<p>ASSERTIVA DE ENTRADA: Transacao deve existir na rede </p><dl class="params"><dt>Parâmetros</dt><dd>
   <table class="params">
     <tr><td class="paramname">rede</td><td></td></tr>
     <tr><td class="paramname">transacao</td><td></td></tr>
